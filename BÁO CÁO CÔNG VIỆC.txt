@@ -1,0 +1,196 @@
+TO: vinhit@tybach.com.vn
+CC: phuongit@tybach.com.vn; thoit@tybach.com.vn; thuit@tybach.com.vn
+
+=========================================
+|	QUÁ TRÌNH TẠO 1 BIỂU MẪU	|	
+=========================================
+B1: Tạo giao diện có sẳn của nhà cung ứng hoặc tự code
+B2: Cài đặt cho biểu mẫu nếu có
+	+ Kí hàng loạt
+	+ Lựa chọn nhân viên sử dụng biểu mẫu
+	+ Nhân viên phụ trách biểu mẫu
+	+ Quyền hạn có thể sử dụng của người phụ trách biểu mẫu	
+		* Cho phép hủy biểu đơn
+		* Cho phép kết án bắt buộc
+		* Cho phép đóng khôi phục
+		* Xác nhận cho phép thay đổi kết quả
+B3: Tạo các sự kiên cập nhật trạng thái biểu mẫu 
+	+ Khi gửi
+	+ Khi Hủy
+	+ Khi Phủ quyết
+	+ Khi đồng ý
+B4: Tạo điều kiện để set vào lưu trình
+B5: Tạo lưu trình hoặc lưu trình phụ nếu có
+B6: Tạo file Report.rpt để in biểu mẫu
+B7: Tạo chức năng hiển thị danh sách biểu mẫu đã gửi
+B7: Phát hành biểu mẫu
+B8: Kiểm trả biểu mẫu (tất cả trường hợp)
+---------------------------------------------------------------------------------
+=================================================
+|	QUÁ TRÌNH TẠO 1 FORM TRONG BIỂU MẪU	|	
+=================================================
+B1: Tạo PO
+B2: Tạo UCO
+B3: Tạo Trigger nếu có
+B4: Tạo giao diện trong CDS ~ Nhớ thêm item vào file plugin.xml trong App_Data
+B5: Kiểm tra FORM
+---------------------------------------------------------------------------------
+
+8/8/24
+Thiết kế biểu mẫu
++ Tạo Giao diện theo mẫu
++ Tạo điều kiện thiết lập
++ Tạo luồng phụ
++ Tạo lưu trình 
++ Công bố biễu mẫu
+
+9/8/24
+- Hiển thị dữ liệu lên form
+- Quy trình thực hiện code 
+- Hướng dẫn đẩy dữ liệu lên giao diện
+- Thực hành đẩy dữ liệu
+PO - sql
+TRIGGER
+UCO - use method from PO 
+
+GUI -> CDS
+
+Thêm conpoment vào file plugin.xml
+
+N gửi
+P Đang chờ ký (Chưa ký duyệt)
+NP Hủy bỏ
+X Phủ quyết
+Z Hoàn thành
+
+Adpot = Hoàn thành
+Reject = Phủ quyết
+Cancel = Vô hiệu
+
+- Trạng thái của form
+Adpot = Hoàn thành
+Reject = Phủ quyết
+Cancel = Vô hiệu
+- Các sự kiện cập nhật trạng thái của form
+Start
+Flow
+End
+- Hiển thị nút Print khi form có trạng thái Z(Hoàn thành trình ký)
+- Thiếu kế form report 
+=======
+- Tiếp tục cập nhật dữ liệu Flow thay đổi trạng thái trong quá trình ký (Start, Flow, End thuộc Trigger) 
+•	N gửi
+•	P Đang chờ ký
+•	NP Hủy bỏ
+•	X Phủ quyết
+•	Z Hoàn thành
+- Cập nhật dữ liệu End (Start, Flow, End thuộc Trigger) thiết lập trạng thái hoàn thành Z tùy vào điêu kiện trình ký khác nhau
+Adpot = Hoàn thành
+Reject = Phủ quyết
+Cancel = Vô hiệu
+- Hiển thị nút Print với các biểu mẫu thuộc Z
+- Tạo Report theo mẫu 
+- Sự kiện thứ 7 nam lau nhà
+===================
+12/08/23
+Tên và tác dụng của bảng trong sql
+LNO (ID của bảng số phiếu nghiệm thu): Mã định danh duy nhất cho từng mục trong bảng, giúp theo dõi và quản lý số lượng phiếu chấp nhận.
+
+ListType (Loại danh sách): Phân loại các yêu cầu, ví dụ như "Đồ dùng Tổng Vụ" hoặc "Linh kiện máy", để quản lý và truy xuất dữ liệu dễ dàng hơn.
+
+PurchaseRequestNo (Số phiếu đơn xin đặt mua): Số lượng đơn xin mua hàng (ví dụ: 2, 3), theo dõi số lượng mua.
+
+AcceptanceDate (Ngày nghiệm thu): Ngày yêu cầu được nghiệm thu, giúp theo dõi thời điểm yêu cầu.
+
+RKNO (Số phiếu đơn đặt mua): Mã số đơn đặt mua, giúp theo dõi và kiểm tra yêu cầu trong hệ thống.
+
+Department (Đơn vị đề nghị hoặc phòng ban): Phòng ban hoặc đơn vị đề xuất yêu cầu, hỗ trợ phân loại và quản lý yêu cầu theo đơn vị.
+
+Applicant (Người nộp đơn): Xác định người gửi yêu cầu, dễ dàng theo dõi, liên hệ hoặc yêu cầu thêm thông tin.
+
+Description (Mô tả): Chi tiết về yêu cầu hoặc mục cần nghiệm thu, hỗ trợ trong quá trình phê duyệt và thực hiện.
+
+PropertyNumbers (Mã số tài sản): Mã số của tài sản cụ thể, giúp quản lý và theo dõi tài sản trong hệ thống.
+
+Remark (Ghi chú hoặc bổ sung): Thông tin bổ sung hoặc nhận xét liên quan đến yêu cầu.
+
+flowflag (Trạng thái): Trạng thái của yêu cầu, ví dụ như "N gửi", "P Đang chờ ký (Chưa ký duyệt)", "NP Hủy bỏ", "X Phủ quyết", "Z Hoàn thành".
+
+UserDate (Ngày mà user thực hiện hành động yêu cầu): Ngày người dùng thực hiện hành động, cung cấp thông tin về thời gian thao tác.
+
+Tiếp tục tạo biểu mẫu report ERP
+Tìm hiểu các bảng SQL và tác dụng
+Tạo biểu mẫu "PHIẾU NGHIỆM THU TÀI SẢN CỐ ĐỊNH"
+Tạo các sự kiện cập nhật dữ liệu của form
+=====================================
+13/08/2024
+Nghiên cứu lưu trình "PHIẾU NGHIỆM THU TÀI SẢN CỐ ĐỊNH"
+
+Người đề nghị
+  └── Chủ quản người đề nghị
+        └── Đơn vị liên quan
+              ├── Nhân viên Bảo vệ
+              |      └── Nhân viên bảo quản
+              |            ├── Nếu Hình thức = Máy móc (Công cụ)
+              |            |      └── Nhân viên đơn vị thông tin
+              |            └── Nếu Hình thức != Máy móc (Công cụ)
+              |                   └── Khác
+              ├── Chủ quản - Cơ Điện
+              ├── Chủ quản - Tổng vụ
+                    └── Kết thúc (Nếu có thông báo)
+
+Tiếp tục tạo "PHIẾU NGHIỆM THU TÀI SẢN CỐ ĐỊNH"
+Tạo reports 
+Tạo lưu trình 
+Hiển thị dữ liệu
+Hoàn thành lưu trình
+Tạo danh sách truy vấn các biểu mẫu đã gửi
+=================================================
+14/08/2024
+- Tạo web service
+	B1: Tạo code Checked_Null
+	B2: Vào hệ thống -> Đăng ký WS bên ngoài -> Thêm liên kết 
+	B3: Thêm web service vào biểu mẫu trong Lưu trình thiết lập
+	B4: Kiểm thử chức năng
+- Phân tích 2 bảng TSCD_KCRKS & LYV_AcceptanceFA trong sql
+- Sửa điều kiện trong lưu trình của "PHIẾU NGHIỆM THU TÀI SẢN CỐ ĐỊNH"
+- Tạo giao diện "Đơn xin nghỉ phép" ~ chưa kết nối database HRM
+==================================================================
+16/08/2024
+- Tạo form "ĐƠN XIN NGHỈ PHÉP"
+	+ Tạo giao diện form
+	+ Cài đặt form
+	+ Tạo các sự kiện của form (trigger)
+	+ Tạo điều kiện trong form
+	+ Tạo lưu trình và lưu trình phụ
+	+ Tạo webservice
+	+ Tạo file report
+- Tạo menu hiển thị danh sách form ĐƠN XIN NGHỈ PHÉP đã gửi
+- Lưu trình gửi form ĐƠN XIN NGHỈ PHÉP
+=====================================================
+|	Quy trình phê duyệt kỳ nghỉ được phê duyệt  |
+=====================================================
+- Phép >= 10 ngày: 
+Người đề nghị -> 
+Chủ quản đơn vị  ->
+Chủ quản bộ phận ->
+
+Nếu Ngày nghỉ >= 10 -> Chủ quản cao nhất bộ phận *
+
+-> Nếu Khu = A -> Nhân sự khu A
+-> Nếu Khu = GC -> Nhân sự khu GC 
+
+-> Chủ quản nhân sự
+-> Phó tổng
+-> Kết thúc lưu trình
+======================================================
+
+- Phép <= 10 ngày: 
+Người đề nghị -> 
+Chủ quản đơn vị  ->
+Chủ quản bộ phận ->
+
+Nếu ngày nghỉ <= 10
+-> Nếu Khu = A -> Nhân sự khu A
+-> Nếu Khu = GC -> Nhân sự khu GC 
+-> Chủ quản nhân sự
