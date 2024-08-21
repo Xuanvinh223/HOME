@@ -5,6 +5,51 @@
     <Field>
       <OptionalField>
 
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripExpert/LYN_BusinessTripExpert_Form.ascx" FieldName="BusinessTripExpert">
+			  <Display>
+				  <Value Culture="zh-TW" Name="BÁO CÁO CÔNG TÁC - CHUYÊN GIA"/>
+				  <Value Culture="zh-CN" Name="BÁO CÁO CÔNG TÁC - CHUYÊN GIA"/>
+				  <Value Culture="en-US" Name="BÁO CÁO CÔNG TÁC - CHUYÊN GIA"/>
+				  <Value Culture="vi" Name="BÁO CÁO CÔNG TÁC - CHUYÊN GIA"/>
+			  </Display>
+		  </FieldItem>
+		  
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Supplier/LYN_Supplier.ascx" FieldName="Supplier">
+			  <Display>
+				  <Value Culture="zh-TW" Name="Nhà cung ứng"/>
+				  <Value Culture="zh-CN" Name="Nhà cung ứng"/>
+				  <Value Culture="en-US" Name="Nhà cung ứng"/>
+				  <Value Culture="vi" Name="Nhà cung ứng"/>
+			  </Display>
+		  </FieldItem>
+
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/CapacityAssessmentCB/LYN_CapacityAssessmentCB.ascx" FieldName="LYN_CapacityAssessmentCB">
+			  <Display>
+				  <Value Culture="zh-TW" Name="LYN 出差申請單"/>
+				  <Value Culture="zh-CN" Name="LYN 出差申請單"/>
+				  <Value Culture="en-US" Name="LYN BusinessTrip"/>
+				  <Value Culture="vi" Name="Đánh giá năng lực cáng bộ"/>
+			  </Display>
+		  </FieldItem>		  
+		  
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTrip/LYN_BusinessTrip_Form.ascx" FieldName="LYN_BusinessTrip_Form">
+			  <Display>
+				  <Value Culture="zh-TW" Name="LYN 出差申請單"/>
+				  <Value Culture="zh-CN" Name="LYN 出差申請單"/>
+				  <Value Culture="en-US" Name="LYN BusinessTrip"/>
+				  <Value Culture="vi" Name="LYN Đơn đề nghị đi công tác"/>
+			  </Display>
+		  </FieldItem>
+
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Out/LYV_Out.ascx" FieldName="Out">
+			  <Display>
+				  <Value Culture="zh-TW" Name="Out" />
+				  <Value Culture="zh-CN" Name="Out" />
+				  <Value Culture="en-US" Name="Out" />
+				  <Value Culture="vi" Name="Out" />
+			  </Display>
+		  </FieldItem>
+
 		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Leave/LYV_Leave_Form.ascx" FieldName="Leave">
 			  <Display>
 				  <Value Culture="zh-TW" Name="Leave" />

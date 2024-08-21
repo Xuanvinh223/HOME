@@ -231,11 +231,11 @@ ORDER BY BEGIN_TIME DESC
 SELECT TOP 1 * FROM LYN_BusinessTrip ORDER BY LNO DESC
 
 
- SELECT ROW_NUMBER() OVER(ORDER BY NAME) AS Seq ,S_STEP_DESC, NAME, COMMENT, S_USERDATE, CASE WHEN ST='N' THEN '申請' WHEN ST='Z' THEN '結案' WHEN ST='X' THEN '作廢' WHEN ST='NP' THEN '退回' ELSE '核准' END AS STATUS 
+ SELECT UserId,S_STEP_DESC, NAME, COMMENT, S_USERDATE, CASE WHEN ST='N' THEN '申請' WHEN ST='Z' THEN '結案' WHEN ST='X' THEN '作廢' WHEN ST='NP' THEN '退回' ELSE '核准' END AS STATUS 
 FROM (SELECT TOP 100 TITLE_NAME + ' ('+ GROUP_NAME + ')' as S_STEP_DESC, TB_EB_USER.NAME, COMMENT,  FORMAT(FINISH_TIME, 'yyyy/MM/dd HH:mm') as S_USERDATE, TB_WKF_TASK_NODE.SITE_ID,TB_WKF_TASK.CURRENT_DOC_ID,SIGN_STATUS,
               CASE WHEN SIGN_STATUS = 0 and TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.SITE_ID THEN 'N'
               WHEN SIGN_STATUS = 0 and END_TIME=FINISH_TIME and TB_WKF_TASK.TASK_ID <> TB_WKF_TASK_NODE.SITE_ID THEN 'Z' 
-			  WHEN SIGN_STATUS = 1 OR SIGN_STATUS = 5 THEN 'X' WHEN SIGN_STATUS = 2 THEN 'NP' ELSE 'P' END as ST , TB_WKF_TASK.TASK_ID
+			  WHEN SIGN_STATUS = 1 OR SIGN_STATUS = 5 THEN 'X' WHEN SIGN_STATUS = 2 THEN 'NP' ELSE 'P' END as ST , TB_WKF_TASK.TASK_ID, dbo.TB_EB_USER.ACCOUNT AS UserId
        FROM TB_WKF_TASK_NODE 
        LEFT JOIN TB_WKF_TASK ON TB_WKF_TASK.TASK_ID=TB_WKF_TASK_NODE.TASK_ID 
        --LEFT JOIN LYN_ITService on LYN_ITService.IT001=TB_WKF_TASK.DOC_NBR 
@@ -299,3 +299,28 @@ LEFT JOIN (
                 RowID = 1 
  ) AS ApproveData ON 1 = 1 
  WHERE LNO='LYV240800102'
+
+ SELECT * FROM LYN_BusinessTripExpert
+CREATE TABLE LYN_BusinessTripExpert (
+    LNO VARCHAR(255) PRIMARY KEY,             -- Giả sử LNO là khóa chính và kiểu dữ liệu là INT
+    expert VARCHAR(255),             -- Thay đổi kích thước VARCHAR nếu cần
+    Factory VARCHAR(255),
+    Type VARCHAR(255),
+    Name_ID VARCHAR(255),
+    Name NVARCHAR(255),
+    Name_DepID VARCHAR(255),
+    Name_DepName NVARCHAR(255),
+    Agent_ID VARCHAR(255),
+    Agent VARCHAR(255),
+    Purpose NVARCHAR(255),                    -- Thay đổi kiểu dữ liệu nếu cần
+    FLocation NVARCHAR(255),
+    Journey NVARCHAR(255),
+    Time DATETIME,                   -- Hoặc DATE nếu chỉ có ngày
+    Days int,                        -- Hoặc SMALLINT nếu giá trị nhỏ hơn
+    TransportType NVARCHAR(255),
+    ApplyCar INT,              -- Sử dụng BOOLEAN nếu là giá trị TRUE/FALSE
+    Remark NVARCHAR(255),
+    flowflag VARCHAR(255),
+    USERID VARCHAR(255),
+    USERDATE DATETIME                -- Hoặc DATE nếu chỉ có ngày
+);

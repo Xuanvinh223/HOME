@@ -1,4 +1,6 @@
 USE HRM
+
+
 SELECT *
                             FROM ST_NHANVIEN 
                             WHERE NV_Ma NOT IN(SELECT NV_Ma FROM ST_NHANVIENTHOIVIEC)
