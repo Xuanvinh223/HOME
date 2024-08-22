@@ -137,7 +137,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
     }
     private void LoadDataDep()
     {
-        LYN.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYN.BusinessTripOD.UCO.BusinessTripODUCO();
+        Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
         DataTable dt = uco.GetDep();
         gvDep.DataSource = dt;
         ViewState["formsDT"] = dt;
@@ -154,7 +154,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
             expert.Checked = false;
             return;
         }
-        LYN.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYN.BusinessTripOD.UCO.BusinessTripODUCO();
+        Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
         string data = uco.GetEmployee(Name_ID.Text);
         string UserName = data.Split(";")[0];
         string UserDep = data.Split(";")[1];
@@ -196,7 +196,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
             Agent.Text = "";
             return;
         }
-        LYN.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYN.BusinessTripOD.UCO.BusinessTripODUCO();
+        Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
         string data = uco.GetEmployee(Agent_ID.Text);
         string UserName = data.Split(";")[0];
         string Flag = data.Split(";")[2];
@@ -247,7 +247,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
     public void Print_Click(object sender, EventArgs e)
     {
         ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-        Dialog.Open2(Print, "~/CDS/LYN/Plugin/BusinessTripOD/LYN_BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/LYN_BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
     }
     /// <summary>
     /// 外掛欄位的條件值
@@ -264,7 +264,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
             {
                 string account = Current.UserGUID;
                 string group = ApplicantGroupId;
-                LYN.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYN.BusinessTripOD.UCO.BusinessTripODUCO();
+                Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
                 string LEV = uco.GetLEV(account, group);
                 string Expert = "N";
                 if (expert.Checked == true)
@@ -501,7 +501,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         else
         {
             ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-            Dialog.Open2(Print, "~/CDS/LYN/Plugin/BusinessTripOD/LYN_BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+            Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/LYN_BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
             pPrint.Visible = true;
         }
     }

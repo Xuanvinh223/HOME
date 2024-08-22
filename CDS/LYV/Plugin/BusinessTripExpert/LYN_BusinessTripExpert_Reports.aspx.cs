@@ -18,16 +18,11 @@ public partial class WKF_BusinessTripExpert_Reports : Ede.Uof.Utility.Page.BaseP
 
             ReportDocument rd = new ReportDocument();
             TableLogOnInfo connInfo = new TableLogOnInfo();
-            rd.Load(Server.MapPath("~/CDS/LYN/Plugin/Report/rptBusinessTripExpert.rpt"));
-            connInfo.ConnectionInfo.ServerName = "192.168.23.121";
+            rd.Load(Server.MapPath("~/CDS/LYV/Plugin/Report/rptBusinessTripVN.rpt"));
+            connInfo.ConnectionInfo.ServerName = "192.168.23.11";
             connInfo.ConnectionInfo.DatabaseName = "UOF";
             connInfo.ConnectionInfo.UserID = "trinhky";
             connInfo.ConnectionInfo.Password = "It@123";
-
-            /*connInfo.ConnectionInfo.ServerName = "192.168.23.8";
-            connInfo.ConnectionInfo.DatabaseName = "UOF";
-            connInfo.ConnectionInfo.UserID = "uof";
-            connInfo.ConnectionInfo.Password = "mhgdimhdyjqje";*/
 
             for (int i = 0; i < rd.Database.Tables.Count; i++)
             {

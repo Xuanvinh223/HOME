@@ -41,15 +41,15 @@ namespace Training.Trigger.BusinessTripOD
             string SiteCode = applyTask.SiteCode;
             string signStatus = applyTask.SignResult.ToString();
 
-            string LNO = applyTask.Task.CurrentDocument.Fields["LNO"].FieldValue.ToString();
-            string Area = applyTask.Task.CurrentDocument.Fields["Area"] == null ? "" : applyTask.Task.CurrentDocument.Fields["Area"].FieldValue.ToString();
+            string LNO = applyTask.Task.CurrentDocument.Fields["LYV"].FieldValue.ToString();
+            //string Area = applyTask.Task.CurrentDocument.Fields["Area"] == null ? "" : applyTask.Task.CurrentDocument.Fields["Area"].FieldValue.ToString();
             string MaPhieu = applyTask.Task.CurrentDocument.Fields["MaPhieu"].FieldValue.ToString();
 
             XElement xE = XElement.Parse(applyTask.Task.CurrentDocument.Fields["Form"].FieldValue.ToString());
 
             BusinessTripODUCO uco = new BusinessTripODUCO();
 
-            uco.UpdateFormStatus(LNO, Area, SiteCode, signStatus, MaPhieu, xE);
+            uco.UpdateFormStatus(LNO, "Area", SiteCode, signStatus, MaPhieu, xE);
             return "";
         }
 

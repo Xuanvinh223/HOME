@@ -70,14 +70,10 @@ namespace Training.BusinessTripOD.PO
         }
         internal DataTable GetDep()
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
+            string conn = Training.Properties.Settings.Default.HRM.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string cmdTxt = @"Select DV_MA,DV_TEN from
-                              (Select DV_MA, DV_TEN from [HRS].[P0104-TYXUAN].[dbo].[ST_DONVI] ST_DonVi 
-                              UNION 
-                              Select (DID COLLATE database_default) DV_MA, (Name COLLATE database_default) DV_Ten  
-                              from [ERP].[LIY_TYXUAN].[dbo].[Directory_Department] Directory_Department ) DonVi";
-
+            string cmdTxt = @"SELECT ST_NHANVIEN.DV_MA,DV_TEN
+                            FROM ST_DONVI left JOIN dbo.ST_NHANVIEN ON ST_NHANVIEN.DV_MA = ST_DONVI.DV_MA";
             DataTable dt = new DataTable();
 
             dt.Load(this.m_db.ExecuteReader(cmdTxt));

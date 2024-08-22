@@ -365,7 +365,7 @@ namespace Training.BusinessTripExpert.PO
             if (Time2 != "") where += " and Time <= '" + Time2 + "' ";
 
             string SQL = "";
-            SQL += "SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, Time, USERID, USERDATE, flowflag, TASK_ID ";
+            SQL += "SELECT LNO, Name, Name_ID, Purpose, FLocation, Time, USERID, USERDATE, flowflag, TASK_ID ";
             SQL += "FROM LYN_BusinessTripExpert LEFT JOIN TB_WKF_TASK on LYN_BusinessTripExpert.LNO=TB_WKF_TASK.DOC_NBR ";
             SQL += "WHERE 1=1 " + where + "  ";
             SQL += "ORDER BY LYN_BusinessTripExpert.LNO desc ";

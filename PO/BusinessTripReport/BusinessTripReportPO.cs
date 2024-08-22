@@ -23,9 +23,9 @@ namespace Training.BusinessTripReport.PO
             if (BTime2 != "") where += " and BTime <= '" + BTime2 + "' ";
 
             string SQL = @"SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
-                           FROM LYN_BusinessTrip LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip.LNO=TB_WKF_TASK.DOC_NBR 
+                           FROM LYN_BusinessTrip_Templ LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip_Templ.LNO=TB_WKF_TASK.DOC_NBR 
                            WHERE isnull(Days,2)>=2 and flowflag='Z' and LNO not in (select BLNO as LNO from LYN_BusinessTripReport where isnull(Cancel,0)<>1) " + where + @"
-                           ORDER BY LYN_BusinessTrip.LNO desc ";
+                           ORDER BY LYN_BusinessTrip_Templ.LNO desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));
@@ -40,9 +40,9 @@ namespace Training.BusinessTripReport.PO
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
             string SQL = @"SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
-                           FROM LYN_BusinessTrip LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip.LNO=TB_WKF_TASK.DOC_NBR 
+                           FROM LYN_BusinessTrip_Templ LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip_Templ.LNO=TB_WKF_TASK.DOC_NBR 
                            WHERE LNO = " + BLNO + @"
-                           ORDER BY LYN_BusinessTrip.LNO desc ";
+                           ORDER BY LYN_BusinessTrip_Templ.LNO desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));

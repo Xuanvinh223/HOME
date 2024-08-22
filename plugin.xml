@@ -5,6 +5,24 @@
     <Field>
       <OptionalField>
 
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport.ascx" FieldName="BusinessTripReport">
+			  <Display>
+				  <Value Culture="zh-TW" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
+				  <Value Culture="zh-CN" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
+				  <Value Culture="en-US" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
+				  <Value Culture="vi" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
+			  </Display>
+		  </FieldItem>
+		  
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripOD/LYN_BusinessTripOD_Form.ascx" FieldName="BusinessTripOD">
+			  <Display>
+				  <Value Culture="zh-TW" Name="BÁO CÁO CÔNG TÁC - OD"/>
+				  <Value Culture="zh-CN" Name="BÁO CÁO CÔNG TÁC - OD"/>
+				  <Value Culture="en-US" Name="BÁO CÁO CÔNG TÁC - OD"/>
+				  <Value Culture="vi" Name="BÁO CÁO CÔNG TÁC - OD"/>
+			  </Display>
+		  </FieldItem>
+		  
 		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripExpert/LYN_BusinessTripExpert_Form.ascx" FieldName="BusinessTripExpert">
 			  <Display>
 				  <Value Culture="zh-TW" Name="BÁO CÁO CÔNG TÁC - CHUYÊN GIA"/>

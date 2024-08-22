@@ -88,7 +88,7 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
             expert = "Y";
         }
 
-        LYN.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYN.BusinessTripReport.UCO.BusinessTripReportUCO();
+        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
 
         DataTable dt = uco.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
         ViewState["formsDT"] = dt;
@@ -241,12 +241,12 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
     public void Print_Click(object sender, EventArgs e)
     {
         ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-        Dialog.Open2(Print, "~/CDS/LYN/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
     }
     public void Disable_Click(object sender, EventArgs e)
     {
         string LNO = hfLNO.Value.ToString();
-        LYN.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYN.BusinessTripReport.UCO.BusinessTripReportUCO();
+        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
         string Status = uco.GetBusinessTripReport(LNO);
         if (Status == "cfm")
         {
@@ -259,13 +259,13 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
         else
         {
             ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-            Dialog.Open2(Disable, "~/CDS/LYN/Plugin/BusinessTripReport/LYN_BusinessTripReport_Modal.aspx", "註銷外出單", 950, 600, Dialog.PostBackType.None, param);
+            Dialog.Open2(Disable, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Modal.aspx", "註銷外出單", 950, 600, Dialog.PostBackType.None, param);
         }
     }
     public void Approve_Click(object sender, EventArgs e)
     {
         string LNO = hfLNO.Value.ToString();
-        LYN.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYN.BusinessTripReport.UCO.BusinessTripReportUCO();
+        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
         string Status = uco.GetBusinessTripReport(LNO);
         if (Status == "cfm")
         {
@@ -423,7 +423,7 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
         //  < TestPlugin Type = "456" />
         //</ FieldItem >
         string key = xeTP.Attribute("BLNO").Value;
-        LYN.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYN.BusinessTripReport.UCO.BusinessTripReportUCO();
+        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
         if (key != "")
         {
             pnQuery.Visible = false;
@@ -470,7 +470,7 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
             {
                 pPrint.Visible = true;
                 ExpandoObject param1 = new { LNO = hfLNO.Value }.ToExpando();
-                Dialog.Open2(Print, "~/CDS/LYN/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
+                Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
                 pDisable.Visible = true;
                 pApprove.Visible = false;
             }
@@ -478,14 +478,14 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
             {
                 pPrint.Visible = true;
                 ExpandoObject param1 = new { LNO = hfLNO.Value }.ToExpando();
-                Dialog.Open2(Print, "~/CDS/LYN/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
-                pDisable.Visible = false;
+                Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
+                //pDisable.Visible = false;
                 pApprove.Visible = true;
             }
             else
             {
                 pPrint.Visible = true;
-                pDisable.Visible = false;
+                //pDisable.Visible = false;
                 pApprove.Visible = false;
             }
         }

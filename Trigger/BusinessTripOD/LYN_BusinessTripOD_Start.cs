@@ -22,10 +22,10 @@ namespace Training.Trigger.BusinessTripOD
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(applyTask.CurrentDocXML);
 
-            string LNO = applyTask.Task.CurrentDocument.Fields["LNO"].FieldValue.ToString();
-            string Area = applyTask.Task.CurrentDocument.Fields["Area"] == null ? "" : applyTask.Task.CurrentDocument.Fields["Area"].FieldValue.ToString();
+            string LNO = applyTask.Task.CurrentDocument.Fields["LYV"].FieldValue.ToString();
+            //string Area = applyTask.Task.CurrentDocument.Fields["Area"] == null ? "" : applyTask.Task.CurrentDocument.Fields["Area"].FieldValue.ToString();
             string UserID = applyTask.Task.CurrentDocument.Fields["UserID"].FieldValue.ToString();
-            UserID= UserID.Substring(UserID.IndexOf('(')+4, UserID.IndexOf(')')- UserID.IndexOf('(')-4);
+            UserID = UserID.Substring(UserID.IndexOf('(') + 4, UserID.IndexOf(')') - UserID.IndexOf('(') - 4);
 
             XElement xE = XElement.Parse(applyTask.Task.CurrentDocument.Fields["Form"].FieldValue.ToString());
 
@@ -49,8 +49,8 @@ namespace Training.Trigger.BusinessTripOD
             /// <param name="fieldValue">欄位內容(新的內容)</param>
             /// <param name="realValue">表單真實的值(for欄位式站點,傳入NULL代表不變動)</param> 
             /// 更新C23888資料
-            taskUtility.UpdateTaskContent(false, taskID, "expert", expert, "");
-            uco.InsertBusinessTripODFormData(LNO, Area, UserID, xE, MaPhieu);
+            //taskUtility.UpdateTaskContent(false, taskID, "expert", expert, "");
+            uco.InsertBusinessTripODFormData(LNO, "Area", UserID, xE, MaPhieu);
 
             return "";
         }

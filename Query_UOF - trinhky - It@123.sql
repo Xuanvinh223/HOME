@@ -2,325 +2,34 @@
 
 SELECT * FROM dbo.TB_WKF_TASK
 ORDER BY BEGIN_TIME DESC
-SELECT 
-    LYN_AcceptanceFA.*, 
-    BUSER.NAME AS CGUSERNAME, 
-    CGZL.USERDate AS CGDate, 
-    ApplicantDate,
-    ISNULL(NameB1, '') AS NameB1, 
-    ISNULL(DateB1, '') AS DateB1, 
-    ISNULL(NameB2, '') AS NameB2, 
-    ISNULL(DateB2, '') AS DateB2, 
-    ISNULL(NameB3, '') AS NameB3, 
-    ISNULL(DateB3, '') AS DateB3, 
-    ISNULL(NameB4, '') AS NameB4, 
-    ISNULL(DateB4, '') AS DateB4,
-	ISNULL(NameB5, '') AS NameB5, 
-    ISNULL(DateB5, '') AS DateB5,
-	ISNULL(NameB6, '') AS NameB6, 
-    ISNULL(DateB6, '') AS DateB6
-FROM 
-    LYN_AcceptanceFA
-LEFT JOIN 
-    [ERP].[TB_ERP].dbo.KCRK KCRK 
-    ON KCRK.RKNO = LYN_AcceptanceFA.RKNO COLLATE Chinese_Taiwan_Stroke_CI_AS
-LEFT JOIN 
-    [ERP].[TB_ERP].dbo.CGZL CGZL 
-    ON CGZL.CGNO = KCRK.ZSNO
-LEFT JOIN 
-    TB_EB_USER BUSER 
-    ON CGZL.USERID = REPLACE(BUSER.ACCOUNT, 'LYV', '') COLLATE Chinese_Taiwan_Stroke_CI_AS
-LEFT JOIN 
-    TB_WKF_TASK 
-    ON LYN_AcceptanceFA.LNO = TB_WKF_TASK.DOC_NBR
-LEFT JOIN (
-    SELECT 
-        MAX(APPNAME) AS Applicant, 
-        MAX(CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
-        MAX(CASE WHEN SITE_CODE = 'B1' THEN NAME END) AS NameB1, 
-        MAX(CASE WHEN SITE_CODE = 'B1' THEN FINISH_TIME END) AS DateB1, 
-        MAX(CASE WHEN SITE_CODE = 'B2' THEN NAME END) AS NameB2, 
-        MAX(CASE WHEN SITE_CODE = 'B2' THEN FINISH_TIME END) AS DateB2, 
-        MAX(CASE WHEN SITE_CODE = 'B3' THEN NAME END) AS NameB3, 
-        MAX(CASE WHEN SITE_CODE = 'B3' THEN FINISH_TIME END) AS DateB3,
-        MAX(CASE WHEN SITE_CODE = 'B4' THEN NAME END) AS NameB4, 
-        MAX(CASE WHEN SITE_CODE = 'B4' THEN FINISH_TIME END) AS DateB4,
-		MAX(CASE WHEN SITE_CODE = 'B5' THEN NAME END) AS NameB5, 
-        MAX(CASE WHEN SITE_CODE = 'B5' THEN FINISH_TIME END) AS DateB5,
-		MAX(CASE WHEN SITE_CODE = 'B6' THEN NAME END) AS NameB6, 
-        MAX(CASE WHEN SITE_CODE = 'B6' THEN FINISH_TIME END) AS DateB6
-    FROM ( 		
-        SELECT 
-            TB_WKF_TASK.TASK_ID, 
-            TB_WKF_TASK_TRIGGER_RECORD.SITE_CODE,  
-            TB_EB_USER.NAME, 
-            CAST(FINISH_TIME AS DATE) AS FINISH_TIME, 
-            GROUP_NAME, 
-            TITLE_NAME, 
-            LEV, 
-            US.NAME AS APPNAME, 
-            TB_WKF_TASK.BEGIN_TIME
-        FROM 
-            TB_WKF_TASK
-        LEFT JOIN 
-            TB_WKF_TASK_NODE 
-            ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID
-        LEFT JOIN 
-            TB_WKF_TASK_NODE_SIGNER_INFO 
-            ON TB_WKF_TASK_NODE_SIGNER_INFO.SITE_ID = TB_WKF_TASK_NODE.SITE_ID 
-            AND TB_WKF_TASK_NODE.NODE_SEQ = TB_WKF_TASK_NODE_SIGNER_INFO.NODE_SEQ
-        LEFT JOIN 
-            TB_EB_GROUP 
-            ON TB_WKF_TASK_NODE_SIGNER_INFO.GROUP_ID = TB_EB_GROUP.GROUP_ID
-        LEFT JOIN 
-            TB_EB_EMPL_DEP 
-            ON TB_EB_EMPL_DEP.GROUP_ID = TB_EB_GROUP.GROUP_ID 
-            AND TB_EB_EMPL_DEP.USER_GUID = TB_WKF_TASK_NODE.ORIGINAL_SIGNER
-        LEFT JOIN 
-            TB_EB_USER 
-            ON TB_EB_USER.USER_GUID = TB_WKF_TASK_NODE.ACTUAL_SIGNER
-        LEFT JOIN 
-            TB_EB_USER US 
-            ON US.USER_GUID = TB_WKF_TASK.AGENT_USER
-        LEFT JOIN 
-            TB_EB_JOB_TITLE 
-            ON TB_EB_JOB_TITLE.TITLE_ID = TB_EB_EMPL_DEP.TITLE_ID
-        LEFT JOIN 
-            TB_WKF_TASK_TRIGGER_RECORD 
-            ON TB_WKF_TASK_TRIGGER_RECORD.TASK_ID = TB_WKF_TASK.TASK_ID 
-            AND TB_WKF_TASK_TRIGGER_RECORD.SITE_ID = TB_WKF_TASK_NODE_SIGNER_INFO.SITE_ID
-        WHERE 
-            ACTUAL_SIGNER IS NOT NULL 
-            AND TB_WKF_TASK.DOC_NBR = 'LYV240800018'
-    ) AS ApproveData 
-) AS ApproveData 
-ON 1 = 1 
-WHERE 
-    LYN_AcceptanceFA.LNO = 'LYV240800018';
 
-----------------------------------------------------------
-
-WITH TB_WKF_TASK_NODE_CTE AS (
-                                    SELECT TB_WKF_TASK.TASK_ID, DOC_NBR, 
-		                                CASE WHEN (GROUP_NAME = 'HR/CR') AND (TB_EB_JOB_TITLE.TITLE_NAME = '越籍人員' OR ISNULL(TB_EB_JOB_TITLE.TITLE_NAME, '') = '') THEN '人事A' 
-		                                WHEN (GROUP_NAME = '行政事務') AND (TB_EB_JOB_TITLE.TITLE_NAME = '越籍人員' OR ISNULL(TB_EB_JOB_TITLE.TITLE_NAME, '') = '') THEN '人事HC' 
-                                        WHEN (GROUP_NAME = 'HR/CR') AND (TB_EB_JOB_TITLE.TITLE_NAME <> '越籍人員') THEN 'HRManagerA'
-		                                WHEN (GROUP_NAME = '行政事務') AND (TB_EB_JOB_TITLE.TITLE_NAME <> '越籍人員') THEN 'HRManagerHC' ELSE TB_EB_JOB_TITLE.TITLE_NAME END AS STEP_DESC, 
-                                        ROW_NUMBER() OVER (PARTITION BY DOC_NBR ORDER BY START_TIME DESC) AS rn
-                                    FROM TB_WKF_TASK LEFT JOIN TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID 
-                                    LEFT JOIN TB_WKF_TASK_NODE_SIGNER_INFO ON TB_WKF_TASK_NODE_SIGNER_INFO.SITE_ID = TB_WKF_TASK_NODE.SITE_ID AND TB_WKF_TASK_NODE_SIGNER_INFO.NODE_SEQ = TB_WKF_TASK_NODE.NODE_SEQ 
-                                    LEFT JOIN TB_EB_GROUP ON TB_WKF_TASK_NODE_SIGNER_INFO.GROUP_ID = TB_EB_GROUP.GROUP_ID 
-                                    LEFT JOIN TB_EB_JOB_TITLE ON TB_EB_JOB_TITLE.TITLE_ID = TB_WKF_TASK_NODE_SIGNER_INFO.TITLE_ID  
-                                    WHERE END_TIME IS NULL AND FINISH_TIME IS NULL 
-                                ),
-                                Name_CTE AS (
-                                    SELECT  SUBSTRING(ACCOUNT, PATINDEX('%[0-9]%', ACCOUNT), LEN(ACCOUNT)) UserID, NAME 
-                                    FROM TB_EB_USER 
-                                )
-                                SELECT LYN_Leave.LNO, LYN_Leave.USERID, Name_CTE.NAME as USERNAME, LYN_Leave.DepartmentID DV_MA_, LYN_Leave.DepartmentID, LYN_Leave.LeaverID, LYN_Leave.LeaverName, LYN_Leave.Type,
-                                       LYN_Leave.TotalDay, LYN_Leave.StartDate, LYN_Leave.EndDate, LYN_Leave.DHMonth, LYN_Leave.YDLeave, LYN_Leave.Total, LYN_Leave.Reason, LYN_Leave.Remark, 
-	                                   CONVERT(VARCHAR, LYN_Leave.USERDATE, 120) USERDATE, ISNULL(TB_WKF_TASK_NODE_CTE.STEP_DESC, '已結案') AS D_STEP_DESC, TB_WKF_TASK.TASK_ID, TB_WKF_TASK.ATTACH_ID, LYN_Leave.Documents 
-                                FROM LYN_Leave LEFT JOIN TB_WKF_TASK ON LYN_Leave.LNO = TB_WKF_TASK.DOC_NBR 
-                                LEFT JOIN (SELECT * FROM TB_WKF_TASK_NODE_CTE WHERE rn = 1) AS TB_WKF_TASK_NODE_CTE ON LYN_Leave.LNO = TB_WKF_TASK_NODE_CTE.DOC_NBR 
-                                LEFT JOIN Name_CTE ON Name_CTE.UserID = LYN_Leave.USERID 
-----------------------------------------------------------
- SELECT LYN_Leave.LNO, LYN_Leave.USERID, Name.NAME as USERNAME, LYN_Leave.DepartmentID DV_MA_, LYN_Leave.DepartmentID, LYN_Leave.LeaverID, LYN_Leave.LeaverName, LYN_Leave.Type, 
-                                       LYN_Leave.TotalDay, LYN_Leave.StartDate, LYN_Leave.EndDate, LYN_Leave.DHMonth, LYN_Leave.YDLeave, LYN_Leave.Total, LYN_Leave.Reason, LYN_Leave.Remark, 
-                                       CONVERT(VARCHAR,LYN_Leave.USERDATE,120) USERDATE, '已結案' AS D_STEP_DESC, TB_WKF_TASK.TASK_ID, TB_WKF_TASK.ATTACH_ID, LYN_Leave.Documents 
-                                FROM LYN_Leave LEFT JOIN TB_WKF_TASK on LYN_Leave.LNO=TB_WKF_TASK.DOC_NBR 
-                                LEFT JOIN ( SELECT SUBSTRING(ACCOUNT, PATINDEX('%[0-9]%', ACCOUNT), LEN(ACCOUNT)) UserID, NAME FROM TB_EB_USER ) AS Name ON Name.UserID = LYN_Leave.USERID 
-                                WHERE 1=1  and Documents = 'Y'  and flowflag = 'Z'  
-                                ORDER BY LYN_Leave.LNO desc 
-------------------------------------------------------------------------------------------
-
-SELECT LNO, DepartmentID, LeaverID, LeaverName, DeputyID, DeputyName, Type, LeaveDays, TotalDay, TotalHour, StartDate, StartTime, EndDate, 
-	   EndTime, Reason, Remark, Documents, Applicant, ApplicantDate, Supervisor, SupervisorDate, Supervisor1, SupervisorDate1, Manager, 
-	   ManagerDate, Director, DirectorDate, HR, HRDate, HRManager, HRManagerDate, VNVP, VNVPDate
-FROM LYN_Leave
-LEFT JOIN TB_WKF_TASK on LYN_Leave.LNO=TB_WKF_TASK.DOC_NBR
-LEFT JOIN (
-  SELECT MAX(APPNAME) AS Applicant, 
-  MAX( CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
-  MAX(CASE WHEN GROUP_NAME=APPGROUP AND ((LEV=4 AND APPGROUP_LEV=4 AND TITLE_NAME<>'越籍人員') OR (LEV=5 AND APPGROUP_LEV=5 AND TITLE_NAME<>'越籍人員')) THEN NAME END) AS Supervisor, 
-  MAX(CASE WHEN GROUP_NAME=APPGROUP AND ((LEV=4 AND APPGROUP_LEV=4 AND TITLE_NAME<>'越籍人員') OR (LEV=5 AND APPGROUP_LEV=5 AND TITLE_NAME<>'越籍人員')) THEN FINISH_TIME END) AS SupervisorDate, 
-  MAX(CASE WHEN LEV=4 AND APPGROUP_LEV=5 THEN NAME END) AS Supervisor1, 
-  MAX(CASE WHEN LEV=4 AND APPGROUP_LEV=5 THEN FINISH_TIME END) AS SupervisorDate1, 
-  MAX(CASE WHEN LEV=3 THEN NAME END) AS Manager, 
-  MAX(CASE WHEN LEV=3 THEN FINISH_TIME END) AS ManagerDate, 
-  MAX(CASE WHEN LEV=2 THEN NAME END) AS Director, 
-  MAX(CASE WHEN LEV=2 THEN FINISH_TIME END) AS DirectorDate, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME='越籍人員' THEN NAME END) AS HR, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME='越籍人員' THEN FINISH_TIME END) AS HRDate, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME<>'越籍人員' THEN NAME END) AS HRManager, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME<>'越籍人員' THEN FINISH_TIME END) AS HRManagerDate, 
-  MAX(CASE WHEN LEV=1 THEN NAME END) AS VNVP, 
-  MAX(CASE WHEN LEV=1 THEN FINISH_TIME END) AS VNVPDate FROM ( 
-		SELECT TB_EB_USER.NAME,CAST(FINISH_TIME AS DATE) FINISH_TIME, TB_EB_GROUP.GROUP_NAME, TITLE_NAME, US.NAME as APPNAME, TB_WKF_TASK.BEGIN_TIME,
-		ROW_NUMBER() OVER (PARTITION BY FINISH_TIME ORDER BY FINISH_TIME DESC) AS RowID, TB_EB_GROUP.LEV, APPGROUP.LEV APPGROUP_LEV, APPGROUP.GROUP_NAME APPGROUP
-			FROM TB_WKF_TASK
-			LEFT JOIN TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID=TB_WKF_TASK_NODE.TASK_ID
-			LEFT JOIN TB_WKF_TASK_NODE_SIGNER_INFO ON TB_WKF_TASK_NODE_SIGNER_INFO.SITE_ID=TB_WKF_TASK_NODE.SITE_ID AND TB_WKF_TASK_NODE.NODE_SEQ=TB_WKF_TASK_NODE_SIGNER_INFO.NODE_SEQ
-			LEFT JOIN TB_EB_GROUP ON TB_WKF_TASK_NODE_SIGNER_INFO.GROUP_ID=TB_EB_GROUP.GROUP_ID
-			LEFT JOIN TB_EB_EMPL_DEP ON TB_EB_EMPL_DEP.GROUP_ID=TB_EB_GROUP.GROUP_ID AND TB_EB_EMPL_DEP.USER_GUID=TB_WKF_TASK_NODE.ORIGINAL_SIGNER
-            LEFT JOIN TB_EB_USER ON TB_EB_USER.USER_GUID=TB_WKF_TASK_NODE.ACTUAL_SIGNER
-			LEFT JOIN TB_EB_USER US ON US.USER_GUID=TB_WKF_TASK.AGENT_USER
-			LEFT JOIN TB_EB_GROUP APPGROUP ON APPGROUP.GROUP_ID=TB_WKF_TASK.USER_GROUP_ID  
-			LEFT JOIN TB_EB_JOB_TITLE ON TB_EB_JOB_TITLE.TITLE_ID=TB_EB_EMPL_DEP.TITLE_ID
-			WHERE ACTUAL_SIGNER IS NOT NULL AND TB_WKF_TASK.DOC_NBR='LYV240800039'
-			  ) AS ApproveData 
-  WHERE RowID = 1 
- ) AS ApproveData ON 1 = 1 
- WHERE LNO='LYV240800039'
-
- SELECT * FROM dbo.TB_EB_GROUP
-
-SELECT * FROM dbo.LYN_Leave
-
-
-SELECT  ACCOUNT as userid ,EU.USER_GUID, EFS.FILE_ID, REPLACE(EFS.FILE_PATH,'\','/') FILE_PATH, EFS.FILE_CONTENT_TYPE, EFS.FILE_NAME 
-FROM TB_EB_USER EU LEFT JOIN TB_EB_EMPL_ELEC_SIGN EES ON  EU.USER_GUID = EES.USER_GUID  AND EES.DEFAULT_SIGN = 1
-	LEFT JOIN TB_EB_FILE_STORE EFS ON EES.ELEC_SIGN = EFS.FILE_GROUP_ID
-
-
-
-SELECT USER_ID,LNO, DepartmentID, LeaverID, LeaverName, DeputyID, DeputyName, Type, LeaveDays, TotalDay, TotalHour, StartDate, StartTime, EndDate, 
-	   EndTime, Reason, Remark, Documents, Applicant, ApplicantDate, Supervisor, SupervisorDate, Supervisor1, SupervisorDate1, Manager, 
-	   ManagerDate, Director, DirectorDate, HR, HRDate, HRManager, HRManagerDate, VNVP, VNVPDate
-FROM LYN_Leave
-LEFT JOIN TB_WKF_TASK on LYN_Leave.LNO=TB_WKF_TASK.DOC_NBR
-LEFT JOIN (
-  SELECT 
-  MAX(APPNAME) AS Applicant,
-  MAX(USER_ID) AS USER_ID, 
-  MAX( CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
-  MAX(CASE WHEN GROUP_NAME=APPGROUP AND ((LEV=4 AND APPGROUP_LEV=4 AND TITLE_NAME<>'越籍人員') OR (LEV=5 AND APPGROUP_LEV=5 AND TITLE_NAME<>'越籍人員')) THEN NAME END) AS Supervisor, 
-  MAX(CASE WHEN GROUP_NAME=APPGROUP AND ((LEV=4 AND APPGROUP_LEV=4 AND TITLE_NAME<>'越籍人員') OR (LEV=5 AND APPGROUP_LEV=5 AND TITLE_NAME<>'越籍人員')) THEN FINISH_TIME END) AS SupervisorDate, 
-  MAX(CASE WHEN LEV=4 AND APPGROUP_LEV=5 THEN NAME END) AS Supervisor1, 
-  MAX(CASE WHEN LEV=4 AND APPGROUP_LEV=5 THEN FINISH_TIME END) AS SupervisorDate1, 
-  MAX(CASE WHEN LEV=3 THEN NAME END) AS Manager, 
-  MAX(CASE WHEN LEV=3 THEN FINISH_TIME END) AS ManagerDate, 
-  MAX(CASE WHEN LEV=2 THEN NAME END) AS Director, 
-  MAX(CASE WHEN LEV=2 THEN FINISH_TIME END) AS DirectorDate, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME='越籍人員' THEN NAME END) AS HR, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME='越籍人員' THEN FINISH_TIME END) AS HRDate, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME<>'越籍人員' THEN NAME END) AS HRManager, 
-  MAX(CASE WHEN (GROUP_NAME='HR/CR' OR GROUP_NAME='行政事務') AND TITLE_NAME<>'越籍人員' THEN FINISH_TIME END) AS HRManagerDate, 
-  MAX(CASE WHEN LEV=1 THEN NAME END) AS VNVP, 
-  MAX(CASE WHEN LEV=1 THEN FINISH_TIME END) AS VNVPDate FROM ( 
-		SELECT TB_EB_USER.NAME,CAST(FINISH_TIME AS DATE) FINISH_TIME, TB_EB_GROUP.GROUP_NAME, TITLE_NAME, US.ACCOUNT AS USER_ID, US.NAME as APPNAME, TB_WKF_TASK.BEGIN_TIME,
-		ROW_NUMBER() OVER (PARTITION BY FINISH_TIME ORDER BY FINISH_TIME DESC) AS RowID, TB_EB_GROUP.LEV, APPGROUP.LEV APPGROUP_LEV, APPGROUP.GROUP_NAME APPGROUP
-			FROM TB_WKF_TASK
-			LEFT JOIN TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID=TB_WKF_TASK_NODE.TASK_ID
-			LEFT JOIN TB_WKF_TASK_NODE_SIGNER_INFO ON TB_WKF_TASK_NODE_SIGNER_INFO.SITE_ID=TB_WKF_TASK_NODE.SITE_ID AND TB_WKF_TASK_NODE.NODE_SEQ=TB_WKF_TASK_NODE_SIGNER_INFO.NODE_SEQ
-			LEFT JOIN TB_EB_GROUP ON TB_WKF_TASK_NODE_SIGNER_INFO.GROUP_ID=TB_EB_GROUP.GROUP_ID
-			LEFT JOIN TB_EB_EMPL_DEP ON TB_EB_EMPL_DEP.GROUP_ID=TB_EB_GROUP.GROUP_ID AND TB_EB_EMPL_DEP.USER_GUID=TB_WKF_TASK_NODE.ORIGINAL_SIGNER
-            LEFT JOIN TB_EB_USER ON TB_EB_USER.USER_GUID=TB_WKF_TASK_NODE.ACTUAL_SIGNER
-			LEFT JOIN TB_EB_USER US ON US.USER_GUID=TB_WKF_TASK.AGENT_USER
-			LEFT JOIN TB_EB_GROUP APPGROUP ON APPGROUP.GROUP_ID=TB_WKF_TASK.USER_GROUP_ID  
-			LEFT JOIN TB_EB_JOB_TITLE ON TB_EB_JOB_TITLE.TITLE_ID=TB_EB_EMPL_DEP.TITLE_ID
-			WHERE ACTUAL_SIGNER IS NOT NULL AND TB_WKF_TASK.DOC_NBR='LYV240800039'
-			  ) AS ApproveData 
-  WHERE RowID = 1 
- ) AS ApproveData ON 1 = 1 
- WHERE LNO='LYV240800039'
-
-
-SELECT * FROM dbo.TB_WKF_TASK
+SELECT CURRENT_DOC FROM dbo.TB_WKF_TASK
 ORDER BY BEGIN_TIME DESC
 
-SELECT TOP 1 * FROM LYN_BusinessTrip ORDER BY LNO DESC
+SELECT LNO, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
+                           FROM LYN_BusinessTrip LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip.LNO=TB_WKF_TASK.DOC_NBR 
+                           WHERE isnull(Days,2)>=2 and flowflag='Z' and LNO not in (select BLNO as LNO from LYN_BusinessTripReport where isnull(Cancel,0)<>1)
+SELECT * FROM dbo.LYN_BusinessTripExpert                           
+SELECT * FROM dbo.LYN_BusinessTrip_Templ
 
 
- SELECT UserId,S_STEP_DESC, NAME, COMMENT, S_USERDATE, CASE WHEN ST='N' THEN '申請' WHEN ST='Z' THEN '結案' WHEN ST='X' THEN '作廢' WHEN ST='NP' THEN '退回' ELSE '核准' END AS STATUS 
-FROM (SELECT TOP 100 TITLE_NAME + ' ('+ GROUP_NAME + ')' as S_STEP_DESC, TB_EB_USER.NAME, COMMENT,  FORMAT(FINISH_TIME, 'yyyy/MM/dd HH:mm') as S_USERDATE, TB_WKF_TASK_NODE.SITE_ID,TB_WKF_TASK.CURRENT_DOC_ID,SIGN_STATUS,
-              CASE WHEN SIGN_STATUS = 0 and TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.SITE_ID THEN 'N'
-              WHEN SIGN_STATUS = 0 and END_TIME=FINISH_TIME and TB_WKF_TASK.TASK_ID <> TB_WKF_TASK_NODE.SITE_ID THEN 'Z' 
-			  WHEN SIGN_STATUS = 1 OR SIGN_STATUS = 5 THEN 'X' WHEN SIGN_STATUS = 2 THEN 'NP' ELSE 'P' END as ST , TB_WKF_TASK.TASK_ID, dbo.TB_EB_USER.ACCOUNT AS UserId
-       FROM TB_WKF_TASK_NODE 
-       LEFT JOIN TB_WKF_TASK ON TB_WKF_TASK.TASK_ID=TB_WKF_TASK_NODE.TASK_ID 
-       --LEFT JOIN LYN_ITService on LYN_ITService.IT001=TB_WKF_TASK.DOC_NBR 
-       LEFT JOIN TB_WKF_TASK_NODE_SIGNER_INFO ON TB_WKF_TASK_NODE_SIGNER_INFO.SITE_ID=TB_WKF_TASK_NODE.SITE_ID AND TB_WKF_TASK_NODE.NODE_SEQ=TB_WKF_TASK_NODE_SIGNER_INFO.NODE_SEQ 
-       LEFT JOIN TB_EB_GROUP ON TB_WKF_TASK_NODE_SIGNER_INFO.GROUP_ID=TB_EB_GROUP.GROUP_ID 
-       LEFT JOIN TB_EB_EMPL_DEP ON TB_EB_EMPL_DEP.GROUP_ID=TB_EB_GROUP.GROUP_ID AND TB_EB_EMPL_DEP.USER_GUID=TB_WKF_TASK_NODE.ORIGINAL_SIGNER 
-       LEFT JOIN TB_EB_USER ON TB_EB_USER.USER_GUID=TB_WKF_TASK_NODE.ACTUAL_SIGNER 
-       LEFT JOIN TB_EB_USER US ON US.USER_GUID=TB_WKF_TASK.AGENT_USER 
-       LEFT JOIN TB_EB_JOB_TITLE ON TB_EB_JOB_TITLE.TITLE_ID=TB_EB_EMPL_DEP.TITLE_ID 
-       WHERE ACTUAL_SIGNER IS NOT NULL AND TB_WKF_TASK.DOC_NBR = 'LYV240800102'--AND LYN_ITService.IT001 = 'LYN-IT01240800177'
-	   ORDER BY FINISH_TIME ASC
-) AS SYS_TODOHIS
+SELECT *FROM dbo.LYN_BusinessTripReport
 
 
-
- SELECT LNO, ISNULL(Type, '')  Type,Name, Name_ID,Name_DepID, Name_DepName, Agent, Agent_ID, Purpose, FLocation, Convert(varchar,BTime,120) as BTime,
-       ISNULL(Convert(varchar,ETime,120), '') as ETime, Days,Journey,ISNULL(TransportType, '') TransportType, ISNULL(ApplyCar, '') ApplyCar, Remark,
-	   USERID, USERDATE,ISNULL( (Select ISNULL(FILE_NAME, '') +'   ' from TB_EB_FILE_STORE where  FILE_GROUP_ID = TB_WKF_TASK.ATTACH_ID   FOR XML PATH ('')), N'Không') FILENAME, 
-	   Applicant, ApplicantDate, Supervisor, SupervisorDate, Supervisor1, SupervisorDate1, Manager, ManagerDate, HR, HRDate, GD, GDDate 
-FROM LYN_BusinessTrip
-LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip.LNO=TB_WKF_TASK.DOC_NBR
-LEFT JOIN (
-  SELECT 
-                MAX(APPNAME) AS Applicant, 
-                MAX(CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
-                MAX(CASE WHEN SITE_CODE='S1' THEN NAME END) AS Supervisor, 
-                MAX(CASE WHEN SITE_CODE='S1' THEN FINISH_TIME END) AS SupervisorDate,  
-                MAX(CASE WHEN SITE_CODE='S2' THEN NAME END) AS Supervisor1, 
-                MAX(CASE WHEN SITE_CODE='S2' THEN FINISH_TIME END) AS SupervisorDate1,  
-                MAX(CASE WHEN SITE_CODE='S3' THEN NAME END) AS Manager, 
-                MAX(CASE WHEN SITE_CODE='S3' THEN FINISH_TIME END) AS ManagerDate, 
-                MAX(CASE WHEN SITE_CODE='HR' THEN NAME END) AS HR, 
-                MAX(CASE WHEN SITE_CODE='HR' THEN FINISH_TIME END) AS HRDate, 
-                MAX(CASE WHEN SITE_CODE='GD' THEN NAME END) AS GD, 
-                MAX(CASE WHEN SITE_CODE='GD' THEN FINISH_TIME END) AS GDDate 
-            FROM 
-                ( 
-                    SELECT 
-                        case when TB_WKF_TASK_NODE.ACTUAL_SIGNER<>TB_WKF_TASK_NODE.ORIGINAL_SIGNER then TB_EB_USER.NAME + '(*)' else TB_EB_USER.NAME end as NAME, 
-                        CAST(FINISH_TIME AS DATE) FINISH_TIME, 
-                        US.NAME AS APPNAME, 
-                        TB_WKF_TASK.BEGIN_TIME,
-                        ROW_NUMBER() OVER (PARTITION BY FINISH_TIME ORDER BY FINISH_TIME DESC) AS RowID, 
-                        TB_WKF_TASK_TRIGGER_RECORD.SITE_CODE
-                    FROM 
-                        TB_WKF_TASK			徐明聖	
-                    LEFT JOIN 
-                        TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID
-                    LEFT JOIN 
-                        TB_WKF_TASK_TRIGGER_RECORD ON TB_WKF_TASK_TRIGGER_RECORD.SITE_ID = TB_WKF_TASK_NODE.SITE_ID AND TB_WKF_TASK_NODE.TASK_ID = TB_WKF_TASK_TRIGGER_RECORD.TASK_ID
-                    LEFT JOIN 
-                        TB_EB_USER ON TB_EB_USER.USER_GUID = TB_WKF_TASK_NODE.ACTUAL_SIGNER
-                    LEFT JOIN 
-                        TB_EB_USER US ON US.USER_GUID = TB_WKF_TASK.AGENT_USER
-                    WHERE 
-                        ACTUAL_SIGNER IS NOT NULL AND 
-                        SITE_CODE NOT IN ('Applicant','END_FORM') AND 
-                        TB_WKF_TASK.DOC_NBR = 'LYV240800102'
-                ) AS ApproveData 
-            WHERE 
-                RowID = 1 
- ) AS ApproveData ON 1 = 1 
- WHERE LNO='LYV240800102'
-
- SELECT * FROM LYN_BusinessTripExpert
-CREATE TABLE LYN_BusinessTripExpert (
-    LNO VARCHAR(255) PRIMARY KEY,             -- Giả sử LNO là khóa chính và kiểu dữ liệu là INT
-    expert VARCHAR(255),             -- Thay đổi kích thước VARCHAR nếu cần
-    Factory VARCHAR(255),
-    Type VARCHAR(255),
-    Name_ID VARCHAR(255),
-    Name NVARCHAR(255),
-    Name_DepID VARCHAR(255),
-    Name_DepName NVARCHAR(255),
-    Agent_ID VARCHAR(255),
-    Agent VARCHAR(255),
-    Purpose NVARCHAR(255),                    -- Thay đổi kiểu dữ liệu nếu cần
-    FLocation NVARCHAR(255),
-    Journey NVARCHAR(255),
-    Time DATETIME,                   -- Hoặc DATE nếu chỉ có ngày
-    Days int,                        -- Hoặc SMALLINT nếu giá trị nhỏ hơn
-    TransportType NVARCHAR(255),
-    ApplyCar INT,              -- Sử dụng BOOLEAN nếu là giá trị TRUE/FALSE
-    Remark NVARCHAR(255),
-    flowflag VARCHAR(255),
-    USERID VARCHAR(255),
-    USERDATE DATETIME                -- Hoặc DATE nếu chỉ có ngày
+CREATE TABLE LYN_BusinessTripReport (
+    LNO           NVARCHAR(100) PRIMARY KEY,         -- Assuming LNO is a primary key and an integer
+    Department    NVARCHAR(100),           -- Adjust length as needed for department name
+    [Date]        DATE,                    -- Assuming this column stores a date
+    Date1         DATE,                    -- Assuming this column stores another date
+    Name          NVARCHAR(100),           -- Adjust length as needed for the person's name
+    Destination   NVARCHAR(255),           -- Adjust length as needed for destination description
+    Description   NVARCHAR(MAX),           -- Adjust length as needed for trip description
+    BLNO          NVARCHAR(255),
+	Cancel INT ,
+	CancelReason NVARCHAR(255),
+	CFMID NVARCHAR(255),
+	-- Assuming BLNO is an integer (if it's a reference to another table, consider using a foreign key)
+    USERID        NVARCHAR(50),            -- Adjust length as needed for user identifier
+    USERDATE      DATETIME,                -- Assuming this column stores a datetime value
+    flowflag      VARCHAR(2)                  -- Assuming flowflag is a small integer indicating a status or flag
 );

@@ -93,7 +93,7 @@ public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
         {
             DataRowView row = (DataRowView)e.Row.DataItem;
 
-            LYN.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYN.BusinessTripOD.UCO.BusinessTripODUCO();
+            Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
             DataTable dt = uco.GetWSSignNextInfo(row["LNO"].ToString(), hfSiteName.Value, Current.UserGUID);
 
             if (dt.Rows.Count > 0)
@@ -128,7 +128,7 @@ public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
             expert = "Y";
         }
 
-        LYN.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYN.BusinessTripOD.UCO.BusinessTripODUCO();
+        Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
 
         DataTable dt = uco.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
         ViewState["formsDT"] = dt;

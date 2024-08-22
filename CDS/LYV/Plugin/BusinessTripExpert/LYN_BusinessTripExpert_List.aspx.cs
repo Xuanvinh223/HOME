@@ -35,6 +35,7 @@ public partial class WKF_BusinessTripExpert_List : Ede.Uof.Utility.Page.BasePage
             BindEmptyDataToGridView();
         }
         hfSiteName.Value = Request.ApplicationPath.Substring(1);
+        LoadDataITS();
     }
     protected void ddlPageSize_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -93,7 +94,7 @@ public partial class WKF_BusinessTripExpert_List : Ede.Uof.Utility.Page.BasePage
         {
             DataRowView row = (DataRowView)e.Row.DataItem;
 
-            LYN.BusinessTripExpert.UCO.BusinessTripExpertUCO uco = new LYN.BusinessTripExpert.UCO.BusinessTripExpertUCO();
+            Training.BusinessTripExpert.UCO.BusinessTripExpertUCO uco = new Training.BusinessTripExpert.UCO.BusinessTripExpertUCO();
             DataTable dt = uco.GetWSSignNextInfo(row["LNO"].ToString(), hfSiteName.Value, Current.UserGUID);
 
             if (dt.Rows.Count > 0)
@@ -128,7 +129,7 @@ public partial class WKF_BusinessTripExpert_List : Ede.Uof.Utility.Page.BasePage
             expert = "Y";
         }
 
-        LYN.BusinessTripExpert.UCO.BusinessTripExpertUCO uco = new LYN.BusinessTripExpert.UCO.BusinessTripExpertUCO();
+        Training.BusinessTripExpert.UCO.BusinessTripExpertUCO uco = new Training.BusinessTripExpert.UCO.BusinessTripExpertUCO();
 
         DataTable dt = uco.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
         ViewState["formsDT"] = dt;
