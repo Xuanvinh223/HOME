@@ -41,23 +41,28 @@ public class WebServiceLYN  : System.Web.Services.WebService {
 
         try
         {
-            string Name_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["Name_ID"].Value.ToString();
-            string Agent_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["Agent_ID"].Value.ToString();
-            string Purpose = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["Purpose"].Value.ToString();
-            string FLocation = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["FLocation"].Value.ToString();
-            string Journey = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["Journey"].Value.ToString();
-            string Days = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["Days"].Value.ToString();
-            string ETime = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["ETime"].Value.ToString();
-            string STime = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripOD_Form").Attributes["STime"].Value.ToString();
+            string Name_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["Name_ID"].Value.ToString();
+            string Agent_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["Agent_ID"].Value.ToString();
+            string Purpose = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["Purpose"].Value.ToString();
+            string FLocation = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["FLocation"].Value.ToString();
+            string Journey = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["Journey"].Value.ToString();
+            string Days = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["Days"].Value.ToString();
+            string ETime = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["ETime"].Value.ToString();
+            string STime = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripOD_Form").Attributes["STime"].Value.ToString();
 
-            if (Name_ID == "") {
+            if (Name_ID == "")
+            {
                 returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText ="Please select the ID user !";
+                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the ID user !";
             }
             else if (Agent_ID == "")
             {
                 returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
                 returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the ID user !";
+            }else if (Name_ID == Agent_ID)
+            {
+                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
+                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Số thẻ không được trùng với số thẻ người thay thế";
             }
             else if (Purpose == "")
             {
@@ -74,7 +79,7 @@ public class WebServiceLYN  : System.Web.Services.WebService {
                 returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
                 returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the Journey !";
             }
-            else if (Days == "0" || (ETime =="" && STime==""))
+            else if (Days == "0" || (ETime == "" && STime == ""))
             {
                 returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
                 returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the correct Date Time !";

@@ -44,7 +44,7 @@ public partial class WKF_BusinessTripReport_Modal : Ede.Uof.Utility.Page.BasePag
     void CDS_WebPage_Dialog_Button1OnClick()
     {
         string LNO = ViewState["LNO"].ToString();
-        LYN.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYN.BusinessTripReport.UCO.BusinessTripReportUCO();
+        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
         if (CancelReason.Text.Trim() == "")
         {
             ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "alertMessage", "alert('請輸入註銷原因 Please enter the reason for cancellation')", true);

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ede.Uof.WKF.ExternalUtility;
-using Training.BusinessTrip.UCO;
+using LYV.BusinessTripOD.UCO;
 
-namespace Training.Trigger.BusinessTrip
+namespace LYV.Trigger.BusinessTripOD
 {
-    public class LYN_BusinessTrip_End : ICallbackTriggerPlugin
+    public class BusinessTripOD_End : ICallbackTriggerPlugin
     {
         public void Finally()
         {
@@ -17,8 +17,9 @@ namespace Training.Trigger.BusinessTrip
 
         public string GetFormResult(ApplyTask applyTask)
         {
+            // throw new NotImplementedException();
 
-            BusinessTripUCO uco = new BusinessTripUCO();
+            BusinessTripODUCO uco = new BusinessTripODUCO();
             string LNO = applyTask.FormNumber;
             string signStatus = applyTask.FormResult.ToString();
 

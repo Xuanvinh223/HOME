@@ -14,12 +14,12 @@
 			  </Display>
 		  </FieldItem>
 		  
-		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripOD/LYN_BusinessTripOD_Form.ascx" FieldName="BusinessTripOD">
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripOD/BusinessTripOD_Form.ascx" FieldName="BusinessTripOD_Form">
 			  <Display>
-				  <Value Culture="zh-TW" Name="BÁO CÁO CÔNG TÁC - OD"/>
-				  <Value Culture="zh-CN" Name="BÁO CÁO CÔNG TÁC - OD"/>
-				  <Value Culture="en-US" Name="BÁO CÁO CÔNG TÁC - OD"/>
-				  <Value Culture="vi" Name="BÁO CÁO CÔNG TÁC - OD"/>
+				  <Value Culture="zh-TW" Name="BusinessTripOD"/>
+				  <Value Culture="zh-CN" Name="BusinessTripOD"/>
+				  <Value Culture="en-US" Name="BusinessTripOD"/>
+				  <Value Culture="vi" Name="BusinessTripOD"/>
 			  </Display>
 		  </FieldItem>
 		  
@@ -50,12 +50,12 @@
 			  </Display>
 		  </FieldItem>		  
 		  
-		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTrip/LYN_BusinessTrip_Form.ascx" FieldName="LYN_BusinessTrip_Form">
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Form.ascx" FieldName="BusinessTrip_Form">
 			  <Display>
 				  <Value Culture="zh-TW" Name="LYN 出差申請單"/>
 				  <Value Culture="zh-CN" Name="LYN 出差申請單"/>
 				  <Value Culture="en-US" Name="LYN BusinessTrip"/>
-				  <Value Culture="vi" Name="LYN Đơn đề nghị đi công tác"/>
+				  <Value Culture="vi" Name="BusinessTrip"/>
 			  </Display>
 		  </FieldItem>
 

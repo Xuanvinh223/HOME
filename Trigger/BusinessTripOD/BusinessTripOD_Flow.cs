@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using Ede.Uof.WKF.ExternalUtility;
-using Training.BusinessTrip.UCO;
+using LYV.BusinessTripOD.UCO;
 using System.Xml.Linq;
-using Ede.Uof.EIP.Organization.Util;
 
-namespace Training.Trigger.BusinessTrip
+namespace LYV.Trigger.BusinessTripOD
 {
-    public class LYN_BusinessTrip_Flow : ICallbackTriggerPlugin
+    public class BusinessTripOD_Flow : ICallbackTriggerPlugin
     {
         public void Finally()
         {
@@ -22,17 +17,18 @@ namespace Training.Trigger.BusinessTrip
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(applyTask.CurrentDocXML);
-            BusinessTripUCO uco = new BusinessTripUCO();
             string SiteCode = applyTask.SiteCode;
             string signStatus = applyTask.SignResult.ToString();
 
             string LNO = applyTask.Task.CurrentDocument.Fields["LYV"].FieldValue.ToString();
-            string EmployeeType = applyTask.Task.CurrentDocument.Fields["EmployeeType"].FieldValue.ToString();
-            string RequestDate = applyTask.Task.CurrentDocument.Fields["RequestDate"].FieldValue.ToString();
-            string Type = applyTask.Task.CurrentDocument.Fields["Type"].FieldValue.ToString();
+            //string Area = applyTask.Task.CurrentDocument.Fields["Area"] == null ? "" : applyTask.Task.CurrentDocument.Fields["Area"].FieldValue.ToString();
+            string MaPhieu = applyTask.Task.CurrentDocument.Fields["MaPhieu"].FieldValue.ToString();
+
             XElement xE = XElement.Parse(applyTask.Task.CurrentDocument.Fields["Form"].FieldValue.ToString());
 
-            uco.UpdateFormStatus(LNO, EmployeeType, RequestDate, Type, SiteCode, signStatus, xE);
+            BusinessTripODUCO uco = new BusinessTripODUCO();
+
+            uco.UpdateFormStatus(LNO, "Area", SiteCode, signStatus, MaPhieu, xE);
             return "";
         }
 

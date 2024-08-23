@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using Training.BusinessTripOD.PO;
-using Training.Data;
+﻿using System.Data;
+using LYV.BusinessTripOD.PO;
 using System.Xml.Linq;
 
-namespace Training.BusinessTripOD.UCO
+namespace LYV.BusinessTripOD.UCO
 {
     public  class BusinessTripODUCO
     {
@@ -30,9 +24,9 @@ namespace Training.BusinessTripOD.UCO
         {
             return m_BusinessTripODPO.GetEmployee(UserID);
         }
-        public void InsertBusinessTripODFormData(string LNO, string Area, string UserID, XElement xE, string MaPhieu)
+        public void InsertBusinessTripODFormData(string LYV, string EmployeeType, string RequestDate, string Type, string DepID, string UserID, XElement xE)
         {
-            m_BusinessTripODPO.InsertBusinessTripODFormData(LNO, Area, UserID, xE, MaPhieu);
+            m_BusinessTripODPO.InsertBusinessTripODFormData(LYV,EmployeeType,RequestDate,Type,DepID,UserID,xE);
         }
         public void UpdateFormStatus(string LNO, string Area, string SiteCode, string signStatus, string MaPhieu, XElement xE)
         {

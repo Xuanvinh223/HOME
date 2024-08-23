@@ -6,32 +6,14 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using Ede.Uof.WKF.Design;
-using System.Collections.Generic;
-using Ede.Uof.WKF.Utility;
 using Ede.Uof.EIP.Organization.Util;
-using Ede.Uof.WKF.Design.Data;
-using Ede.Uof.WKF.VersionFields;
-using System.Xml;
-using System.Linq;
 using Ede.Uof.EIP.SystemInfo;
 using System.Xml.Linq;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
-using System.Text;
-using System.Globalization;
 using DocumentFormat.OpenXml.Spreadsheet;
-using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
 using Ede.Uof.Utility.Page.Common;
 using System.Dynamic;
-using System.Activities.Statements;
+using LYV.BusinessTrip.UCO;
 
 public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
 {
@@ -127,7 +109,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     }
     private void LoadDataDep()
     {
-        Training.BusinessTrip.UCO.BusinessTripUCO uco = new Training.BusinessTrip.UCO.BusinessTripUCO();
+        LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
         DataTable dt = uco.GetDep();
         gvDep.DataSource = dt;
         ViewState["formsDT"] = dt;
@@ -144,7 +126,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
 
             return;
         }
-        Training.BusinessTrip.UCO.BusinessTripUCO uco = new Training.BusinessTrip.UCO.BusinessTripUCO();
+        LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
         string data = uco.GetEmployee(Name_ID.Text);
         string UserName = data.Split(";")[0];
         string UserDep = data.Split(";")[1];
@@ -179,7 +161,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             Agent.Text = "";
             return;
         }
-        Training.BusinessTrip.UCO.BusinessTripUCO uco = new Training.BusinessTrip.UCO.BusinessTripUCO();
+        LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
         string data = uco.GetEmployee(Agent_ID.Text);
         string UserName = data.Split(";")[0];
         string Flag = data.Split(";")[2];
@@ -234,8 +216,8 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     }
     public void Print_Click(object sender, EventArgs e)
     {
-        ExpandoObject param = new { LNO = hfLNO.Value, type = TransportType.SelectedValue }.ToExpando();
-        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/LYN_BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
     }
     /// <summary>
     /// 外掛欄位的條件值
@@ -252,7 +234,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             {
                 string account = Current.UserGUID;
                 string group = ApplicantGroupId;
-                Training.BusinessTrip.UCO.BusinessTripUCO uco = new Training.BusinessTrip.UCO.BusinessTripUCO();
+                LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
                 string LEV = uco.GetLEV(account, group);
                 string Expert = "N";
 
@@ -344,7 +326,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             }
             else
             {
-                XElement TPElement = new XElement("LYN_BusinessTrip_Form");
+                XElement TPElement = new XElement("LYV_BusinessTrip_Form");
 
                 TPElement.Add(new XAttribute("Name_ID", Name_ID.Text));
                 TPElement.Add(new XAttribute("Name", Name.Text));
@@ -496,8 +478,8 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         }
         else
         {
-            ExpandoObject param = new { LNO = hfLNO.Value, type = TransportType.SelectedValue }.ToExpando();
-            Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/LYN_BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+            ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+            Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
             pPrint.Visible = true;
         }
     }
@@ -542,7 +524,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
                 }
                 if (base.taskObj != null)
                 {
-                    hfLNO.Value = base.taskObj.FormNumber;
+                    hfLYV.Value = base.taskObj.FormNumber;
                     hfTASK_RESULT.Value = base.taskObj.TaskResult.ToString();
                 }
                 SetCustomField(XElement.Parse(fieldOptional.FieldValue));

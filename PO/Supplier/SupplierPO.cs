@@ -96,6 +96,7 @@ namespace Training.Supplier.PO
             @USERID , 
 	        GETDATE()
             )";
+
             this.m_db.AddParameter("@LNO", LNO);
             this.m_db.AddParameter("@Type", Type);
             this.m_db.AddParameter("@SupplierID", SupplierID);

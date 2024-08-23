@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master/DialogMasterPage.master" CodeFile="LYN_BusinessTripOD_Reports.aspx.cs" Inherits="WKF_BusinessTripOD_Reports" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master/DialogMasterPage.master" CodeFile="BusinessTrip_Reports.aspx.cs" Inherits="WKF_BusinessTrip_Reports" %>
 
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 
@@ -8,7 +8,7 @@
     <table id="tblDetail" runat="server" cellspacing="1" style="width: 100%">
         <tr>
             <td>
-                <CR:CrystalReportViewer ID="crvBusinessTripOD" runat="server" AutoDataBind="true" ShowAllPageIds="false" DisplayToolbar="False"></CR:CrystalReportViewer>
+                <CR:CrystalReportViewer ID="crvBusinessTrip" runat="server" AutoDataBind="true" ShowAllPageIds="false" DisplayToolbar="False"></CR:CrystalReportViewer>
             </td>
         </tr>
     </table>

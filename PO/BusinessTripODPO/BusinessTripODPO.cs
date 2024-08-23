@@ -1,10 +1,11 @@
 ﻿using Ede.Uof.WKF.Utility;
+using System;
 using System.Data;
 using System.Xml.Linq;
 
-namespace Training.BusinessTrip.PO
+namespace LYV.BusinessTripOD.PO
 {
-    internal class BusinessTripPO : Ede.Uof.Utility.Data.BasePersistentObject
+    internal class BusinessTripODPO : Ede.Uof.Utility.Data.BasePersistentObject
     {
         internal string GetLEV(string UserID, string groupID)
         {
@@ -31,14 +32,11 @@ namespace Training.BusinessTrip.PO
             return LEV;
 
         }
-        internal string GetMaPhieu(string Type)
+        internal string GetMaPhieu()
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string cmd = "";
-            if (Type == "1")
-            {
-                cmd = @"DECLARE @NO VARCHAR(50) = ''
+            string cmd = @"DECLARE @NO VARCHAR(50) = ''
 
                           SELECT @NO=CONVERT(VARCHAR,YEAR(GETDATE()))+
                                      RIGHT('0' + CONVERT(VARCHAR,MONTH(GETDATE())), 2)+
@@ -46,30 +44,13 @@ namespace Training.BusinessTrip.PO
 
                           SELECT CASE 
                                     WHEN MAX(MaPhieu) IS NOT NULL THEN 
-                                    'V' + CONVERT(VARCHAR, CONVERT(BIGINT, SUBSTRING(MAX(MaPhieu), 2, LEN(MAX(MaPhieu)))) + 1) 
+                                    'O' + CONVERT(VARCHAR, CONVERT(BIGINT, SUBSTRING(MAX(MaPhieu), 2, LEN(MAX(MaPhieu)))) + 1) 
                                     ELSE 
-                                    'V' + @NO + '001' 
+                                    'O' + @NO + '001' 
                                  END AS MaPhieu 
-                          FROM LYN_BusinessTrip
-                          WHERE MaPhieu LIKE 'V' + @NO + '%'";
-            }
-            else
-            {
-                cmd = @"DECLARE @NO VARCHAR(50) = ''
+                          FROM LYN_BusinessTripOD
 
-                          SELECT @NO=CONVERT(VARCHAR,YEAR(GETDATE()))+
-                                     RIGHT('0' + CONVERT(VARCHAR,MONTH(GETDATE())), 2)+
-                                     RIGHT('0' + CONVERT(VARCHAR,DAY(GETDATE())), 2)
-
-                          SELECT CASE 
-                                    WHEN MAX(MaPhieu) IS NOT NULL THEN 
-                                    'F' + CONVERT(VARCHAR, CONVERT(BIGINT, SUBSTRING(MAX(MaPhieu), 2, LEN(MAX(MaPhieu)))) + 1) 
-                                    ELSE 
-                                    'F' + @NO + '001' 
-                                 END AS MaPhieu 
-                          FROM LYN_BusinessTrip
-                          WHERE MaPhieu LIKE 'F' + @NO + '%'";
-            }
+                          WHERE MaPhieu LIKE 'O' + @NO + '%'";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(cmd));
@@ -89,7 +70,6 @@ namespace Training.BusinessTrip.PO
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string cmdTxt = @"SELECT ST_NHANVIEN.DV_MA,DV_TEN
                             FROM ST_DONVI left JOIN dbo.ST_NHANVIEN ON ST_NHANVIEN.DV_MA = ST_DONVI.DV_MA";
-
             DataTable dt = new DataTable();
 
             dt.Load(this.m_db.ExecuteReader(cmdTxt));
@@ -133,16 +113,11 @@ namespace Training.BusinessTrip.PO
                     this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
                     DataTable dt1 = new DataTable();
 
-                    string selectSql = @"
-                        SELECT ST_NHANVIEN.NV_Ma, 
-                               ST_NHANVIEN.NV_Ten, 
-                               ST_NHANVIEN.DV_MA_, 
-                               ISNULL(ST_NHANVIENTHOIVIEC.NV_Ma, 'Employee') AS Flag, 
-                               ST_DONVI.KHU 
-                        FROM ST_NHANVIEN 
-                        LEFT JOIN ST_NHANVIENTHOIVIEC ON ST_NHANVIENTHOIVIEC.NV_Ma = ST_NHANVIEN.NV_Ma 
-                        LEFT JOIN ST_DONVI ON ST_DONVI.DV_MA = ST_NHANVIEN.DV_MA 
-                        WHERE ST_NHANVIEN.NV_Ma =  '" + UserID + "'";
+                    string selectSql = "";
+                    selectSql += " Select Certificate.ID, Certificate.Name,Directory.DID, Directory_Department.Name as DepName, Resigned from [LIY_TYXUAN].[dbo].[Certificate] Certificate";
+                    selectSql += "	left join [LIY_TYXUAN].[dbo].[Directory] Directory on Directory.ID = Certificate.ID ";
+                    selectSql += "  left join [LIY_TYXUAN].[dbo].[Directory_Department] Directory_Department on Directory_Department.DID = Directory.DID ";
+                    selectSql += " where Certificate.ID = '" + UserID + "'";
 
                     dt1.Load(this.m_db.ExecuteReader(selectSql));
                     this.m_db.Dispose();
@@ -160,7 +135,7 @@ namespace Training.BusinessTrip.PO
 
             return result;
         }
-        internal void InsertBusinessTripFormData(string LNO,string EmployeeType, string RequestDate,string type,string DepID, string UserID, XElement xE)
+        internal void InsertBusinessTripODFormData(string LYV, string EmployeeType, string RequestDate, string Type, string DepID, string UserID, XElement xE)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
@@ -174,7 +149,8 @@ namespace Training.BusinessTrip.PO
             string Purpose = xE.Attribute("Purpose").Value;
             string FLocation = xE.Attribute("FLocation").Value;
             string Journey = xE.Attribute("Journey").Value;
-            string BTime = xE.Attribute("BTime").Value;
+            string Time = xE.Attribute("Time").Value;
+            string STime = xE.Attribute("STime").Value;
             string ETime = xE.Attribute("ETime").Value;
             string Days = xE.Attribute("Days").Value;
             string TransportType = xE.Attribute("TransportType").Value;
@@ -182,34 +158,36 @@ namespace Training.BusinessTrip.PO
             string Remark = xE.Attribute("Remark").Value;
             string documents = xE.Attribute("documents").Value;
 
-            string cmdTxt = @"  INSERT INTO LYN_BusinessTrip
-                                (	    [LNO]
-                                       ,[EmployeeType]
-                                       ,[RequestDate]
-                                       ,[Type]
-                                       ,[Documents]
-                                       ,[Name_ID]
-                                       ,[Name]
-                                       ,[Name_DepID]
-                                       ,[Name_DepName]
-                                       ,[Agent_ID]
-                                       ,[Agent]
-                                       ,[Purpose]
-                                       ,[FLocation]
-                                       ,[Journey]
-                                       ,[BTime]
-                                       ,[ETime]
-                                       ,[Days]
-                                       ,[TransportType]
-                                       ,[ApplyCar]
-                                       ,[Remark]
-                                       ,[flowflag]
-                                       ,[USERID]
-                                       ,[DepID]
-                                       ,[USERDATE]) 
+            string cmdTxt = @"  INSERT INTO LYV_BusinessTripOD
+                                (	 [LYV],
+                                     [EmployeeType],
+                                     [RequestDate],
+                                     [Type],
+                                     [Documents],
+                                     [Name_ID] ,
+                                     [Name] ,
+                                     [Name_DepID] ,
+                                     [Name_DepName] ,
+                                     [Agent_ID] ,
+                                     [Agent] ,
+                                     [Purpose] ,
+                                     [FLocation] ,
+                                     [Journey] ,
+                                     [Time] ,
+                                     [STime] ,
+                                     [ETime] ,
+                                     [Days] ,
+                                     [TransportType] ,
+                                     [ApplyCar] ,
+                                     [Remark] ,
+                                     [flowflag] ,  
+                                     [USERID] ,
+                                     [DepID] ,
+                                     [USERDATE] 
+                                ) 
                                  VALUES 
                                  (	
-                                     @LNO,
+                                     @LYV,
                                      @EmployeeType,
                                      @RequestDate,
                                      @Type,
@@ -223,9 +201,10 @@ namespace Training.BusinessTrip.PO
                                      @Purpose,
                                      @FLocation,
                                      @Journey,
-                                     @BTime,
-                                     " + (string.IsNullOrEmpty(ETime) ? "NULL" : "@ETime") + @",
-                                     " + (string.IsNullOrEmpty(Days) ? "NULL" : "@Days") + @", 
+                                     @Time,
+                                     @STime,
+                                     @ETime,
+                                     @Days, 
                                      " + (string.IsNullOrEmpty(TransportType) ? "NULL" : "@TransportType") + @", 
                                      @ApplyCar,
                                      @Remark,
@@ -235,10 +214,10 @@ namespace Training.BusinessTrip.PO
                                      getdate()
                                 )";
 
-            this.m_db.AddParameter("@LNO", LNO);
+            this.m_db.AddParameter("@LYV", LYV);
             this.m_db.AddParameter("@EmployeeType", EmployeeType);
             this.m_db.AddParameter("@RequestDate", RequestDate);
-            this.m_db.AddParameter("@Type", type);
+            this.m_db.AddParameter("@Type", Type);
             this.m_db.AddParameter("@Documents", documents);
             this.m_db.AddParameter("@Name_ID", Name_ID);
             this.m_db.AddParameter("@Name", Name);
@@ -249,7 +228,8 @@ namespace Training.BusinessTrip.PO
             this.m_db.AddParameter("@Purpose", Purpose);
             this.m_db.AddParameter("@FLocation", FLocation);
             this.m_db.AddParameter("@Journey", Journey);
-            this.m_db.AddParameter("@BTime", BTime);
+            this.m_db.AddParameter("@Time", Time);
+            this.m_db.AddParameter("@STime", STime);
             this.m_db.AddParameter("@ETime", ETime);
             this.m_db.AddParameter("@Days", Days);
             this.m_db.AddParameter("@TransportType", TransportType);
@@ -262,21 +242,24 @@ namespace Training.BusinessTrip.PO
 
             this.m_db.Dispose();
         }
-        internal void UpdateFormStatus(string LNO, string EmployeeType, string RequestDate, string Type, string SiteCode, string signStatus, XElement xE)
+        internal void UpdateFormStatus(string LNO, string Area, string SiteCode, string signStatus, string MaPhieu, XElement xE)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
-            string cmdflowflag = @"SELECT flowflag FROM LYN_BusinessTrip WHERE LNO = @LNO";
+            string cmdflowflag = @"SELECT flowflag FROM LYV_BusinessTripOD WHERE LYV = @LYV";
 
             DataTable dt = new DataTable();
-            this.m_db.AddParameter("@LNO", LNO);
+            this.m_db.AddParameter("@LYV", LNO);
             dt.Load(this.m_db.ExecuteReader(cmdflowflag));
 
             string flowflag = dt.Rows[0][0].ToString(); //請假人工號
+            string expert = xE.Attribute("expert").Value;
 
             if ((flowflag == "NP" || flowflag == "N") && SiteCode != "ReturnToApplicant")
             {
+                string Factory = xE.Attribute("Factory").Value;
+                string Type = xE.Attribute("Type").Value;
                 string Name_ID = xE.Attribute("Name_ID").Value;
                 string Name = xE.Attribute("Name").Value;
                 string Name_DepID = xE.Attribute("Name_DepID").Value;
@@ -286,19 +269,20 @@ namespace Training.BusinessTrip.PO
                 string Purpose = xE.Attribute("Purpose").Value;
                 string FLocation = xE.Attribute("FLocation").Value;
                 string Journey = xE.Attribute("Journey").Value;
-                string BTime = xE.Attribute("BTime").Value;
+                string Time = xE.Attribute("Time").Value;
+                string STime = xE.Attribute("STime").Value;
                 string ETime = xE.Attribute("ETime").Value;
                 string Days = xE.Attribute("Days").Value;
                 string TransportType = xE.Attribute("TransportType").Value;
                 string ApplyCar = xE.Attribute("ApplyCar").Value;
                 string Remark = xE.Attribute("Remark").Value;
-                string documents = xE.Attribute("documents").Value;
 
-                string cmdTxt = @"  UPDATE LYN_BusinessTrip SET
-                                     [EmployeeType] = @EmployeeType,
-                                     [RequestDate] = @RequestDate,
+                string cmdTxt = @"  UPDATE LYN_BusinessTripOD SET
+                                     [Area] = " + (string.IsNullOrEmpty(Area) ? "NULL" : "@Area") + @",
+                                     [MaPhieu] = @MaPhieu,
+                                     [expert] = @expert,
+                                     [Factory] = @Factory,
                                      [Type] = @Type,
-                                     [Documents] = @Documents,
                                      [Name_ID] = @Name_ID,
                                      [Name] = @Name,
                                      [Name_DepID] = @Name_DepID,
@@ -307,9 +291,10 @@ namespace Training.BusinessTrip.PO
                                      [Purpose] = @Purpose,
                                      [FLocation] = @FLocation,
                                      [Journey] = @Journey,
-                                     [BTime] = @BTime,
-                                     [ETime] = " + (string.IsNullOrEmpty(ETime) ? "NULL" : "@ETime") + @",
-                                     [Days] = " + (string.IsNullOrEmpty(Days) ? "NULL" : "@Days") + @",
+                                     [Time] = @Time,
+                                     [STime] = @STime,
+                                     [ETime] = @ETime,
+                                     [Days] = @Days,
                                      [TransportType] = " + (string.IsNullOrEmpty(TransportType) ? "NULL" : "@TransportType") + @",
                                      [ApplyCar] = @ApplyCar,
                                      [Remark] = @Remark,
@@ -319,10 +304,11 @@ namespace Training.BusinessTrip.PO
                                      ";
 
                 this.m_db.AddParameter("@LNO", LNO);
-                this.m_db.AddParameter("@EmployeeType", EmployeeType);
-                this.m_db.AddParameter("@RequestDate", RequestDate);
+                this.m_db.AddParameter("@Area", Area);
+                this.m_db.AddParameter("@MaPhieu", MaPhieu);
+                this.m_db.AddParameter("@expert", expert);
+                this.m_db.AddParameter("@Factory", Factory);
                 this.m_db.AddParameter("@Type", Type);
-                this.m_db.AddParameter("@Documents", documents);
                 this.m_db.AddParameter("@Name_ID", Name_ID);
                 this.m_db.AddParameter("@Name", Name);
                 this.m_db.AddParameter("@Name_DepID", Name_DepID);
@@ -332,7 +318,8 @@ namespace Training.BusinessTrip.PO
                 this.m_db.AddParameter("@Purpose", Purpose);
                 this.m_db.AddParameter("@FLocation", FLocation);
                 this.m_db.AddParameter("@Journey", Journey);
-                this.m_db.AddParameter("@BTime", BTime);
+                this.m_db.AddParameter("@Time", Time);
+                this.m_db.AddParameter("@STime", STime);
                 this.m_db.AddParameter("@ETime", ETime);
                 this.m_db.AddParameter("@Days", Days);
                 this.m_db.AddParameter("@TransportType", TransportType);
@@ -344,26 +331,45 @@ namespace Training.BusinessTrip.PO
 
                 if (!string.IsNullOrEmpty(SiteCode))
                 {
-                    string cmdTxt1 = "UPDATE LYN_BusinessTrip SET flowflag = 'P' WHERE LNO = @LNO ";
+                    string cmdTxt1 = "UPDATE LYN_BusinessTripOD SET flowflag = 'P' WHERE LNO = @LNO ";
                     this.m_db.AddParameter("@LNO", LNO);
                     this.m_db.ExecuteNonQuery(cmdTxt1);
                 }
             }
+            if (SiteCode == "HR" && expert == "N" && flowflag == "P")
+            {
+                string cmdTxt = @"  UPDATE LYN_BusinessTripOD SET
+                                     [MaPhieu] = @MaPhieu
+                                 WHERE
+                                     LNO=@LNO
+                                     ";
+
+                this.m_db.AddParameter("@LNO", LNO);
+                this.m_db.AddParameter("@MaPhieu", MaPhieu);
+
+                this.m_db.ExecuteNonQuery(cmdTxt);
+            }
             if (SiteCode == "ReturnToApplicant")
             {
-                string cmdTxt = "UPDATE LYN_BusinessTrip SET flowflag = 'NP' WHERE LNO = @LNO ";
+                string cmdTxt = "UPDATE LYN_BusinessTripOD SET flowflag = 'NP' WHERE LNO = @LNO ";
                 this.m_db.AddParameter("@LNO", LNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
-            else if (SiteCode == "GD" && signStatus == "Approve")
+            else if (SiteCode == "HR" && expert == "N" && signStatus == "Approve")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTrip SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
+                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LNO", LNO);
+                this.m_db.ExecuteNonQuery(cmdTxt);
+            }
+            else if (SiteCode == "S3" && expert == "Y" && signStatus == "Approve")
+            {
+                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
                 this.m_db.AddParameter("@LNO", LNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (signStatus == "Disapprove")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTrip SET flowflag='X' WHERE LNO = @LNO ";
+                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='X' WHERE LNO = @LNO ";
                 this.m_db.AddParameter("@LNO", LNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
@@ -377,13 +383,13 @@ namespace Training.BusinessTrip.PO
 
             if (formResult == "Adopt")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTrip SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
+                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
                 this.m_db.AddParameter("@LNO", LNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (formResult == "Reject" || formResult == "Cancel")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTrip SET flowflag='X' WHERE LNO = @LNO ";
+                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='X' WHERE LNO = @LNO ";
                 this.m_db.AddParameter("@LNO", LNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
@@ -396,8 +402,8 @@ namespace Training.BusinessTrip.PO
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string cmdTxt = @"SELECT TB_WKF_TASK.TASK_ID, TB_WKF_TASK_NODE.SITE_ID, TB_WKF_TASK_NODE.NODE_SEQ, TB_WKF_TASK_NODE.ORIGINAL_SIGNER
-                            FROM TB_WKF_TASK INNER JOIN TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID
-                            WHERE DOC_NBR=@DOC_NBR AND TB_WKF_TASK_NODE.ORIGINAL_SIGNER=@ORIGINAL_SIGNER AND TB_WKF_TASK_NODE.FINISH_TIME IS NULL";
+                              FROM TB_WKF_TASK INNER JOIN TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID
+                              WHERE DOC_NBR=@DOC_NBR AND TB_WKF_TASK_NODE.ORIGINAL_SIGNER=@ORIGINAL_SIGNER AND TB_WKF_TASK_NODE.FINISH_TIME IS NULL";
             m_db.AddParameter("@DOC_NBR", docNbr);
             m_db.AddParameter("@ORIGINAL_SIGNER", UserGUID);
 
@@ -407,39 +413,21 @@ namespace Training.BusinessTrip.PO
 
             return dt;
         }
-        internal DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2, string expert)
+        internal DataTable GetListBT(string LNO, string Name, string Name_ID, string Time1, string Time2, string expert)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string where = " and expert = '" + expert + "'  ";
-            if (Type != "ALL")
-            {
-                where += " and Type = '" + Type + "' ";
-            }
+            string where = " and expert = '" + expert + "' ";
             if (LNO != "") where += " and LOWER(LNO) like LOWER('%" + LNO + "%') ";
-            if (RLNO != "") where += " and LOWER(RLNO) like LOWER('%" + RLNO + "%') ";
             if (Name != "") where += " and LOWER(Name) like LOWER(N'%" + Name + "%') ";
             if (Name_ID != "") where += " and Name_ID like '" + Name_ID + "%' ";
-            if (BTime1 != "") where += " and BTime >= '" + BTime1 + "' ";
-            if (BTime2 != "") where += " and BTime <= '" + BTime2 + "' ";
+            if (Time1 != "") where += " and Time >= '" + Time1 + "' ";
+            if (Time2 != "") where += " and Time <= '" + Time2 + "' ";
 
-            string SQL = @" SELECT * FROM( 
-                                SELECT LYN_BusinessTrip.LNO, LYN_BusinessTripReport.LNO RLNO, MaPhieu, LYN_BusinessTrip.Name, Name_ID, Purpose, FLocation, 
-                                CONVERT(varchar,BTime,120) BTime, CONVERT(varchar,ETime,120) ETime, LYN_BusinessTrip.USERID, CONVERT(varchar,LYN_BusinessTrip.USERDATE,120) USERDATE, LYN_BusinessTrip.flowflag, 
-                                case when Type=1 THEN 'V' else 'F' end as Type, expert, isnull(Days,2) Days, TB_WKF_TASK.TASK_ID, TB_WKF_TASK_Report.TASK_ID RTASK_ID 
-                                FROM LYN_BusinessTrip LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip.LNO=TB_WKF_TASK.DOC_NBR 
-                                LEFT JOIN LYN_BusinessTripReport on LYN_BusinessTrip.LNO=LYN_BusinessTripReport.BLNO 
-                                LEFT JOIN TB_WKF_TASK TB_WKF_TASK_Report on LYN_BusinessTripReport.LNO=TB_WKF_TASK_Report.DOC_NBR 
-                                where isnull(LYN_BusinessTripReport.Cancel,0) <> 1 
-                                union all 
-                                SELECT LNO, '' RLNO, MaPhieu, Name, Name_ID, Purpose, FLocation, 
-                                CONVERT(varchar,CAST(CONVERT(varchar, Time, 23) + ' ' + isnull(STime,'00:00') AS smalldatetime),120)  AS BTime, 
-                                CONVERT(varchar,CAST(CONVERT(varchar, Time, 23) + ' ' + isnull(ETime,'00:00') AS smalldatetime),120) AS ETime, 
-                                USERID, CONVERT(varchar,USERDATE,120) USERDATE, flowflag, 'O' Type, expert, Days, TASK_ID, '' RTASK_ID 
-                                FROM LYN_BusinessTripOD LEFT JOIN TB_WKF_TASK on LYN_BusinessTripOD.LNO=TB_WKF_TASK.DOC_NBR 
-                            )AS BT 
-                            WHERE 1=1" + where + @"
-                            ORDER BY BT.LNO desc ";
+            string SQL = @"SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, Time, USERID, USERDATE, flowflag, TASK_ID 
+                           FROM LYN_BusinessTripOD LEFT JOIN TB_WKF_TASK on LYN_BusinessTripOD.LNO=TB_WKF_TASK.DOC_NBR 
+                           WHERE 1=1" + where + @"
+                           ORDER BY LYN_BusinessTripOD.LNO desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));

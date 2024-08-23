@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master/DefaultMasterPage.master" CodeFile="LYN_BusinessTrip_List.aspx.cs" Inherits="WKF_BusinessTrip_List" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master/DefaultMasterPage.master" CodeFile="BusinessTrip_List.aspx.cs" Inherits="WKF_BusinessTrip_List" %>
 
 <%@ Import Namespace="Ede.Uof.Utility.Page.Common" %>
 <%@ Register Assembly="Ede.Uof.Utility.Component.Grid" Namespace="Ede.Uof.Utility.Component" TagPrefix="Ede" %>

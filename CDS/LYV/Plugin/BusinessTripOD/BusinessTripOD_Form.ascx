@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="LYN_BusinessTripOD_Form.ascx.cs" Inherits="WKF_BusinessTripOD_Form" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="BusinessTripOD_Form.ascx.cs" Inherits="WKF_BusinessTripOD_Form" %>
 <%@ Reference Control="~/WKF/FormManagement/VersionFieldUserControl/VersionFieldUC.ascx" %>
 
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.css" type="text/css" rel="stylesheet" />
@@ -39,14 +39,14 @@
         }
 
     .radio {
-                width: 60%;
-                text-align: left;
-            }
+        width: 60%;
+        text-align: left;
+    }
 
-                .radio th, .radio td {
-                    width: 20%;
-                    vertical-align: top;
-                }
+        .radio th, .radio td {
+            width: 20%;
+            vertical-align: top;
+        }
 </style>
 
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
@@ -56,34 +56,10 @@
                 <asp:ImageButton ID="Print" runat="server" ImageUrl="../General/Images/print.png" OnClick="Print_Click" />
                 <asp:Label ID="lbPrint" runat="server" Text="Print" AssociatedControlID="Print" />
             </asp:Panel>
-            <asp:HiddenField ID="hfLNO" runat="server" />
+            <asp:HiddenField ID="hfLYV" runat="server" />
             <asp:HiddenField ID="hfTASK_RESULT" runat="server" />
         </asp:Panel>
         <table class="Form" style="width: 100%">
-            <tr>
-                <td style="width:20%"><b>Chuyên gia<br />
-                    專家</b></td>
-                <td style="width:35%">
-                    <asp:CheckBox ID="expert" runat="server" Checked="false" />
-                </td>
-                <td style="width:15%"><b>Nhà máy<br />
-                   工廠</b></td>
-                <td style="width:30%">
-                    <asp:RadioButtonList ID="Factory" runat="server" RepeatDirection="Horizontal" CssClass="radio">
-                            <asp:ListItem Text="Khu A | A區" Value="A" Selected="True"/>
-                            <asp:ListItem Text="Khu B | B區" Value="B" />
-                        </asp:RadioButtonList>
-                </td>
-            </tr>
-            <tr>
-                <td><b>Đơn vị<br />
-                    單位</b></td>
-                <td>
-                    <asp:TextBox ID="Name_DepID" runat="server" MaxLength="50" Enabled="false" Width="60%"/>
-                    <asp:ImageButton ID="SearchDep" runat="server" ImageUrl="../General/Images/select.png" OnClick="SearchDep_Click" Width="3%" /><br />
-                </td>
-                <td colspan="2"></td>
-            </tr>
             <tr>
                 <td colspan="4" style="padding: 0px">
                     <asp:Panel ID="Dep" runat="server" Visible="false">
@@ -124,48 +100,58 @@
                 </td>
             </tr>
             <tr>
-                <td><b>Họ tên<br />
-                    姓名</b></td>
                 <td>
-                    <asp:TextBox ID="Name" runat="server" MaxLength="50" Enabled="false" Width="60%"/>
+                    <label style="color: red;">* </label>
+                    <b>Họ tên</b></td>
+                <td>
+                    <asp:TextBox ID="Name" runat="server" MaxLength="50" Enabled="false" Width="90%" />
                 </td>
-                <td><b>Số thẻ<br />
-                    工號</b></td>
+                <td>
+                    <label style="color: red;">* </label>
+                    <b>Số thẻ</b></td>
                 <td>
                     <asp:TextBox ID="Name_ID" runat="server" MaxLength="20" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" Width="60%" />
                 </td>
+                <td>
+                    <label style="color: red;">* </label>
+                    <b>Đơn vị</b></td>
+                <td>
+                    <asp:TextBox ID="Name_DepID" runat="server" MaxLength="50" Enabled="false" Width="60%" />
+                    <asp:ImageButton ID="SearchDep" runat="server" ImageUrl="../General/Images/select.png" OnClick="SearchDep_Click" Width="3%" /><br />
+                </td>
             </tr>
             <tr>
-                <td><b>Họ tên người thay thế<br />
-                    職務代理人</b></td>
                 <td>
-                    <asp:TextBox ID="Agent" runat="server" MaxLength="50" Enabled="false" Width="60%" />
+                    <label style="color: red;">* </label>
+                    <b>Họ tên người thay thế</b></td>
+                <td>
+                    <asp:TextBox ID="Agent" runat="server" MaxLength="50" Enabled="false" Width="90%" />
                 </td>
-                <td><b>người thay thế Số thẻ<br />
-                    代理人工號</b></td>
+                <td>
+                    <label style="color: red;">* </label>
+                    <b>Số thẻ người thay thế</b></td>
                 <td>
                     <asp:TextBox ID="Agent_ID" runat="server" MaxLength="20" AutoPostBack="true" OnTextChanged="Agent_ID_TextChanged" Width="60%" />
                 </td>
-            </tr>
-            <tr>
-                <td><b>Lý do đi<br />
-                    出差事由</b></td>
-                <td colspan="3">
-                    <asp:TextBox ID="Purpose" runat="server" Enabled="false" TextMode="MultiLine" Width="100%" Height="100" MaxLength="500"></asp:TextBox>
+                <td><b>Tài liệu kèm theo</b></td>
+                <td>
+                    <asp:TextBox ID="documents" runat="server" MaxLength="20" AutoPostBack="true" Width="60%" />
                 </td>
             </tr>
             <tr>
-                <td><b>Địa điểm công tác<br />
-                    出差地點</b></td>
+                <td>
+                    <label style="color: red;">* </label>
+                    <b>Lý do đi</b></td>
                 <td colspan="3">
-                    <asp:TextBox ID="FLocation" runat="server" Enabled="false" TextMode="MultiLine" Width="100%" Height="100" MaxLength="500"></asp:TextBox>
+                    <asp:TextBox ID="Purpose" runat="server" Enabled="false" TextMode="MultiLine" Width="146.5%" Height="100" MaxLength="500"></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td><b>Hành trình<br />
-                    行程</b></td>
+                <td>
+                    <label style="color: red;">* </label>
+                    <b>Địa điểm công tác</b></td>
                 <td colspan="3">
-                    <asp:TextBox ID="Journey" runat="server" Enabled="false" TextMode="MultiLine" Width="100%" Height="100" MaxLength="500"></asp:TextBox>
+                    <asp:TextBox ID="FLocation" runat="server" Enabled="false" TextMode="MultiLine" Width="146.5%" Height="100" MaxLength="500"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -178,38 +164,57 @@
                     <b>Giờ đi 出發時間</b><asp:TextBox ID="STime" TextMode="Time" runat="server"></asp:TextBox>
                     <b>Giờ về 回程時間</b><asp:TextBox ID="ETime" TextMode="Time" runat="server"></asp:TextBox>
                 </td>
-            </tr>
-            <tr>
-                <td><b>Days<br />
+                <td><b>Ngày đi<br />
                     天數</b></td>
                 <td>
                     <asp:TextBox ID="Days" runat="server" Text="1" ReadOnly="true" Width="20%"></asp:TextBox>
                 </td>
-                <td><b>Đi bằng phương tiện<br />
-                    擬乘交通工具</b></td>
+            </tr>
+            <tr>
                 <td>
-                    <asp:DropDownList ID="TransportType" runat="server" Width="60%"  OnTextChanged="TransportTypeChanged" AutoPostBack="true">
-                        <asp:ListItem Enabled="true" Text="---please select---" Value=""></asp:ListItem>
-                        <asp:ListItem Text="汽車Xe hơi" Value="1"></asp:ListItem>
-                        <asp:ListItem Text="其他Phương tiện khác" Value="2"></asp:ListItem>
-                    </asp:DropDownList>
+                    <label style="color: red;">* </label>
+                    <b>Hành trình</b></td>
+                <td colspan="3">
+                    <asp:TextBox ID="Journey" runat="server" Enabled="false" TextMode="MultiLine" Width="146.5%" Height="100" MaxLength="500"></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td><b>Xe công ty<br />
-                    公司派車</b></td>
+                <td>
+                    <label style="color: red;">* </label>
+                    <b>Đi bằng phương tiện</b></td>
+                <td>
+                    <asp:DropDownList Visible="false" ID="AnTransportType" runat="server" Width="60%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
+                    </asp:DropDownList>
+                    <asp:DropDownList ID="TransportType" runat="server" Width="60%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
+                        <asp:ListItem Enabled="true" Text="---please select---" Value="Default"></asp:ListItem>
+                        <asp:ListItem Text="Xe hơi" Value="Xe hơi"></asp:ListItem>
+                        <asp:ListItem Text="Máy bay" Value="Máy bay"></asp:ListItem>
+                        <asp:ListItem Text="Thuyền" Value="Thuyền"></asp:ListItem>
+                        <asp:ListItem Text="Xe buýt" Value="Xe buýt"></asp:ListItem>
+                        <asp:ListItem Text="Phương tiện khác" Value="5"></asp:ListItem>
+                    </asp:DropDownList>
+                </td>
+                <td>
+                    <asp:TextBox ID="ptkhac" Visible="false" runat="server" MaxLength="20" AutoPostBack="true" Width="60%" />
+                </td>
+            </tr>
+            <tr>
+                <td><b>Xe công ty</b></td>
                 <td>
                     <asp:CheckBox ID="ApplyCar" runat="server" Checked="false" />
                 </td>
                 <td colspan="2"></td>
             </tr>
             <tr>
-                <td><b>Ghi rõ nguyên nhân đi máy bay<br />
-                    , thuyền (Đi xe lửa, xe hơi không<br />
-                    搭乘飛機、船舶原因請詳詿明</b></td>
-                <td colspan="3">
-                    <asp:TextBox ID="Remark" runat="server" Enabled="false" TextMode="MultiLine" Width="100%" Height="100" MaxLength="500"></asp:TextBox>
-                </td>
+                <asp:Panel ID="pTN" runat="server" Visible="true">
+                    <td><b>Ghi rõ nguyên nhân đi máy bay,<br />
+                        thuyền (Đi xe lửa, xe hơi không
+                        <br />
+                        cần ghi chú)</b></td>
+                    <td colspan="3">
+                        <asp:TextBox ID="Remark" runat="server" Enabled="false" TextMode="MultiLine" Width="100%" Height="100" MaxLength="500"></asp:TextBox>
+                    </td>
+                </asp:Panel>
             </tr>
         </table>
         <script type="text/javascript">

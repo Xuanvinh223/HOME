@@ -1,12 +1,17 @@
 ﻿using System.Data;
-using Training.BusinessTrip.PO;
+using LYV.BusinessTrip.PO;
 using System.Xml.Linq;
 
-namespace Training.BusinessTrip.UCO
+namespace LYV.BusinessTrip.UCO
 {
     public  class BusinessTripUCO
     {
         BusinessTripPO m_BusinessTripPO = new BusinessTripPO();
+
+        public string GetType(string LYV)
+        {
+            return m_BusinessTripPO.GetType(LYV);
+        }
 
         public string GetLEV(string UserID, string groupID)
         {
@@ -24,13 +29,13 @@ namespace Training.BusinessTrip.UCO
         {
             return m_BusinessTripPO.GetEmployee(UserID);
         }
-        public void InsertBusinessTripFormData(string LNO, string employeeType, string RequestDate, string type, string DepID, string UserID, XElement xE)
+        public void InsertBusinessTripFormData(string LYV, string employeeType, string RequestDate, string type, string DepID, string UserID, XElement xE)
         {
-            m_BusinessTripPO.InsertBusinessTripFormData(LNO, employeeType, RequestDate, type, DepID, UserID, xE);
+            m_BusinessTripPO.InsertBusinessTripFormData(LYV, employeeType, RequestDate, type, DepID, UserID, xE);
         }
-        public void UpdateFormStatus(string LNO, string EmployeeType, string RequestDate, string Type, string SiteCode, string signStatus, XElement xE)
+        public void UpdateFormStatus(string LYV, string EmployeeType, string RequestDate, string Type, string SiteCode, string signStatus, XElement xE)
         {
-            m_BusinessTripPO.UpdateFormStatus(LNO, EmployeeType, RequestDate,Type, SiteCode, signStatus, xE);
+            m_BusinessTripPO.UpdateFormStatus(LYV, EmployeeType, RequestDate,Type, SiteCode, signStatus, xE);
         }
 
         public void UpdateFormResult(string LNO, string formResult)

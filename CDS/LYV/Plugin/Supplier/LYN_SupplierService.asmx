@@ -33,19 +33,19 @@ public class LynSupplierService : System.Web.Services.WebService
 
         try
         {
-            string Type = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["Type"].Value;
-            string SupplierID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["SupplierID"].Value;
-            string SupplierName = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["SupplierName"].Value;
-            string CompanyAddress = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["CompanyAddress"].Value;
-            string FactoryAddress = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["FactoryAddress"].Value;
-            string Product = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["Product"].Value;
-            string Established = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["Established"].Value;
-            string License = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["License"].Value;
-            string PersonInCharge = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["PersonInCharge"].Value;
-            string ContactPerson = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["ContactPerson"].Value;
-            string Tel = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["Tel"].Value;
-            string Fax = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["Fax"].Value;
-            string Email = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='LYN_Supplier']/LYN_Supplier").Attributes["Email"].Value;
+            string Type = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["Type"].Value;
+            string SupplierID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["SupplierID"].Value;
+            string SupplierName = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["SupplierName"].Value;
+            string CompanyAddress = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["CompanyAddress"].Value;
+            string FactoryAddress = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["FactoryAddress"].Value;
+            string Product = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["Product"].Value;
+            string Established = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["Established"].Value;
+            string License = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["License"].Value;
+            string PersonInCharge = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["PersonInCharge"].Value;
+            string ContactPerson = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["ContactPerson"].Value;
+            string Tel = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["Tel"].Value;
+            string Fax = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["Fax"].Value;
+            string Email = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_Supplier").Attributes["Email"].Value;
             if (Type == "default")
             {
                 returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
