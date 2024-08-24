@@ -1,42 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using Training.BusinessTripReport.PO;
-using Training.Data;
+﻿using System.Data;
+using LYV.BusinessTripReport.PO;
 using System.Xml.Linq;
 
-namespace Training.BusinessTripReport.UCO
+namespace LYV.BusinessTripReport.UCO
 {
     public  class BusinessTripReportUCO
     {
         BusinessTripReportPO m_BusinessTripReportPO = new BusinessTripReportPO();
 
-        public DataTable GetListBT(string LNO, string Name, string Name_ID, string BTime1, string BTime2, string expert)
+        public DataTable GetListBT(string LYV, string Name, string Name_ID, string BTime1, string BTime2)
         {
-            return m_BusinessTripReportPO.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
+            return m_BusinessTripReportPO.GetListBT(LYV, Name, Name_ID, BTime1, BTime2);
         }
-        public DataTable GetBusinessTripReport_BLNO(string BLNO)
+        public DataTable GetBusinessTripReport_BLYV(string BLYV)
         {
-            return m_BusinessTripReportPO.GetBusinessTripReport_BLNO(BLNO);
+            return m_BusinessTripReportPO.GetBusinessTripReport_BLYV(BLYV);
         }
-        public void InsertBusinessTripReportData(string LNO, string UserID, string Department, string Date, string Date1, string Name, string Destination, string Description, XElement xE)
+        public void InsertBusinessTripReportData(string LYV, string UserID, string Department, string Date, string Date1, string Name, string Destination, string Description, XElement xE)
         {
-            m_BusinessTripReportPO.InsertBusinessTripReportData(LNO, UserID, Department, Date, Date1, Name, Destination, Description, xE);
+            m_BusinessTripReportPO.InsertBusinessTripReportData(LYV, UserID, Department, Date, Date1, Name, Destination, Description, xE);
         }
-        public string GetBusinessTripReport(string LNO)
+        public string GetBusinessTripReport(string LYV)
         {
-            return m_BusinessTripReportPO.GetBusinessTripReport(LNO);
+            return m_BusinessTripReportPO.GetBusinessTripReport(LYV);
         }
-        public void UpdateCancelReason(string LNO, string CancelReason)
+        public void UpdateCancelReason(string LYV, string CancelReason)
         {
-            m_BusinessTripReportPO.UpdateCancelReason(LNO, CancelReason);
+            m_BusinessTripReportPO.UpdateCancelReason(LYV, CancelReason);
         }
-        public void Confirm(string LNO, string CFMID)
+        public void Confirm(string LYV, string CFMID)
         {
-            m_BusinessTripReportPO.Confirm(LNO, CFMID);
+            m_BusinessTripReportPO.Confirm(LYV, CFMID);
         }
     }
 }

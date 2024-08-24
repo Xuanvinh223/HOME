@@ -48,7 +48,7 @@ namespace LYV.BusinessTripOD.PO
                                     ELSE 
                                     'O' + @NO + '001' 
                                  END AS MaPhieu 
-                          FROM LYN_BusinessTripOD
+                          FROM LYV_BusinessTripOD
 
                           WHERE MaPhieu LIKE 'O' + @NO + '%'";
 
@@ -242,7 +242,7 @@ namespace LYV.BusinessTripOD.PO
 
             this.m_db.Dispose();
         }
-        internal void UpdateFormStatus(string LNO, string Area, string SiteCode, string signStatus, string MaPhieu, XElement xE)
+        internal void UpdateFormStatus(string LYV, string EmployeeType, string RequestDate, string Type, string DepID, string UserID, string SiteCode, string signStatus, XElement xE)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
@@ -250,7 +250,7 @@ namespace LYV.BusinessTripOD.PO
             string cmdflowflag = @"SELECT flowflag FROM LYV_BusinessTripOD WHERE LYV = @LYV";
 
             DataTable dt = new DataTable();
-            this.m_db.AddParameter("@LYV", LNO);
+            this.m_db.AddParameter("@LYV", LYV);
             dt.Load(this.m_db.ExecuteReader(cmdflowflag));
 
             string flowflag = dt.Rows[0][0].ToString(); //請假人工號
@@ -258,8 +258,6 @@ namespace LYV.BusinessTripOD.PO
 
             if ((flowflag == "NP" || flowflag == "N") && SiteCode != "ReturnToApplicant")
             {
-                string Factory = xE.Attribute("Factory").Value;
-                string Type = xE.Attribute("Type").Value;
                 string Name_ID = xE.Attribute("Name_ID").Value;
                 string Name = xE.Attribute("Name").Value;
                 string Name_DepID = xE.Attribute("Name_DepID").Value;
@@ -276,12 +274,12 @@ namespace LYV.BusinessTripOD.PO
                 string TransportType = xE.Attribute("TransportType").Value;
                 string ApplyCar = xE.Attribute("ApplyCar").Value;
                 string Remark = xE.Attribute("Remark").Value;
+                string documents = xE.Attribute("documents").Value;
 
-                string cmdTxt = @"  UPDATE LYN_BusinessTripOD SET
-                                     [Area] = " + (string.IsNullOrEmpty(Area) ? "NULL" : "@Area") + @",
-                                     [MaPhieu] = @MaPhieu,
-                                     [expert] = @expert,
-                                     [Factory] = @Factory,
+                string cmdTxt = @"  UPDATE LYV_BusinessTripOD SET
+                                     [EmployeeType] = @EmployeeType,
+                                     [RequestDate] = @RequestDate,
+                                     [Documents] = @Documents,
                                      [Type] = @Type,
                                      [Name_ID] = @Name_ID,
                                      [Name] = @Name,
@@ -300,15 +298,14 @@ namespace LYV.BusinessTripOD.PO
                                      [Remark] = @Remark,
                                      [flowflag] = @flowflag
                                  WHERE
-                                     LNO=@LNO
+                                     LYV=@LYV
                                      ";
 
-                this.m_db.AddParameter("@LNO", LNO);
-                this.m_db.AddParameter("@Area", Area);
-                this.m_db.AddParameter("@MaPhieu", MaPhieu);
-                this.m_db.AddParameter("@expert", expert);
-                this.m_db.AddParameter("@Factory", Factory);
+                this.m_db.AddParameter("@LYV", LYV);
+                this.m_db.AddParameter("@EmployeeType", EmployeeType);
+                this.m_db.AddParameter("@RequestDate", RequestDate);
                 this.m_db.AddParameter("@Type", Type);
+                this.m_db.AddParameter("@Documents", documents);
                 this.m_db.AddParameter("@Name_ID", Name_ID);
                 this.m_db.AddParameter("@Name", Name);
                 this.m_db.AddParameter("@Name_DepID", Name_DepID);
@@ -331,66 +328,53 @@ namespace LYV.BusinessTripOD.PO
 
                 if (!string.IsNullOrEmpty(SiteCode))
                 {
-                    string cmdTxt1 = "UPDATE LYN_BusinessTripOD SET flowflag = 'P' WHERE LNO = @LNO ";
-                    this.m_db.AddParameter("@LNO", LNO);
+                    string cmdTxt1 = "UPDATE LYV_BusinessTripOD SET flowflag = 'P' WHERE LYV = @LYV ";
+                    this.m_db.AddParameter("@LYV", LYV);
                     this.m_db.ExecuteNonQuery(cmdTxt1);
                 }
             }
-            if (SiteCode == "HR" && expert == "N" && flowflag == "P")
-            {
-                string cmdTxt = @"  UPDATE LYN_BusinessTripOD SET
-                                     [MaPhieu] = @MaPhieu
-                                 WHERE
-                                     LNO=@LNO
-                                     ";
-
-                this.m_db.AddParameter("@LNO", LNO);
-                this.m_db.AddParameter("@MaPhieu", MaPhieu);
-
-                this.m_db.ExecuteNonQuery(cmdTxt);
-            }
             if (SiteCode == "ReturnToApplicant")
             {
-                string cmdTxt = "UPDATE LYN_BusinessTripOD SET flowflag = 'NP' WHERE LNO = @LNO ";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = "UPDATE LYV_BusinessTripOD SET flowflag = 'NP' WHERE LYV = @LYV ";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (SiteCode == "HR" && expert == "N" && signStatus == "Approve")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTripOD SET flowflag='Z' WHERE LYV = @LYV AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (SiteCode == "S3" && expert == "Y" && signStatus == "Approve")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTripOD SET flowflag='Z' WHERE LYV = @LYV AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (signStatus == "Disapprove")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='X' WHERE LNO = @LNO ";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTripOD SET flowflag='X' WHERE LYV = @LYV ";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
 
             this.m_db.Dispose();
         }
-        internal void UpdateFormResult(string LNO, string formResult)
+        internal void UpdateFormResult(string LYV, string formResult)
         {
             string conn1 = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
 
             if (formResult == "Adopt")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTripOD SET flowflag='Z' WHERE LYV = @LYV AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (formResult == "Reject" || formResult == "Cancel")
             {
-                string cmdTxt = @"UPDATE LYN_BusinessTripOD SET flowflag='X' WHERE LNO = @LNO ";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTripOD SET flowflag='X' WHERE LYV = @LYV ";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
 
@@ -413,21 +397,21 @@ namespace LYV.BusinessTripOD.PO
 
             return dt;
         }
-        internal DataTable GetListBT(string LNO, string Name, string Name_ID, string Time1, string Time2, string expert)
+        internal DataTable GetListBT(string LYV, string Name, string Name_ID, string Time1, string Time2)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string where = " and expert = '" + expert + "' ";
-            if (LNO != "") where += " and LOWER(LNO) like LOWER('%" + LNO + "%') ";
+            string where = "";
+            if (LYV != "") where += " and LOWER(LYV) like LOWER('%" + LYV + "%') ";
             if (Name != "") where += " and LOWER(Name) like LOWER(N'%" + Name + "%') ";
             if (Name_ID != "") where += " and Name_ID like '" + Name_ID + "%' ";
             if (Time1 != "") where += " and Time >= '" + Time1 + "' ";
             if (Time2 != "") where += " and Time <= '" + Time2 + "' ";
 
-            string SQL = @"SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, Time, USERID, USERDATE, flowflag, TASK_ID 
-                           FROM LYN_BusinessTripOD LEFT JOIN TB_WKF_TASK on LYN_BusinessTripOD.LNO=TB_WKF_TASK.DOC_NBR 
+            string SQL = @"SELECT LYV, Name, Name_ID, Purpose, FLocation, Time, USERID, USERDATE, flowflag, TASK_ID 
+                           FROM LYV_BusinessTripOD LEFT JOIN TB_WKF_TASK on LYV_BusinessTripOD.LYV=TB_WKF_TASK.DOC_NBR 
                            WHERE 1=1" + where + @"
-                           ORDER BY LYN_BusinessTripOD.LNO desc ";
+                           ORDER BY LYV_BusinessTripOD.LYV desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));

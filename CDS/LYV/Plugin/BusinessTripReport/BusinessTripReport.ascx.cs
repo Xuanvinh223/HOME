@@ -1,36 +1,16 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using Ede.Uof.WKF.Design;
 using System.Collections.Generic;
-using Ede.Uof.WKF.Utility;
 using Ede.Uof.EIP.Organization.Util;
-using Ede.Uof.WKF.Design.Data;
-using Ede.Uof.WKF.VersionFields;
-using System.Xml;
-using System.Linq;
 using Ede.Uof.EIP.SystemInfo;
 using System.Xml.Linq;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
-using System.Text;
-using System.Globalization;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Ede.Uof.Utility.Page.Common;
 using System.Dynamic;
-using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
 
 public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
 {
@@ -76,21 +56,15 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
     }
     private void LoadDataBT()
     {
-        string LNO = qLNO.Text;
+        string LYV = qLYV.Text;
         string Name = qName.Text;
         string Name_ID = qName_ID.Text;
         string BTime1 = qBTime1.Text;
         string BTime2 = qBTime2.Text;
-        string expert = "N";
 
-        if (qexpert.Checked)
-        {
-            expert = "Y";
-        }
+        LYV.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYV.BusinessTripReport.UCO.BusinessTripReportUCO();
 
-        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
-
-        DataTable dt = uco.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
+        DataTable dt = uco.GetListBT(LYV, Name, Name_ID, BTime1, BTime2);
         ViewState["formsDT"] = dt;
         gvBT.DataSource = dt;
         gvBT.DataBind();
@@ -107,10 +81,10 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
         {
             DataRowView row = (DataRowView)e.Row.DataItem;
 
-            LinkButton btnLNO = (LinkButton)e.Row.FindControl("btnLNO");
+            LinkButton btnLYV = (LinkButton)e.Row.FindControl("btnLYV");
             ExpandoObject param = new { TASK_ID = row["TASK_ID"].ToString() }.ToExpando();
             //Grid開窗是用RowDataBound事件再開窗
-            Dialog.Open2(btnLNO, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
+            Dialog.Open2(btnLYV, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
 
             HtmlInputCheckBox cb = (HtmlInputCheckBox)e.Row.FindControl("CheckBox");
             if (!pnQuery.Visible)
@@ -122,12 +96,12 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
                 e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(gvBT, "Select$" + e.Row.RowIndex);
 
                 // Lấy giá trị của thuộc tính DataKey từ GridView
-                string dataKey = gvBT.DataKeys[e.Row.RowIndex].Values["LNO"].ToString();
+                string dataKey = gvBT.DataKeys[e.Row.RowIndex].Values["LYV"].ToString();
 
                 // Lấy danh sách đã chọn từ ViewState
                 List<string> checkedGUIDs = ViewState["CheckedGUIDs"] as List<string> ?? new List<string>();
 
-                // Kiểm tra xem giá trị "LNO" có nằm trong danh sách đã chọn hay không
+                // Kiểm tra xem giá trị "LYV" có nằm trong danh sách đã chọn hay không
                 bool isChecked = checkedGUIDs.Contains(dataKey);
 
                 // Tìm ô checkbox trong dòng hiện tại
@@ -149,13 +123,13 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
     }
     protected void gvBT_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
     {
-        // Lấy danh sách các "LLNO" đã chọn từ ViewState
+        // Lấy danh sách các "LLYV" đã chọn từ ViewState
         List<string> checkedGUIDs = ViewState["CheckedGUIDs"] as List<string> ?? new List<string>();
         if (e.NewSelectedIndex >= 0)
         {
             HtmlInputCheckBox chkBox = (HtmlInputCheckBox)gvBT.Rows[e.NewSelectedIndex].FindControl("CheckBox");
             // Lấy giá trị của thuộc tính DataKey từ GridView
-            string dataKey = gvBT.DataKeys[e.NewSelectedIndex].Values["LNO"].ToString();
+            string dataKey = gvBT.DataKeys[e.NewSelectedIndex].Values["LYV"].ToString();
 
             // Kiểm tra xem đã chọn hay chưa
             bool isChecked = checkedGUIDs.Contains(dataKey);
@@ -180,7 +154,7 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
                 foreach (DataRow row in dataTable.Rows)
                 {
                     // Lấy giá trị của thuộc tính DataKey từ GridView
-                    string dataKey = row["LNO"].ToString();
+                    string dataKey = row["LYV"].ToString();
 
                     bool isChecked = checkedGUIDs.Contains(dataKey);
 
@@ -209,12 +183,11 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
     }
     public void Clear_Click(object sender, EventArgs e)
     {
-        qLNO.Text = "";
+        qLYV.Text = "";
         qName.Text = "";
         qName_ID.Text = "";
         qBTime1.Text = "";
         qBTime2.Text = "";
-        qexpert.Checked = false;
     }
     protected string GetGridViewChecked()
     {
@@ -240,14 +213,14 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
     }
     public void Print_Click(object sender, EventArgs e)
     {
-        ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
     }
     public void Disable_Click(object sender, EventArgs e)
     {
-        string LNO = hfLNO.Value.ToString();
-        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
-        string Status = uco.GetBusinessTripReport(LNO);
+        string LYV = hfLYV.Value.ToString();
+        LYV.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYV.BusinessTripReport.UCO.BusinessTripReportUCO();
+        string Status = uco.GetBusinessTripReport(LYV);
         if (Status == "cfm")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alert('This BusinessTripReport has been confirm.')", true);
@@ -258,15 +231,15 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
         }
         else
         {
-            ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-            Dialog.Open2(Disable, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Modal.aspx", "註銷外出單", 950, 600, Dialog.PostBackType.None, param);
+            ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+            Dialog.Open2(Disable, "~/CDS/LYV/Plugin/BusinessTripReport/BusinessTripReport_Modal.aspx", "註銷外出單", 950, 600, Dialog.PostBackType.None, param);
         }
     }
     public void Approve_Click(object sender, EventArgs e)
     {
-        string LNO = hfLNO.Value.ToString();
-        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
-        string Status = uco.GetBusinessTripReport(LNO);
+        string LYV = hfLYV.Value.ToString();
+        LYV.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYV.BusinessTripReport.UCO.BusinessTripReportUCO();
+        string Status = uco.GetBusinessTripReport(LYV);
         if (Status == "cfm")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alert('This BusinessTripReport has been confirm.')", true);
@@ -277,7 +250,7 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
         }
         else
         {
-            uco.Confirm(LNO, Current.Account.Replace("LYN", ""));
+            uco.Confirm(LYV, Current.Account.Replace("LYV", ""));
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alert('This BusinessTripReport has confirm')", true);
         }
     }
@@ -374,10 +347,10 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
             }
             else
             {
-                XElement TPElement = new XElement("LYN_BusinessTripReport");
+                XElement TPElement = new XElement("LYV_BusinessTripReport");
                 string key = GetGridViewChecked();
                 TPElement.Add(new XAttribute("Account", Current.Account));
-                TPElement.Add(new XAttribute("BLNO", key));
+                TPElement.Add(new XAttribute("BLYV", key));
                 return TPElement.ToString();
             }
             
@@ -419,32 +392,29 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
     }
    private void SetCustomField(XElement xeTP)
     {
-        //< FieldItem fieldId = "C99" ConditionValue = "" realValue = "" >
-        //  < TestPlugin Type = "456" />
-        //</ FieldItem >
-        string key = xeTP.Attribute("BLNO").Value;
-        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
+        string key = xeTP.Attribute("BLYV").Value;
+        LYV.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYV.BusinessTripReport.UCO.BusinessTripReportUCO();
         if (key != "")
         {
             pnQuery.Visible = false;
-            string[] dsBLNO = key.Split(",");
-            string BLNO = "'" + dsBLNO[0] + "'";
-            if (dsBLNO.Length > 1)
+            string[] dsBLYV = key.Split(",");
+            string BLYV = "'" + dsBLYV[0] + "'";
+            if (dsBLYV.Length > 1)
             {
-                for (int i = 1; i < dsBLNO.Length; i++)
+                for (int i = 1; i < dsBLYV.Length; i++)
                 {
-                    BLNO += ", '" + dsBLNO[i] + "'";
+                    BLYV += ", '" + dsBLYV[i] + "'";
                 }
             }
-            DataTable dt = uco.GetBusinessTripReport_BLNO(BLNO);
+            DataTable dt = uco.GetBusinessTripReport_BLYV(BLYV);
             ViewState["formsDT"] = dt;
             gvBT.DataSource = dt;
             gvBT.DataBind();
         }
 
         string Account = xeTP.Attribute("Account").Value;
-        string LNO = hfLNO.Value.ToString();
-        string Status = uco.GetBusinessTripReport(LNO);
+        string LYV = hfLYV.Value.ToString();
+        string Status = uco.GetBusinessTripReport(LYV);
         if (Status == "cancel")
         {
             pPrint.Visible = false;
@@ -469,23 +439,23 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
             if (Account == Current.Account)
             {
                 pPrint.Visible = true;
-                ExpandoObject param1 = new { LNO = hfLNO.Value }.ToExpando();
-                Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
+                ExpandoObject param1 = new { LYV = hfLYV.Value }.ToExpando();
+                Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
                 pDisable.Visible = true;
                 pApprove.Visible = false;
             }
             else if (Current.Account == "LYN07713")
             {
                 pPrint.Visible = true;
-                ExpandoObject param1 = new { LNO = hfLNO.Value }.ToExpando();
-                Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
-                //pDisable.Visible = false;
+                ExpandoObject param1 = new { LYV = hfLYV.Value }.ToExpando();
+                Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripReport/BusinessTripReport_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param1);
+                pDisable.Visible = false;
                 pApprove.Visible = true;
             }
             else
             {
                 pPrint.Visible = true;
-                //pDisable.Visible = false;
+                pDisable.Visible = false;
                 pApprove.Visible = false;
             }
         }
@@ -528,7 +498,7 @@ public partial class WKF_BusinessTripReport : WKF_FormManagement_VersionFieldUse
                 }
                 if (base.taskObj != null)
                 {
-                    hfLNO.Value = base.taskObj.FormNumber;
+                    hfLYV.Value = base.taskObj.FormNumber;
                     hfTASK_RESULT.Value = base.taskObj.TaskResult.ToString();
                 }
                 SetCustomField(XElement.Parse(fieldOptional.FieldValue));

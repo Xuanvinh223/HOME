@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="LYN_BusinessTripReport.ascx.cs" Inherits="WKF_BusinessTripReport" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="BusinessTripReport.ascx.cs" Inherits="WKF_BusinessTripReport" %>
 <%@ Reference Control="~/WKF/FormManagement/VersionFieldUserControl/VersionFieldUC.ascx" %>
 <%@ Register Assembly="Ede.Uof.Utility.Component.Grid" Namespace="Ede.Uof.Utility.Component" TagPrefix="Ede" %>
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
@@ -85,7 +85,7 @@
                 <asp:Label ID="lbDisable" runat="server" Text="註銷 Cancel" AssociatedControlID="Disable" />
             </asp:Panel>
             <asp:Label ID="lTitle" runat="server" Text="" Visible="false" style="text-align: right; font-weight: bold;font-size: x-large;" Width="90%"></asp:Label>
-            <asp:HiddenField ID="hfLNO" runat="server" />
+            <asp:HiddenField ID="hfLYV" runat="server" />
             <asp:HiddenField ID="hfTASK_RESULT" runat="server" />
         </asp:Panel>
         <asp:Panel ID="pnQuery" runat="server">
@@ -93,7 +93,7 @@
                 <tr>
                     <td>
                         <b>Số phiếu單號</b><br />
-                        <asp:TextBox ID="qLNO" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="qLYV" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <b>Họ tên姓名</b><br />
@@ -108,10 +108,6 @@
                         <asp:TextBox ID="qBTime1" TextMode="Date" runat="server"></asp:TextBox>
                         <b>~ </b>
                         <asp:TextBox ID="qBTime2" TextMode="Date" runat="server"></asp:TextBox>
-                    </td>
-                    <td>
-                        <b>Chuyên gia | 專家</b><br />
-                        <asp:CheckBox ID="qexpert" runat="server"></asp:CheckBox>
                     </td>
                     <td>
                         <asp:Panel ID="pQuery" runat="server" DefaultButton="Query" CssClass="btn">
@@ -131,26 +127,18 @@
         <table style="width: 100%">
             <tr>
                 <td>
-                    <Ede:Grid ID="gvBT" runat="server" CssClass="FormGrid" PageSize="20" AllowPaging="True" DataKeyNames="LNO" AutoGenerateColumns="False" AutoGenerateCheckBoxColumn="True" CustomDropDownListPage="False" DataKeyOnClientWithCheckBox="True" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="False" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowDataBound="gvBT_RowDataBound" OnPageIndexChanging="gvBT_PageIndexChanging" OnSelectedIndexChanging="gvBT_SelectedIndexChanging" AllowSorting="True" Width="100%">
+                    <Ede:Grid ID="gvBT" runat="server" CssClass="FormGrid" PageSize="20" AllowPaging="True" DataKeyNames="LYV" AutoGenerateColumns="False" AutoGenerateCheckBoxColumn="True" CustomDropDownListPage="False" DataKeyOnClientWithCheckBox="True" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="False" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowDataBound="gvBT_RowDataBound" OnPageIndexChanging="gvBT_PageIndexChanging" OnSelectedIndexChanging="gvBT_SelectedIndexChanging" AllowSorting="True" Width="100%">
                         <EnhancePagerSettings ShowHeaderPager="false"></EnhancePagerSettings>
 
                         <ExportExcelSettings AllowExportToExcel="False"></ExportExcelSettings>
                         <Columns>
                             <asp:TemplateField HeaderText="Số phiếu單號">
                                 <EditItemTemplate>
-                                    <asp:TextBox ID="LNO" runat="server" Text='<%# Bind("LNO") %>'></asp:TextBox>
+                                    <asp:TextBox ID="LYV" runat="server" Text='<%# Bind("LYV") %>'></asp:TextBox>
                                 </EditItemTemplate>
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="btnLNO" runat="server" Text='<%# Bind("LNO") %>'></asp:LinkButton>
+                                    <asp:LinkButton ID="btnLYV" runat="server" Text='<%# Bind("LYV") %>'></asp:LinkButton>
                                     <asp:HiddenField ID="hTASK_ID" runat="server" Value='<%# Bind("TASK_ID") %>' />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Số NO">
-                                <EditItemTemplate>
-                                    <asp:TextBox ID="MaPhieu" runat="server" Text='<%# Bind("MaPhieu") %>'></asp:TextBox>
-                                </EditItemTemplate>
-                                <ItemTemplate>
-                                    <asp:Label ID="lbMaPhieu" runat="server" Text='<%# Bind("MaPhieu") %>'></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Họ tên姓名">

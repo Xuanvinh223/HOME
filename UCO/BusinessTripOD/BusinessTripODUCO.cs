@@ -28,9 +28,9 @@ namespace LYV.BusinessTripOD.UCO
         {
             m_BusinessTripODPO.InsertBusinessTripODFormData(LYV,EmployeeType,RequestDate,Type,DepID,UserID,xE);
         }
-        public void UpdateFormStatus(string LNO, string Area, string SiteCode, string signStatus, string MaPhieu, XElement xE)
+        public void UpdateFormStatus(string LYV, string EmployeeType, string RequestDate, string Type, string DepID, string UserID, string SiteCode, string signStatus, XElement xE)
         {
-            m_BusinessTripODPO.UpdateFormStatus(LNO, Area, SiteCode, signStatus, MaPhieu, xE);
+            m_BusinessTripODPO.UpdateFormStatus( LYV,  EmployeeType,  RequestDate,  Type,  DepID,  UserID,  SiteCode,  signStatus,  xE);
         }
 
         public void UpdateFormResult(string LNO, string formResult)
@@ -41,9 +41,9 @@ namespace LYV.BusinessTripOD.UCO
         {
             return m_BusinessTripODPO.getWSSignNextInfo(DOC_NBR, UserGUID);
         }
-        public DataTable GetListBT(string LNO, string Name, string Name_ID, string BTime1, string BTime2, string expert)
+        public DataTable GetListBT(string LNO, string Name, string Name_ID, string BTime1, string BTime2)
         {
-            return m_BusinessTripODPO.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
+            return m_BusinessTripODPO.GetListBT(LNO, Name, Name_ID, BTime1, BTime2);
         }
     }
 }

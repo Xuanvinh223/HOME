@@ -5,12 +5,12 @@
     <Field>
       <OptionalField>
 
-		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripReport/LYN_BusinessTripReport.ascx" FieldName="BusinessTripReport">
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripReport/BusinessTripReport.ascx" FieldName="BusinessTripReport">
 			  <Display>
-				  <Value Culture="zh-TW" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
-				  <Value Culture="zh-CN" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
-				  <Value Culture="en-US" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
-				  <Value Culture="vi" Name="BÁO CÁO CÔNG TÁC - REPORT"/>
+				  <Value Culture="zh-TW" Name="BusinessTripReport"/>
+				  <Value Culture="zh-CN" Name="BusinessTripReport"/>
+				  <Value Culture="en-US" Name="BusinessTripReport"/>
+				  <Value Culture="vi" Name="BusinessTripReport"/>
 			  </Display>
 		  </FieldItem>
 		  

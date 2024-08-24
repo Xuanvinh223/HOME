@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 using Training.Data;
 using System.Xml.Linq;
 
-namespace Training.BusinessTripReport.PO
+namespace LYV.BusinessTripReport.PO
 {
     internal class BusinessTripReportPO : Ede.Uof.Utility.Data.BasePersistentObject
     {
-        internal DataTable GetListBT(string LNO, string Name, string Name_ID, string BTime1, string BTime2, string expert)
+        internal DataTable GetListBT(string LYV, string Name, string Name_ID, string BTime1, string BTime2)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string where = " and expert = '" + expert + "' ";
-            if (LNO != "") where += " and LOWER(LNO) like LOWER('%" + LNO + "%') ";
+            string where = " ";
+            if (LYV != "") where += " and LOWER(LYV) like LOWER('%" + LYV + "%') ";
             if (Name != "") where += " and LOWER(Name) like LOWER(N'%" + Name + "%') ";
             if (Name_ID != "") where += " and Name_ID like '" + Name_ID + "%' ";
             if (BTime1 != "") where += " and BTime >= '" + BTime1 + "' ";
             if (BTime2 != "") where += " and BTime <= '" + BTime2 + "' ";
 
-            string SQL = @"SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
-                           FROM LYN_BusinessTrip_Templ LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip_Templ.LNO=TB_WKF_TASK.DOC_NBR 
-                           WHERE isnull(Days,2)>=2 and flowflag='Z' and LNO not in (select BLNO as LNO from LYN_BusinessTripReport where isnull(Cancel,0)<>1) " + where + @"
-                           ORDER BY LYN_BusinessTrip_Templ.LNO desc ";
+            string SQL = @"SELECT LYV, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
+                           FROM LYV_BusinessTrip LEFT JOIN TB_WKF_TASK on LYV_BusinessTrip.LYV=TB_WKF_TASK.DOC_NBR 
+                           WHERE isnull(Days,2)>=2 and flowflag='Z' and LYV not in (select BLYV as LYV from LYV_BusinessTripReport where isnull(Cancel,0)<>1) " + where + @"
+                           ORDER BY LYV_BusinessTrip.LYV desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));
@@ -34,15 +34,15 @@ namespace Training.BusinessTripReport.PO
 
             return dt;
         }
-        internal DataTable GetBusinessTripReport_BLNO(string BLNO)
+        internal DataTable GetBusinessTripReport_BLYV(string BLYV)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
-            string SQL = @"SELECT LNO, MaPhieu, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
-                           FROM LYN_BusinessTrip_Templ LEFT JOIN TB_WKF_TASK on LYN_BusinessTrip_Templ.LNO=TB_WKF_TASK.DOC_NBR 
-                           WHERE LNO = " + BLNO + @"
-                           ORDER BY LYN_BusinessTrip_Templ.LNO desc ";
+            string SQL = @"SELECT LYV, Name, Name_ID, Purpose, FLocation, BTime, ETime, USERID, USERDATE, TASK_ID 
+                           FROM LYV_BusinessTrip LEFT JOIN TB_WKF_TASK on LYV_BusinessTrip.LYV=TB_WKF_TASK.DOC_NBR 
+                           WHERE LYV = " + BLYV + @"
+                           ORDER BY LYV_BusinessTrip.LYV desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));
@@ -51,49 +51,49 @@ namespace Training.BusinessTripReport.PO
 
             return dt;
         }
-        internal void InsertBusinessTripReportData(string LNO, string UserID, string Department, string Date, string Date1, string Name, string Destination, string Description, XElement xE)
+        internal void InsertBusinessTripReportData(string LYV, string UserID, string Department, string Date, string Date1, string Name, string Destination, string Description, XElement xE)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
-            string BLNO = xE.Attribute("BLNO").Value;
+            string RLYV = xE.Attribute("BLYV").Value;
 
-            string cmdTxt = @"  INSERT INTO LYN_BusinessTripReport
-                                (	 [LNO] ,  
+            string cmdTxt = @"  INSERT INTO LYV_BusinessTripReport
+                                (	 [LYV] ,  
                                      [Department] , 
                                      [Date] ,
                                      [Date1] ,
                                      [Name] ,
                                      [Destination] ,
                                      [Description] ,
-                                     [BLNO] ,
+                                     [RLYV] ,
                                      [USERID] ,
                                      [USERDATE] ,
                                      [flowflag]
                                 ) 
                                  VALUES 
                                  (	
-                                     @LNO,
+                                     @LYV,
                                      @Department,
                                      @Date,
                                      @Date1,
                                      @Name,
                                      @Destination,
                                      @Description,
-                                     @BLNO,
+                                     @RLYV,
                                      @UserID,
                                      getdate(),
                                      @flowflag
                                 )  ";
 
-            this.m_db.AddParameter("@LNO", LNO);
+            this.m_db.AddParameter("@LYV", LYV);
             this.m_db.AddParameter("@Department", Department);
             this.m_db.AddParameter("@Date", Date);
             this.m_db.AddParameter("@Date1", Date1);
             this.m_db.AddParameter("@Name", Name);
             this.m_db.AddParameter("@Destination", Destination);
             this.m_db.AddParameter("@Description", Description);
-            this.m_db.AddParameter("@BLNO", BLNO);
+            this.m_db.AddParameter("@RLYV", RLYV);
             this.m_db.AddParameter("@UserID", UserID);
             this.m_db.AddParameter("@flowflag", "Z");
 
@@ -101,13 +101,13 @@ namespace Training.BusinessTripReport.PO
 
             this.m_db.Dispose();
         }
-        internal string GetBusinessTripReport(string LNO)
+        internal string GetBusinessTripReport(string LYV)
         {
             string Status = "";
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string cmdTxt = @"SELECT CASE WHEN CFMID IS NOT NULL THEN 'cfm' ELSE CASE WHEN Cancel = 1 THEN 'cancel' ELSE '' END END AS Status FROM LYN_BusinessTripReport
-                              WHERE LNO = '" + LNO + "' ";
+            string cmdTxt = @"SELECT CASE WHEN CFMID IS NOT NULL THEN 'cfm' ELSE CASE WHEN Cancel = 1 THEN 'cancel' ELSE '' END END AS Status FROM LYV_BusinessTripReport
+                              WHERE LYV = '" + LYV + "' ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(cmdTxt));
@@ -120,19 +120,19 @@ namespace Training.BusinessTripReport.PO
             return Status;
 
         }
-        public void UpdateCancelReason(string LNO, string CancelReason)
+        public void UpdateCancelReason(string LYV, string CancelReason)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string cmdTxt = @"UPDATE LYN_BusinessTripReport SET Cancel = 1, CancelReason = '" + CancelReason + "' WHERE LNO = '" + LNO + "' ";
+            string cmdTxt = @"UPDATE LYV_BusinessTripReport SET Cancel = 1, CancelReason = '" + CancelReason + "' WHERE LYV = '" + LYV + "' ";
             this.m_db.ExecuteNonQuery(cmdTxt);
             this.m_db.Dispose();
         }
-        public void Confirm(string LNO, string CFMID)
+        public void Confirm(string LYV, string CFMID)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string cmdTxt = @"UPDATE LYN_BusinessTripReport SET CFMID = '" + CFMID + "', CFMDATE=getdate() WHERE LNO = '" + LNO + "' ";
+            string cmdTxt = @"UPDATE LYV_BusinessTripReport SET CFMID = '" + CFMID + "', CFMDATE=getdate() WHERE LYV = '" + LYV + "' ";
             this.m_db.ExecuteNonQuery(cmdTxt);
             this.m_db.Dispose();
         }

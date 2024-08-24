@@ -8,6 +8,7 @@
     <table id="tblDetail" runat="server" cellspacing="1" style="width: 100%">
         <tr>
             <td>
+               <asp:Label ID="lblReportTitle" runat="server" Text="Phiếu công tác trong ngày" Font-Bold="True" Font-Size="16px" />
                 <CR:CrystalReportViewer ID="crvBusinessTripOD" runat="server" AutoDataBind="true" ShowAllPageIds="false" DisplayToolbar="False"></CR:CrystalReportViewer>
             </td>
         </tr>

@@ -20,15 +20,15 @@ public partial class CDS_FileCenter_Default2 : Ede.Uof.Utility.Page.BasePage
         Setting setting = new Setting();
         ScriptManager.RegisterStartupScript(
             Page, GetType(), "download",
-            string.Format("$uof.download('{0}/Common/FileCenter/DownloadFile.ashx?id={1}');", setting["SiteUrl"],"6999e215-25b4-410b-9b99-f59b591af1f2")
-            
+            string.Format("$uof.download('{0}/Common/FileCenter/DownloadFile.ashx?id={1}');", setting["SiteUrl"], "6999e215-25b4-410b-9b99-f59b591af1f2")
+
             , true);
 
     }
 
     private ArrayList upLoad(string fileGroupID, string newModule)
     {
-        FileGroup fileGroup= Ede.Uof.Utility.FileCenter.V3.FileCenter.GetFileGroup(fileGroupID);
+        FileGroup fileGroup = Ede.Uof.Utility.FileCenter.V3.FileCenter.GetFileGroup(fileGroupID);
         FileCenterModel fcm = new FileCenterModel();
         SortedList<string, string> filePathList = new SortedList<string, string>();
         DataSet fileDs = fcm.GetFileCollection(fileGroupID);

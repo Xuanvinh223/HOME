@@ -41,16 +41,17 @@ public class WebServiceLYN  : System.Web.Services.WebService {
 
         try
         {
-            string LNO =xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_BusinessTripReport").Attributes["BLNO"].Value;
-            string[] dsLNO = LNO.Split(',');
-            if (LNO == "") {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText ="Please select LNO!";
-            }
-            else if (dsLNO.Length>1)
+            string LYV = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTripReport").Attributes["BLYV"].Value;
+            string[] dsLYV = LYV.Split(',');
+            if (LYV == "")
             {
                 returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText ="Please check only 1 LNO!";
+                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select LYV!";
+            }
+            else if (dsLYV.Length > 1)
+            {
+                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
+                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please check only 1 LYV!";
             }
             else
             {

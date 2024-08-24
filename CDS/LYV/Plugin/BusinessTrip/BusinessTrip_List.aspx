@@ -66,16 +66,15 @@
                             <asp:ListItem Text="所有 Tất cả" Value="ALL"></asp:ListItem>
                             <asp:ListItem Text="國內 Trong nước" Value="V"></asp:ListItem>
                             <asp:ListItem Text="國外出差用 Ngoài nước" Value="F"></asp:ListItem>
-                            <asp:ListItem Text="一日 Trong ngày" Value="O"></asp:ListItem>
                         </asp:DropDownList>
                     </td>
                     <td>
                         <b>Số phiếu單號</b><br />
-                        <asp:TextBox ID="qLNO" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="qLYV" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <b>Số báo cáo單號報告</b><br />
-                        <asp:TextBox ID="qRLNO" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="qRLYV" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <b>Họ tên姓名</b><br />
@@ -106,36 +105,28 @@
                 </tr>
             </table>
             <asp:HiddenField ID="hfSiteName" runat="server" />
-            <Ede:Grid ID="gvBT" runat="server" CssClass="gvBT" PageSize="10" AllowPaging="True" DataKeyNames="LNO" AutoGenerateColumns="False" CustomDropDownListPage="False" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="false" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnBeforeExport="gvBT_BeforeExport" OnRowDataBound="gvBT_RowDataBound" OnPageIndexChanging="gvBT_PageIndexChanging" AllowSorting="True" Width="100%" AutoGenerateCheckBoxColumn="False">
+            <Ede:Grid ID="gvBT" runat="server" CssClass="gvBT" PageSize="10" AllowPaging="True" DataKeyNames="LYV" AutoGenerateColumns="False" CustomDropDownListPage="False" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="false" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnBeforeExport="gvBT_BeforeExport" OnRowDataBound="gvBT_RowDataBound" OnPageIndexChanging="gvBT_PageIndexChanging" AllowSorting="True" Width="100%" AutoGenerateCheckBoxColumn="False">
                 <enhancepagersettings showheaderpager="false"></enhancepagersettings>
 
                 <exportexcelsettings allowexporttoexcel="true" exporttype="DataSource" />
                 <columns>
                     <asp:TemplateField HeaderText="Số phiếu單號">
                         <edititemtemplate>
-                            <asp:TextBox ID="LNO" runat="server" Text='<%# Bind("LNO") %>'></asp:TextBox>
+                            <asp:TextBox ID="LYV" runat="server" Text='<%# Bind("LYV") %>'></asp:TextBox>
                         </edititemtemplate>
                         <itemtemplate>
-                            <asp:LinkButton ID="btnLNO" runat="server" Text='<%# Bind("LNO") %>'></asp:LinkButton>
+                            <asp:LinkButton ID="btnLYV" runat="server" Text='<%# Bind("LYV") %>'></asp:LinkButton>
                             <asp:HiddenField ID="hTASK_ID" runat="server" Value='<%# Bind("TASK_ID") %>' />
                             <asp:HiddenField ID="hDays" runat="server" Value='<%# Bind("Days") %>' />
                         </itemtemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Số báo cáo單號報告">
                         <edititemtemplate>
-                            <asp:TextBox ID="RLNO" runat="server" Text='<%# Bind("RLNO") %>'></asp:TextBox>
+                            <asp:TextBox ID="RLYV" runat="server" Text='<%# Bind("RLYV") %>'></asp:TextBox>
                         </edititemtemplate>
                         <itemtemplate>
-                            <asp:LinkButton ID="btnRLNO" runat="server" Text='<%# Bind("RLNO") %>'></asp:LinkButton>
+                            <asp:LinkButton ID="btnRLYV" runat="server" Text='<%# Bind("RLYV") %>'></asp:LinkButton>
                             <asp:HiddenField ID="hRTASK_ID" runat="server" Value='<%# Bind("RTASK_ID") %>' />
-                        </itemtemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Số NO">
-                        <edititemtemplate>
-                            <asp:TextBox ID="MaPhieu" runat="server" Text='<%# Bind("MaPhieu") %>'></asp:TextBox>
-                        </edititemtemplate>
-                        <itemtemplate>
-                            <asp:Label ID="lbMaPhieu" runat="server" Text='<%# Bind("MaPhieu") %>'></asp:Label>
                         </itemtemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Họ tên姓名">

@@ -35,6 +35,7 @@ public partial class WKF_BusinessTrip_List : Ede.Uof.Utility.Page.BasePage
             BindEmptyDataToGridView();
         }
         hfSiteName.Value = Request.ApplicationPath.Substring(1);
+        LoadDataBT();
     }
     protected void ddlPageSize_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -97,33 +98,33 @@ public partial class WKF_BusinessTrip_List : Ede.Uof.Utility.Page.BasePage
         {
             DataRowView row = (DataRowView)e.Row.DataItem;
 
-            Training.BusinessTrip.UCO.BusinessTripUCO uco = new Training.BusinessTrip.UCO.BusinessTripUCO();
-            DataTable dt = uco.GetWSSignNextInfo(row["LNO"].ToString(), hfSiteName.Value, Current.UserGUID);
+            LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
+            DataTable dt = uco.GetWSSignNextInfo(row["LYV"].ToString(), hfSiteName.Value, Current.UserGUID);
 
             if (dt.Rows.Count > 0)
             {
-                LinkButton btnLNO = (LinkButton)e.Row.FindControl("btnLNO");
+                LinkButton btnLYV = (LinkButton)e.Row.FindControl("btnLYV");
                 ExpandoObject param = new { TASK_ID = dt.Rows[0]["TASK_ID"].ToString(), SITE_ID = dt.Rows[0]["SITE_ID"].ToString(), NODE_SEQ = dt.Rows[0]["NODE_SEQ"].ToString() }.ToExpando();
-                Dialog.Open2(btnLNO, "~/WKF/FormUse/FreeTask/SignNodeForm.aspx", "", 1500, 800, Dialog.PostBackType.AfterReturn, param);
+                Dialog.Open2(btnLYV, "~/WKF/FormUse/FreeTask/SignNodeForm.aspx", "", 1500, 800, Dialog.PostBackType.AfterReturn, param);
             }
             else {
-                LinkButton btnLNO = (LinkButton)e.Row.FindControl("btnLNO");
+                LinkButton btnLYV = (LinkButton)e.Row.FindControl("btnLYV");
                 ExpandoObject param = new { TASK_ID = row["TASK_ID"].ToString() }.ToExpando();
                 //Grid開窗是用RowDataBound事件再開窗
-                Dialog.Open2(btnLNO, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
+                Dialog.Open2(btnLYV, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
             }
             if (Convert.ToInt32(row["Days"].ToString()) >= 2)
             {
-                if (string.IsNullOrEmpty(row["RLNO"].ToString()))
+                if (string.IsNullOrEmpty(row["RLYV"].ToString()))
                 {
                     e.Row.ForeColor = System.Drawing.Color.Red;
                 }
                 else
                 {
-                    LinkButton btnRLNO = (LinkButton)e.Row.FindControl("btnRLNO");
+                    LinkButton btnRLYV = (LinkButton)e.Row.FindControl("btnRLYV");
                     ExpandoObject param = new { TASK_ID = row["RTASK_ID"].ToString() }.ToExpando();
                     //Grid開窗是用RowDataBound事件再開窗
-                    Dialog.Open2(btnRLNO, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
+                    Dialog.Open2(btnRLYV, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
                 }
             }
         }
@@ -134,17 +135,17 @@ public partial class WKF_BusinessTrip_List : Ede.Uof.Utility.Page.BasePage
     }
     private void LoadDataBT()
     {
-        string LNO = qLNO.Text;
-        string RLNO = qRLNO.Text;
+        string LYV = qLYV.Text;
+        string RLYV = qRLYV.Text;
         string Name = qName.Text;
         string Name_ID = qName_ID.Text;
         string BTime1 = qBTime1.Text;
         string BTime2 = qBTime2.Text;
         string Type = qType.SelectedValue;
 
-        Training.BusinessTrip.UCO.BusinessTripUCO uco = new Training.BusinessTrip.UCO.BusinessTripUCO();
+        LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
 
-        DataTable dt = uco.GetListBT(LNO, Type, RLNO, Name, Name_ID, BTime1, BTime2, "expert");
+        DataTable dt = uco.GetListBT(LYV, Type, RLYV, Name, Name_ID, BTime1, BTime2);
         ViewState["formsDT"] = dt;
         gvBT.DataSource = dt;
         gvBT.DataBind();
@@ -162,8 +163,8 @@ public partial class WKF_BusinessTrip_List : Ede.Uof.Utility.Page.BasePage
     }
     public void Clear_Click(object sender, EventArgs e)
     {
-        qLNO.Text = "";
-        qRLNO.Text = "";
+        qLYV.Text = "";
+        qRLYV.Text = "";
         qName.Text = "";
         qName_ID.Text = "";
         qBTime1.Text = "";

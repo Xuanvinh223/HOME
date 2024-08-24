@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ede.Uof.Utility.Page.Common;
 using System.Data;
-using System.Security.Cryptography;
-using Ede.Uof.WKF.Utility;
-using Ede.Uof.EIP.Organization.Util;
 using Ede.Uof.EIP.SystemInfo;
-using System.Text;
 using System.Dynamic;
-using System.Web.UI.HtmlControls;
 
 public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
 {
@@ -35,6 +28,7 @@ public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
             BindEmptyDataToGridView();
         }
         hfSiteName.Value = Request.ApplicationPath.Substring(1);
+        LoadDataITS();
     }
     protected void ddlPageSize_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -93,20 +87,20 @@ public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
         {
             DataRowView row = (DataRowView)e.Row.DataItem;
 
-            Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
-            DataTable dt = uco.GetWSSignNextInfo(row["LNO"].ToString(), hfSiteName.Value, Current.UserGUID);
+            LYV.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYV.BusinessTripOD.UCO.BusinessTripODUCO();
+            DataTable dt = uco.GetWSSignNextInfo(row["LYV"].ToString(), hfSiteName.Value, Current.UserGUID);
 
             if (dt.Rows.Count > 0)
             {
-                LinkButton btnLNO = (LinkButton)e.Row.FindControl("btnLNO");
+                LinkButton btnLYV = (LinkButton)e.Row.FindControl("btnLYV");
                 ExpandoObject param = new { TASK_ID = dt.Rows[0]["TASK_ID"].ToString(), SITE_ID = dt.Rows[0]["SITE_ID"].ToString(), NODE_SEQ = dt.Rows[0]["NODE_SEQ"].ToString() }.ToExpando();
-                Dialog.Open2(btnLNO, "~/WKF/FormUse/FreeTask/SignNodeForm.aspx", "", 1500, 800, Dialog.PostBackType.AfterReturn, param);
+                Dialog.Open2(btnLYV, "~/WKF/FormUse/FreeTask/SignNodeForm.aspx", "", 1500, 800, Dialog.PostBackType.AfterReturn, param);
             }
             else {
-                LinkButton btnLNO = (LinkButton)e.Row.FindControl("btnLNO");
+                LinkButton btnLYV = (LinkButton)e.Row.FindControl("btnLYV");
                 ExpandoObject param = new { TASK_ID = row["TASK_ID"].ToString() }.ToExpando();
                 //Grid開窗是用RowDataBound事件再開窗
-                Dialog.Open2(btnLNO, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
+                Dialog.Open2(btnLYV, "~/WKF/FormUse/ViewForm.aspx", "", 1500, 800, Dialog.PostBackType.None, param);
             }
         }
     }
@@ -116,21 +110,15 @@ public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
     }
     private void LoadDataITS()
     {
-        string LNO = qLNO.Text;
+        string LYV = qLYV.Text;
         string Name = qName.Text;
         string Name_ID = qName_ID.Text;
         string BTime1 = qBTime1.Text;
         string BTime2 = qBTime2.Text;
-        string expert = "N";
 
-        if (qexpert.Checked)
-        {
-            expert = "Y";
-        }
+        LYV.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYV.BusinessTripOD.UCO.BusinessTripODUCO();
 
-        Training.BusinessTripOD.UCO.BusinessTripODUCO uco = new Training.BusinessTripOD.UCO.BusinessTripODUCO();
-
-        DataTable dt = uco.GetListBT(LNO, Name, Name_ID, BTime1, BTime2, expert);
+        DataTable dt = uco.GetListBT(LYV, Name, Name_ID, BTime1, BTime2);
         ViewState["formsDT"] = dt;
         gvBT.DataSource = dt;
         gvBT.DataBind();
@@ -148,11 +136,10 @@ public partial class WKF_BusinessTripOD_List : Ede.Uof.Utility.Page.BasePage
     }
     public void Clear_Click(object sender, EventArgs e)
     {
-        qLNO.Text = "";
+        qLYV.Text = "";
         qName.Text = "";
         qName_ID.Text = "";
         qBTime1.Text = "";
         qBTime2.Text = "";
-        qexpert.Checked = false;
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master/DialogMasterPage.master" CodeFile="LYN_BusinessTripReport_Modal.aspx.cs" Inherits="WKF_BusinessTripReport_Modal" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master/DialogMasterPage.master" CodeFile="BusinessTripReport_Modal.aspx.cs" Inherits="WKF_BusinessTripReport_Modal" %>
 
 <%@ Register Assembly="Ede.Uof.Utility.Component.Grid" Namespace="Ede.Uof.Utility.Component" TagPrefix="Fast" %>
 

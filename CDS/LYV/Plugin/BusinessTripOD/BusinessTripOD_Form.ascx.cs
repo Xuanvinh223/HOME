@@ -232,8 +232,8 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
     }
     public void Print_Click(object sender, EventArgs e)
     {
-        ExpandoObject param = new { LNO = hfLYV.Value }.ToExpando();
-        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/LYV_BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
     }
     /// <summary>
     /// 外掛欄位的條件值
@@ -491,8 +491,8 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         }
         else
         {
-            ExpandoObject param = new { LNO = hfLYV.Value }.ToExpando();
-            Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/LYN_BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+            ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+            Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
             pPrint.Visible = true;
         }
     }

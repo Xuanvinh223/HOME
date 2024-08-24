@@ -130,7 +130,7 @@ namespace LYV.BusinessTrip.PO
                 }
                 else
                 {
-                    string conn1 = Training.Properties.Settings.Default.LYV_ERP.ToString();
+                    string conn1 = Training.Properties.Settings.Default.HRM.ToString();
                     this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
                     DataTable dt1 = new DataTable();
 
@@ -408,39 +408,43 @@ namespace LYV.BusinessTrip.PO
 
             return dt;
         }
-        internal DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2, string expert)
+        internal DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string where = " and expert = '" + expert + "'  ";
+            string where = "";
             if (Type != "ALL")
             {
                 where += " and Type = '" + Type + "' ";
             }
-            if (LNO != "") where += " and LOWER(LNO) like LOWER('%" + LNO + "%') ";
-            if (RLNO != "") where += " and LOWER(RLNO) like LOWER('%" + RLNO + "%') ";
+            if (LNO != "") where += " and LOWER(LYV) like LOWER('%" + LNO + "%') ";
+            if (RLNO != "") where += " and LOWER(RLYV) like LOWER('%" + RLNO + "%') ";
             if (Name != "") where += " and LOWER(Name) like LOWER(N'%" + Name + "%') ";
             if (Name_ID != "") where += " and Name_ID like '" + Name_ID + "%' ";
             if (BTime1 != "") where += " and BTime >= '" + BTime1 + "' ";
             if (BTime2 != "") where += " and BTime <= '" + BTime2 + "' ";
 
             string SQL = @" SELECT * FROM( 
-                                SELECT LYV_BusinessTrip.LNO, LYN_BusinessTripReport.LNO RLNO, MaPhieu, LYV_BusinessTrip.Name, Name_ID, Purpose, FLocation, 
-                                CONVERT(varchar,BTime,120) BTime, CONVERT(varchar,ETime,120) ETime, LYV_BusinessTrip.USERID, CONVERT(varchar,LYV_BusinessTrip.USERDATE,120) USERDATE, LYV_BusinessTrip.flowflag, 
-                                case when Type=1 THEN 'V' else 'F' end as Type, expert, isnull(Days,2) Days, TB_WKF_TASK.TASK_ID, TB_WKF_TASK_Report.TASK_ID RTASK_ID 
-                                FROM LYV_BusinessTrip LEFT JOIN TB_WKF_TASK on LYV_BusinessTrip.LNO=TB_WKF_TASK.DOC_NBR 
-                                LEFT JOIN LYN_BusinessTripReport on LYV_BusinessTrip.LNO=LYN_BusinessTripReport.BLNO 
-                                LEFT JOIN TB_WKF_TASK TB_WKF_TASK_Report on LYN_BusinessTripReport.LNO=TB_WKF_TASK_Report.DOC_NBR 
-                                where isnull(LYN_BusinessTripReport.Cancel,0) <> 1 
-                                union all 
-                                SELECT LNO, '' RLNO, MaPhieu, Name, Name_ID, Purpose, FLocation, 
-                                CONVERT(varchar,CAST(CONVERT(varchar, Time, 23) + ' ' + isnull(STime,'00:00') AS smalldatetime),120)  AS BTime, 
-                                CONVERT(varchar,CAST(CONVERT(varchar, Time, 23) + ' ' + isnull(ETime,'00:00') AS smalldatetime),120) AS ETime, 
-                                USERID, CONVERT(varchar,USERDATE,120) USERDATE, flowflag, 'O' Type, expert, Days, TASK_ID, '' RTASK_ID 
-                                FROM LYN_BusinessTripOD LEFT JOIN TB_WKF_TASK on LYN_BusinessTripOD.LNO=TB_WKF_TASK.DOC_NBR 
-                            )AS BT 
-                            WHERE 1=1" + where + @"
-                            ORDER BY BT.LNO desc ";
+                        SELECT LYV_BusinessTrip.LYV, LYV_BusinessTripReport.LYV RLYV, LYV_BusinessTrip.Name, Name_ID, Purpose, FLocation, 
+                        CONVERT(varchar,BTime,120) BTime, CONVERT(varchar,ETime,120) ETime, LYV_BusinessTrip.USERID, CONVERT(varchar,LYV_BusinessTrip.USERDATE,120) USERDATE, LYV_BusinessTrip.flowflag, 
+                        case when Type=N'Trong nước' THEN 'V' else 'F' end as Type, isnull(Days,2) Days, TB_WKF_TASK.TASK_ID, TB_WKF_TASK_Report.TASK_ID RTASK_ID 
+                        FROM LYV_BusinessTrip 
+                        LEFT JOIN TB_WKF_TASK on LYV_BusinessTrip.LYV=TB_WKF_TASK.DOC_NBR 
+                        LEFT JOIN LYV_BusinessTripReport on LYV_BusinessTrip.LYV=LYV_BusinessTripReport.RLYV 
+                        LEFT JOIN TB_WKF_TASK TB_WKF_TASK_Report on LYV_BusinessTripReport.LYV=TB_WKF_TASK_Report.DOC_NBR 
+                        where isnull(LYV_BusinessTripReport.Cancel,0) <> 1
+                        /*
+                        union all 
+                        SELECT LYV, '' RLYV, Name, Name_ID, Purpose, FLocation, 
+                        CONVERT(varchar,CAST(CONVERT(varchar, Time, 23) + ' ' + isnull(STime,'00:00') AS smalldatetime),120)  AS BTime, 
+                        CONVERT(varchar,CAST(CONVERT(varchar, Time, 23) + ' ' + isnull(ETime,'00:00') AS smalldatetime),120) AS ETime, 
+                        USERID, CONVERT(varchar,USERDATE,120) USERDATE, flowflag, 'O' Type, Days, TASK_ID, '' RTASK_ID 
+                        FROM LYV_BusinessTripOD 
+                        LEFT JOIN TB_WKF_TASK on LYV_BusinessTripOD.LYV=TB_WKF_TASK.DOC_NBR 
+                        */
+                    )AS BT 
+                    WHERE 1=1" + where + @"
+                    ORDER BY BT.LYV desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));

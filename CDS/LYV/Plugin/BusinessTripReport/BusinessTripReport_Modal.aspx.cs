@@ -34,24 +34,24 @@ public partial class WKF_BusinessTripReport_Modal : Ede.Uof.Utility.Page.BasePag
     {
         if (!Page.IsPostBack)
         {
-            string LNO = Request["LNO"];
-            ViewState["LNO"] = LNO;
-            lbLNO.Text = LNO;
+            string LYV = Request["LYV"];
+            ViewState["LYV"] = LYV;
+            lbLNO.Text = LYV;
         }
         ((Master_DialogMasterPage)this.Master).FindControl("MasterPageRadButton2").Visible = false;
         ((Master_DialogMasterPage)this.Master).Button1OnClick += CDS_WebPage_Dialog_Button1OnClick;
     }
     void CDS_WebPage_Dialog_Button1OnClick()
     {
-        string LNO = ViewState["LNO"].ToString();
-        Training.BusinessTripReport.UCO.BusinessTripReportUCO uco = new Training.BusinessTripReport.UCO.BusinessTripReportUCO();
+        string LYV = ViewState["LYV"].ToString();
+        LYV.BusinessTripReport.UCO.BusinessTripReportUCO uco = new LYV.BusinessTripReport.UCO.BusinessTripReportUCO();
         if (CancelReason.Text.Trim() == "")
         {
             ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "alertMessage", "alert('請輸入註銷原因 Please enter the reason for cancellation')", true);
         }
         else
         {
-            uco.UpdateCancelReason(LNO, CancelReason.Text);
+            uco.UpdateCancelReason(LYV, CancelReason.Text);
         }
         Dialog.SetReturnValue2("OK");
         Dialog.Close(this);

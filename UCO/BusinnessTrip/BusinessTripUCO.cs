@@ -46,9 +46,9 @@ namespace LYV.BusinessTrip.UCO
         {
             return m_BusinessTripPO.getWSSignNextInfo(DOC_NBR, UserGUID);
         }
-        public DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2, string expert)
+        public DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2)
         {
-            return m_BusinessTripPO.GetListBT(LNO, Type, RLNO, Name, Name_ID, BTime1, BTime2, expert);
+            return m_BusinessTripPO.GetListBT( LNO,  Type,  RLNO,  Name,  Name_ID,  BTime1,  BTime2);
         }
     }
 }

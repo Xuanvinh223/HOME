@@ -62,7 +62,7 @@
                 <tr>
                     <td>
                         <b>Số phiếu單號</b><br />
-                        <asp:TextBox ID="qLNO" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="qLYV" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <b>Họ tên姓名</b><br />
@@ -79,10 +79,6 @@
                         <asp:TextBox ID="qBTime2" TextMode="Date" runat="server"></asp:TextBox>
                     </td>
                     <td>
-                        <b>Chuyên gia | 專家</b><br />
-                            <asp:CheckBox ID="qexpert" runat="server"></asp:CheckBox>
-                    </td>
-                    <td>
                         <asp:Panel ID="pQuery" runat="server" DefaultButton="Query" CssClass="btn">
                             <asp:ImageButton ID="Query" runat="server" ImageUrl="../General/Images/select.png" OnClick="Query_Click" />
                             <asp:Label ID="lbQuery" runat="server" Text="Query" AssociatedControlID="Query" />
@@ -97,26 +93,18 @@
                 </tr>
             </table>
             <asp:HiddenField ID="hfSiteName" runat="server" />
-            <Ede:Grid ID="gvBT" runat="server" CssClass="gvBT" PageSize="10" AllowPaging="True" DataKeyNames="LNO" AutoGenerateColumns="False" CustomDropDownListPage="False" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="false" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnBeforeExport="gvBT_BeforeExport" OnRowDataBound="gvBT_RowDataBound" OnPageIndexChanging="gvBT_PageIndexChanging" AllowSorting="True" Width="100%" AutoGenerateCheckBoxColumn="False">
+            <Ede:Grid ID="gvBT" runat="server" CssClass="gvBT" PageSize="10" AllowPaging="True" DataKeyNames="LYV" AutoGenerateColumns="False" CustomDropDownListPage="False" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="false" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnBeforeExport="gvBT_BeforeExport" OnRowDataBound="gvBT_RowDataBound" OnPageIndexChanging="gvBT_PageIndexChanging" AllowSorting="True" Width="100%" AutoGenerateCheckBoxColumn="False">
                 <enhancepagersettings showheaderpager="false"></enhancepagersettings>
 
                 <exportexcelsettings allowexporttoexcel="true" exporttype="DataSource" />
                 <columns>
                     <asp:TemplateField HeaderText="Số phiếu單號">
                         <edititemtemplate>
-                            <asp:TextBox ID="LNO" runat="server" Text='<%# Bind("LNO") %>'></asp:TextBox>
+                            <asp:TextBox ID="LYV" runat="server" Text='<%# Bind("LYV") %>'></asp:TextBox>
                         </edititemtemplate>
                         <itemtemplate>
-                            <asp:LinkButton ID="btnLNO" runat="server" Text='<%# Bind("LNO") %>'></asp:LinkButton>
+                            <asp:LinkButton ID="btnLYV" runat="server" Text='<%# Bind("LYV") %>'></asp:LinkButton>
                             <asp:HiddenField ID="hTASK_ID" runat="server" Value='<%# Bind("TASK_ID") %>' />
-                        </itemtemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Số NO">
-                        <edititemtemplate>
-                            <asp:TextBox ID="MaPhieu" runat="server" Text='<%# Bind("MaPhieu") %>'></asp:TextBox>
-                        </edititemtemplate>
-                        <itemtemplate>
-                            <asp:Label ID="lbMaPhieu" runat="server" Text='<%# Bind("MaPhieu") %>'></asp:Label>
                         </itemtemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Họ tên姓名">
@@ -159,7 +147,7 @@
                             <asp:Label ID="lbTime" runat="server" Text='<%# Bind("Time") %>'></asp:Label>
                         </itemtemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="USERID申請工號">
+                    <asp:TemplateField HeaderText="Mã số người nộp đơn">
                         <edititemtemplate>
                             <asp:TextBox ID="USERID" runat="server" Text='<%# Bind("USERID") %>'></asp:TextBox>
                         </edititemtemplate>
@@ -175,12 +163,12 @@
                             <asp:Label ID="lbUSERDATE" runat="server" Text='<%# Bind("USERDATE") %>'></asp:Label>
                         </itemtemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="flowflag">
+                    <asp:TemplateField HeaderText="Kết quả">
                         <edititemtemplate>
                             <asp:TextBox ID="flowflag" runat="server" Text='<%# Bind("flowflag") %>'></asp:TextBox>
                         </edititemtemplate>
                         <itemtemplate>
-                            <asp:Label ID="lbflowflag" runat="server" Text='<%# Bind("flowflag") %>'></asp:Label>
+                            <asp:Label ID="lbflowflag" runat="server" Text='<%# Eval("flowflag").ToString() == "Z" ? "Hoàn thành" : "Chưa hoàn thành" %>'></asp:Label>
                         </itemtemplate>
                     </asp:TemplateField>
                 </columns>

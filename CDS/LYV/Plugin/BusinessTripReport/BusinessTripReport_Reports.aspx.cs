@@ -13,12 +13,12 @@ public partial class WKF_BusinessTripReport_Reports : Ede.Uof.Utility.Page.BaseP
     {
         if (!Page.IsPostBack)
         {
-            string LNO = Request["LNO"];
-            hfLNO.Value = LNO;
+            string LYV = Request["LYV"];
+            hfLYV.Value = LYV;
 
             ReportDocument rd = new ReportDocument();
             TableLogOnInfo connInfo = new TableLogOnInfo();
-            rd.Load(Server.MapPath("~/CDS/LYV/Plugin/Report/rptBusinessTripReport.rpt"));
+            rd.Load(Server.MapPath("~/CDS/LYV/Plugin/Report/BusinessTripReport.rpt"));
 
             connInfo.ConnectionInfo.ServerName = "192.168.23.11";
             connInfo.ConnectionInfo.DatabaseName = "UOF";
@@ -29,12 +29,12 @@ public partial class WKF_BusinessTripReport_Reports : Ede.Uof.Utility.Page.BaseP
             {
                 rd.Database.Tables[i].ApplyLogOnInfo(connInfo);
             }
-            rd.SetParameterValue("LNO", hfLNO.Value);
+            rd.SetParameterValue("LYV", LYV);
             //xuất file định dạng pdf hoặc định dạng khác khi người dùng nhấn button download
             //định dạng mặc định trên chrome là .pdf
 
-            //crvBTR.ReportSource = rd;
-            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, hfLNO.Value);
+            crvBTR.ReportSource = rd;
+            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, "BAO_CAO_CONG_TAC");
         }
 
         ((Master_DialogMasterPage)this.Master).FindControl("MasterPageRadButton1").Visible = false;

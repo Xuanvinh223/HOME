@@ -185,7 +185,7 @@
                 <td>
                     <asp:DropDownList Visible="false" ID="AnTransportType" runat="server" Width="60%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
                     </asp:DropDownList>
-                    <asp:DropDownList ID="TransportType" runat="server" Width="60%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
+                    <asp:DropDownList ID="TransportType" runat="server" Width="90%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
                         <asp:ListItem Enabled="true" Text="---please select---" Value="Default"></asp:ListItem>
                         <asp:ListItem Text="Xe hơi" Value="Xe hơi"></asp:ListItem>
                         <asp:ListItem Text="Máy bay" Value="Máy bay"></asp:ListItem>
