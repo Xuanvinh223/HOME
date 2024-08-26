@@ -16,7 +16,7 @@ public partial class WKF_BusinessTrip_Reports : Ede.Uof.Utility.Page.BasePage
             TableLogOnInfo connInfo = new TableLogOnInfo();
 
             string LYV = Request["LYV"];
-            string Type = uco.GetType(hfLNO.Value);
+            string Type = uco.GetType(LYV);
 
             if (Type == "Trong nước")
             {

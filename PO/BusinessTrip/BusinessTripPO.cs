@@ -371,21 +371,21 @@ namespace LYV.BusinessTrip.PO
 
             this.m_db.Dispose();
         }
-        internal void UpdateFormResult(string LNO, string formResult)
+        internal void UpdateFormResult(string LYV, string formResult)
         {
             string conn1 = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
 
             if (formResult == "Adopt")
             {
-                string cmdTxt = @"UPDATE LYV_BusinessTrip SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTrip SET flowflag='Z' WHERE LYV = @LYV AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (formResult == "Reject" || formResult == "Cancel")
             {
-                string cmdTxt = @"UPDATE LYV_BusinessTrip SET flowflag='X' WHERE LNO = @LNO ";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_BusinessTrip SET flowflag='X' WHERE LYV = @LYV ";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
 
@@ -408,7 +408,7 @@ namespace LYV.BusinessTrip.PO
 
             return dt;
         }
-        internal DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2)
+        internal DataTable GetListBT(string LYV, string Type, string RLYV, string Name, string Name_ID, string BTime1, string BTime2)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
@@ -417,8 +417,8 @@ namespace LYV.BusinessTrip.PO
             {
                 where += " and Type = '" + Type + "' ";
             }
-            if (LNO != "") where += " and LOWER(LYV) like LOWER('%" + LNO + "%') ";
-            if (RLNO != "") where += " and LOWER(RLYV) like LOWER('%" + RLNO + "%') ";
+            if (LYV != "") where += " and LOWER(LYV) like LOWER('%" + LYV + "%') ";
+            if (RLYV != "") where += " and LOWER(RLYV) like LOWER('%" + RLYV + "%') ";
             if (Name != "") where += " and LOWER(Name) like LOWER(N'%" + Name + "%') ";
             if (Name_ID != "") where += " and Name_ID like '" + Name_ID + "%' ";
             if (BTime1 != "") where += " and BTime >= '" + BTime1 + "' ";
@@ -472,6 +472,24 @@ namespace LYV.BusinessTrip.PO
             }
             return Type;
           
+        }
+        internal string getFlowflag(string LYV)
+        {
+
+            string conn = Training.Properties.Settings.Default.UOF.ToString();
+            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
+            string cmdflowflag = @"SELECT flowflag FROM dbo.LYV_BusinessTrip WHERE LYV = @LYV";
+
+            DataTable dt = new DataTable();
+            this.m_db.AddParameter("@LYV", LYV);
+            dt.Load(this.m_db.ExecuteReader(cmdflowflag));
+
+            this.m_db.Dispose();
+
+            string flowflag = dt.Rows[0][0].ToString(); //請假人工號
+
+            return flowflag;
+
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using LYV.BusinessTripOD.PO;
 using System.Xml.Linq;
+using LYV.BusinessTrip.PO;
 
 namespace LYV.BusinessTripOD.UCO
 {
@@ -44,6 +45,11 @@ namespace LYV.BusinessTripOD.UCO
         public DataTable GetListBT(string LNO, string Name, string Name_ID, string BTime1, string BTime2)
         {
             return m_BusinessTripODPO.GetListBT(LNO, Name, Name_ID, BTime1, BTime2);
+        }
+
+        public string getFlowflag(string LYV)
+        {
+            return m_BusinessTripODPO.getFlowflag(LYV);
         }
     }
 }

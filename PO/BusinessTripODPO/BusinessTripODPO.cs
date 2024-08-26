@@ -420,5 +420,24 @@ namespace LYV.BusinessTripOD.PO
 
             return dt;
         }
+
+        internal string getFlowflag(string LYV)
+        {
+
+            string conn = Training.Properties.Settings.Default.UOF.ToString();
+            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
+            string cmdflowflag = @"SELECT flowflag FROM dbo.LYV_BusinessTripOD WHERE LYV = @LYV";
+
+            DataTable dt = new DataTable();
+            this.m_db.AddParameter("@LYV", LYV);
+            dt.Load(this.m_db.ExecuteReader(cmdflowflag));
+
+            this.m_db.Dispose();
+
+            string flowflag = dt.Rows[0][0].ToString(); //請假人工號
+
+            return flowflag;
+
+        }
     }
 }

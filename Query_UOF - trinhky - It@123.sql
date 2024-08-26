@@ -8,5 +8,6 @@ ORDER BY BEGIN_TIME DESC
 
 SELECT *FROM dbo.LYV_BusinessTripReport
 SELECT * FROM dbo.LYV_BusinessTrip
+SELECT * FROM dbo.LYV_BusinessTripOD
 
 

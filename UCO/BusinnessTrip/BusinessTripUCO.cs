@@ -38,17 +38,21 @@ namespace LYV.BusinessTrip.UCO
             m_BusinessTripPO.UpdateFormStatus(LYV, EmployeeType, RequestDate,Type, SiteCode, signStatus, xE);
         }
 
-        public void UpdateFormResult(string LNO, string formResult)
+        public void UpdateFormResult(string LYV, string formResult)
         {
-            m_BusinessTripPO.UpdateFormResult(LNO, formResult);
+            m_BusinessTripPO.UpdateFormResult(LYV, formResult);
         }
         public DataTable GetWSSignNextInfo(string DOC_NBR, string siteName, string UserGUID)
         {
             return m_BusinessTripPO.getWSSignNextInfo(DOC_NBR, UserGUID);
         }
-        public DataTable GetListBT(string LNO, string Type, string RLNO, string Name, string Name_ID, string BTime1, string BTime2)
+        public DataTable GetListBT(string LYV, string Type, string RLYV, string Name, string Name_ID, string BTime1, string BTime2)
         {
-            return m_BusinessTripPO.GetListBT( LNO,  Type,  RLNO,  Name,  Name_ID,  BTime1,  BTime2);
+            return m_BusinessTripPO.GetListBT( LYV,  Type,  RLYV,  Name,  Name_ID,  BTime1,  BTime2);
+        }
+        public string getFlowflag(string LYV)
+        {
+            return m_BusinessTripPO.getFlowflag(LYV);
         }
     }
 }

@@ -439,6 +439,8 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
     }
     private void SetCustomField(XElement xeTP)
     {
+        LYV.BusinessTripOD.UCO.BusinessTripODUCO uco = new LYV.BusinessTripOD.UCO.BusinessTripODUCO();
+
         Name_ID.Text = xeTP.Attribute("Name_ID").Value;
         Name.Text = xeTP.Attribute("Name").Value;
         Name_DepID.Attributes["DepID"] = xeTP.Attribute("Name_DepID").Value;
@@ -449,8 +451,9 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         FLocation.Text = xeTP.Attribute("FLocation").Value;
         Journey.Text = xeTP.Attribute("Journey").Value;
         Days.Text = xeTP.Attribute("Days").Value;
-       
+        Remark.Text = xeTP.Attribute("Remark").Value;
         Time.Text = xeTP.Attribute("Time").Value;
+
         if (xeTP.Attribute("STime") != null)
         {
             STime.Text = xeTP.Attribute("STime").Value;
@@ -484,16 +487,27 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
             ApplyCar.Checked = false;
         }
 
-        Remark.Text = xeTP.Attribute("Remark").Value;
-        if (hfTASK_RESULT.Value.ToString() == "Reject" || hfTASK_RESULT.Value.ToString() == "Cancel")
+        /// Ẩn nút in trong lưu trữ
+        if (hfTASK_RESULT.Value.ToString() == "Adopt")
         {
-            pPrint.Visible = false;
+            string pflowflag = uco.getFlowflag(hfLYV.Value);
+            if (pflowflag == "Z")
+            {
+                if (hfTASK_RESULT.Value.ToString() == "Reject" || hfTASK_RESULT.Value.ToString() == "Cancel")
+                {
+                    pPrint.Visible = false;
+                }
+                else
+                {
+                    ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
+                    Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+                    pPrint.Visible = true;
+                }
+            }
         }
         else
         {
-            ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
-            Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTripOD/BusinessTripOD_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
-            pPrint.Visible = true;
+            pPrint.Visible = false;
         }
     }
     /// <summary>
