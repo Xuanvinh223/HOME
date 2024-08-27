@@ -187,7 +187,27 @@
                 </div>
             </div>
         </form>
-        <script type="text/javascript">            function pageLoad() {                flatpickr('#<%= BTime.ClientID %>', {                    dateFormat: "Y-m-d H:i", // "H" là để hiển thị giờ và "i" là để hiển thị phút                    enableTime: true, // Bật chế độ hiển thị giờ và phút                    time_24hr: true,                    onChange: function (rawdate, altdate, FPOBJ) {                        FPOBJ.close();                    }                });                flatpickr('#<%= ETime.ClientID %>', {                    dateFormat: "Y-m-d H:i", // "H" là để hiển thị giờ và "i" là để hiển thị phút                    enableTime: true, // Bật chế độ hiển thị giờ và phút                    time_24hr: true,                    onChange: function (rawdate, altdate, FPOBJ) {                        FPOBJ.close();                    }                });            }        </script>
+        <script type="text/javascript">
+            function pageLoad() {
+                flatpickr('#<%= BTime.ClientID %>', {
+                    dateFormat: "Y-m-d H:i", // "H" là để hiển thị giờ và "i" là để hiển thị phút
+                    enableTime: true, // Bật chế độ hiển thị giờ và phút
+                    time_24hr: true,
+                    onChange: function (rawdate, altdate, FPOBJ) {
+                        FPOBJ.close();
+                    }
+                });
+
+                flatpickr('#<%= ETime.ClientID %>', {
+                    dateFormat: "Y-m-d H:i", // "H" là để hiển thị giờ và "i" là để hiển thị phút
+                    enableTime: true, // Bật chế độ hiển thị giờ và phút
+                    time_24hr: true,
+                    onChange: function (rawdate, altdate, FPOBJ) {
+                        FPOBJ.close();
+                    }
+                });
+            }
+        </script>
         <asp:Label ID="lblHasNoAuthority" runat="server" Text="無填寫權限" ForeColor="Red" Visible="False" meta:resourcekey="lblHasNoAuthorityResource1"></asp:Label>
         <asp:Label ID="lblToolTipMsg" runat="server" Text="不允許修改(唯讀)" Visible="False" meta:resourcekey="lblToolTipMsgResource1"></asp:Label>
         <asp:Label ID="lblModifier" runat="server" Visible="False" meta:resourcekey="lblModifierResource1"></asp:Label>

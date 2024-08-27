@@ -463,9 +463,9 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
             ETime.Text = xeTP.Attribute("ETime").Value;
         }
 
-        AnTransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
-        if (AnTransportType.SelectedValue == "Xe hơi" || AnTransportType.SelectedValue == "Máy bay" ||
-                AnTransportType.SelectedValue == "Thuyền" || AnTransportType.SelectedValue == "Xe buýt")
+        string SelectType = xeTP.Attribute("SelectType").Value;
+        if (SelectType == "Xe hơi" || SelectType == "Máy bay" ||
+                SelectType == "Thuyền" || SelectType == "Xe buýt")
         {
             ptkhac.Visible = false;
             TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;

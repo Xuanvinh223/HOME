@@ -109,7 +109,7 @@ namespace LYV.BusinessTripOD.PO
                 }
                 else
                 {
-                    string conn1 = Training.Properties.Settings.Default.LYV_ERP.ToString();
+                    string conn1 = Training.Properties.Settings.Default.HRM.ToString();
                     this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
                     DataTable dt1 = new DataTable();
 

@@ -236,9 +236,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
                 string group = ApplicantGroupId;
                 LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
                 string LEV = uco.GetLEV(account, group);
-                string Expert = "N";
-
-                return LEV + Expert;
+                return LEV;
             }
         }
         set

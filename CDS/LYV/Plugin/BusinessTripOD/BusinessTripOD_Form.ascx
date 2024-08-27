@@ -3,6 +3,8 @@
 
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.css" type="text/css" rel="stylesheet" />
 <script src="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style type="text/css">
     .FormGrid td, .FormGrid th {
@@ -59,164 +61,180 @@
             <asp:HiddenField ID="hfLYV" runat="server" />
             <asp:HiddenField ID="hfTASK_RESULT" runat="server" />
         </asp:Panel>
-        <table class="Form" style="width: 100%">
-            <tr>
-                <td colspan="4" style="padding: 0px">
-                    <asp:Panel ID="Dep" runat="server" Visible="false">
-                        <table style="width: 100%">
-                            <tr>
-                                <td>
-                                    <asp:TextBox ID="DV_MA_Search" runat="server" placeholder="Search Department ID" AutoPostBack="true" OnTextChanged="DV_Search_TextChanged" />
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="DV_TEN_Search" runat="server" placeholder="Search Department Name" AutoPostBack="true" OnTextChanged="DV_Search_TextChanged" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <asp:GridView ID="gvDep" runat="server" AutoGenerateColumns="False" AllowPaging="True" PageSize="5" OnPageIndexChanging="gvDep_PageIndexChanging" CssClass="FormGrid" Width="100%"
-                                        CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvDep_SelectedIndexChanged" AutoPostBack="true"
-                                        OnRowDataBound="gvDep_RowDataBound">
-                                        <AlternatingRowStyle BackColor="White" />
-                                        <Columns>
-                                            <asp:BoundField DataField="DV_MA" HeaderText="Department ID" />
-                                            <asp:BoundField DataField="DV_TEN" HeaderText="Department Name" />
-                                        </Columns>
-                                        <EditRowStyle BackColor="#2461BF" />
-                                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                        <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                        <RowStyle BackColor="#EFF3FB" />
-                                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                                    </asp:GridView>
-                                </td>
-                            </tr>
-                        </table>
-                    </asp:Panel>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Họ tên</b></td>
-                <td>
-                    <asp:TextBox ID="Name" runat="server" MaxLength="50" Enabled="false" Width="90%" />
-                </td>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Số thẻ</b></td>
-                <td>
-                    <asp:TextBox ID="Name_ID" runat="server" MaxLength="20" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" Width="60%" />
-                </td>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Đơn vị</b></td>
-                <td>
-                    <asp:TextBox ID="Name_DepID" runat="server" MaxLength="50" Enabled="false" Width="60%" />
-                    <asp:ImageButton ID="SearchDep" runat="server" ImageUrl="../General/Images/select.png" OnClick="SearchDep_Click" Width="3%" /><br />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Họ tên người thay thế</b></td>
-                <td>
-                    <asp:TextBox ID="Agent" runat="server" MaxLength="50" Enabled="false" Width="90%" />
-                </td>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Số thẻ người thay thế</b></td>
-                <td>
-                    <asp:TextBox ID="Agent_ID" runat="server" MaxLength="20" AutoPostBack="true" OnTextChanged="Agent_ID_TextChanged" Width="60%" />
-                </td>
-                <td><b>Tài liệu kèm theo</b></td>
-                <td>
-                    <asp:TextBox ID="documents" runat="server" MaxLength="20" AutoPostBack="true" Width="60%" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Lý do đi</b></td>
-                <td colspan="3">
-                    <asp:TextBox ID="Purpose" runat="server" Enabled="false" TextMode="MultiLine" Width="146.5%" Height="100" MaxLength="500"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Địa điểm công tác</b></td>
-                <td colspan="3">
-                    <asp:TextBox ID="FLocation" runat="server" Enabled="false" TextMode="MultiLine" Width="146.5%" Height="100" MaxLength="500"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td><b>Thời gian đi<br />
-                    時間</b></td>
-                <td>
-                    <asp:TextBox ID="Time" TextMode="DateTime" runat="server" Width="60%" OnTextChanged="Time_TextChanged" AutoPostBack="true"></asp:TextBox>
-                </td>
-                <td colspan="2">
-                    <b>Giờ đi 出發時間</b><asp:TextBox ID="STime" TextMode="Time" runat="server"></asp:TextBox>
-                    <b>Giờ về 回程時間</b><asp:TextBox ID="ETime" TextMode="Time" runat="server"></asp:TextBox>
-                </td>
-                <td><b>Ngày đi<br />
-                    天數</b></td>
-                <td>
-                    <asp:TextBox ID="Days" runat="server" Text="1" ReadOnly="true" Width="20%"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Hành trình</b></td>
-                <td colspan="3">
-                    <asp:TextBox ID="Journey" runat="server" Enabled="false" TextMode="MultiLine" Width="146.5%" Height="100" MaxLength="500"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label style="color: red;">* </label>
-                    <b>Đi bằng phương tiện</b></td>
-                <td>
-                    <asp:DropDownList Visible="false" ID="AnTransportType" runat="server" Width="60%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
-                    </asp:DropDownList>
-                    <asp:DropDownList ID="TransportType" runat="server" Width="90%" OnTextChanged="TransportTypeSelect" AutoPostBack="true">
-                        <asp:ListItem Enabled="true" Text="---please select---" Value="Default"></asp:ListItem>
+        <div class="container">
+            <!-- Department Search Panel -->
+            <asp:Panel ID="Dep" runat="server" Visible="false">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <asp:TextBox ID="DV_MA_Search" runat="server" placeholder="Search Department ID" AutoPostBack="true" OnTextChanged="DV_Search_TextChanged" CssClass="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <asp:TextBox ID="DV_TEN_Search" runat="server" placeholder="Search Department Name" AutoPostBack="true" OnTextChanged="DV_Search_TextChanged" CssClass="form-control" />
+                    </div>
+                </div>
+                <asp:GridView ID="gvDep" runat="server" AutoGenerateColumns="False" AllowPaging="True" PageSize="5" OnPageIndexChanging="gvDep_PageIndexChanging" CssClass="table table-bordered table-striped table-hover text-center" Width="100%"
+                    CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvDep_SelectedIndexChanged" AutoPostBack="true" OnRowDataBound="gvDep_RowDataBound">
+                    <AlternatingRowStyle BackColor="White" />
+                    <Columns>
+                        <asp:BoundField DataField="DV_MA" HeaderText="Department ID" />
+                        <asp:BoundField DataField="DV_TEN" HeaderText="Department Name" />
+                    </Columns>
+                </asp:GridView>
+            </asp:Panel>
+            <!-- Form Fields -->
+            <div class="row mb-3">
+                <!-- Số thẻ -->
+                <div class="col-md-4">
+                    <label for="Name_ID" class="form-label">
+                        <b>
+                            <label class="text-danger">* </label>
+                            Số thẻ</b></label>
+                    <asp:TextBox ID="Name_ID" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" />
+                </div>
+                <!-- Họ tên -->
+                <div class="col-md-4">
+                    <label for="Name" class="form-label">
+                        <b>
+                            <label class="text-danger">* </label>
+                            Họ tên</b></label>
+                    <asp:TextBox ID="Name" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" Enabled="false" />
+                </div>
+                <!-- Đơn vị -->
+                <div class="col-md-4">
+                    <label for="Name_DepID" class="form-label"><b>Đơn vị</b></label>
+                    <div class="input-group">
+                        <asp:TextBox ID="Name_DepID" runat="server" MaxLength="50" CssClass="form-control" Enabled="false" />
+                        <span class="input-group-text">
+                            <asp:ImageButton ID="SearchDep" runat="server" ImageUrl="../General/Images/select.png" OnClick="SearchDep_Click" CssClass="btn btn-outline-secondary" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <!-- Số thẻ người thay thế -->
+                <div class="col-md-4">
+                    <label for="Agent_ID" class="form-label">
+                        <b>
+                            <label class="text-danger">* </label>
+                            Số thẻ người thay thế</b>
+                    </label>
+                    <asp:TextBox ID="Agent_ID" runat="server" MaxLength="20" AutoPostBack="true" OnTextChanged="Agent_ID_TextChanged" CssClass="form-control" />
+                </div>
+
+                <!-- Họ tên người thay thế -->
+                <div class="col-md-4">
+                    <label for="Agent" class="form-label">
+                        <b>
+                            <label class="text-danger">* </label>
+                            Họ tên người thay thế</b>
+                    </label>
+                    <asp:TextBox ID="Agent" runat="server" MaxLength="50" Enabled="false" CssClass="form-control" />
+                </div>
+
+                <!-- Tài liệu kèm theo -->
+                <div class="col-md-4">
+                    <label for="documents" class="form-label">
+                        <b>Tài liệu kèm theo</b>
+                    </label>
+                    <asp:TextBox ID="documents" runat="server" MaxLength="20" AutoPostBack="true" CssClass="form-control" />
+                </div>
+            </div>
+
+            <!-- Lý do đi -->
+            <div class="row mb-4">
+                <label for="Purpose" class="form-label">
+                    <b>
+                        <label class="text-danger">* </label>
+                        Lý do đi</b></label>
+                <asp:TextBox ID="Purpose" runat="server" CssClass="form-control" Enabled="false" TextMode="MultiLine" Rows="3" MaxLength="500"></asp:TextBox>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label class="text-danger">*</label>
+                    <b>Địa điểm công tác</b>
+                </div>
+                <div class="col-md-10">
+                    <asp:TextBox ID="FLocation" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <b>Thời gian đi<br />
+                        時間</b>
+                </div>
+                <div class="col-md-4">
+                    <asp:TextBox ID="Time" runat="server" TextMode="DateTime" CssClass="form-control" AutoPostBack="true" OnTextChanged="Time_TextChanged"></asp:TextBox>
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                    <b class="me-2">Giờ đi 出發時間</b>
+                    <asp:TextBox ID="STime" runat="server" TextMode="Time" CssClass="form-control me-2"></asp:TextBox>
+                    <b class="me-2">Giờ về 回程時間</b>
+                    <asp:TextBox ID="ETime" runat="server" TextMode="Time" CssClass="form-control"></asp:TextBox>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <b>Ngày đi<br />
+                        天數</b>
+                </div>
+                <div class="col-md-4">
+                    <asp:TextBox ID="Days" runat="server" ReadOnly="true" CssClass="form-control" Text="1"></asp:TextBox>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label class="text-danger">*</label>
+                    <b>Hành trình</b>
+                </div>
+                <div class="col-md-10">
+                    <asp:TextBox ID="Journey" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label class="text-danger">*</label>
+                    <b>Đi bằng phương tiện</b>
+                </div>
+                <div class="col-md-4">
+                    <asp:DropDownList ID="TransportType" runat="server" CssClass="form-select" AutoPostBack="true">
+                        <asp:ListItem Text="---please select---" Value="Default"></asp:ListItem>
                         <asp:ListItem Text="Xe hơi" Value="Xe hơi"></asp:ListItem>
                         <asp:ListItem Text="Máy bay" Value="Máy bay"></asp:ListItem>
                         <asp:ListItem Text="Thuyền" Value="Thuyền"></asp:ListItem>
                         <asp:ListItem Text="Xe buýt" Value="Xe buýt"></asp:ListItem>
                         <asp:ListItem Text="Phương tiện khác" Value="5"></asp:ListItem>
                     </asp:DropDownList>
-                </td>
-                <td>
-                    <asp:TextBox ID="ptkhac" Visible="false" runat="server" MaxLength="20" AutoPostBack="true" Width="60%" />
-                </td>
-            </tr>
-            <tr>
-                <td><b>Xe công ty</b></td>
-                <td>
-                    <asp:CheckBox ID="ApplyCar" runat="server" Checked="false" />
-                </td>
-                <td colspan="2"></td>
-            </tr>
-            <tr>
-                <asp:Panel ID="pTN" runat="server" Visible="true">
-                    <td><b>Ghi rõ nguyên nhân đi máy bay,<br />
+                    <asp:TextBox ID="ptkhac" runat="server" CssClass="form-control mt-2 d-none" MaxLength="20" AutoPostBack="true"></asp:TextBox>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <b>Xe công ty</b>
+                </div>
+                <div class="col-md-4">
+                    <asp:CheckBox ID="ApplyCar" runat="server" CssClass="form-check-input" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <b>Ghi rõ nguyên nhân đi máy bay,<br />
                         thuyền (Đi xe lửa, xe hơi không
                         <br />
-                        cần ghi chú)</b></td>
-                    <td colspan="3">
-                        <asp:TextBox ID="Remark" runat="server" Enabled="false" TextMode="MultiLine" Width="100%" Height="100" MaxLength="500"></asp:TextBox>
-                    </td>
-                </asp:Panel>
-            </tr>
-        </table>
+                        cần ghi chú)</b>
+                </div>
+                <div class="col-md-4">
+                    <asp:TextBox ID="Remark" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript">
             function pageLoad() {
                 flatpickr('#<%= Time.ClientID %>', {
