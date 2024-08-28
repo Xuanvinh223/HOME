@@ -64,12 +64,22 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
     {
         if (TransportType.SelectedValue == "5")
         {
+            ptkhac.Enabled = true;
             ptkhac.Text = "";
-            ptkhac.Visible = true;
         }
         else
         {
-            ptkhac.Visible = false;
+            ptkhac.Enabled = false;
+            ptkhac.Text = TransportType.SelectedValue;
+        }
+
+        if (TransportType.SelectedValue == "Xe hơi")
+        {
+            ApplyCar.Checked = true;
+        }
+        else
+        {
+            ApplyCar.Checked = false;
         }
     }
     public void SearchDep_Click(object sender, EventArgs e)
@@ -357,6 +367,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
                 TPElement.Add(new XAttribute("Days", Days.Text));
                 TPElement.Add(new XAttribute("documents", documents.Text));
                 TPElement.Add(new XAttribute("Time", Time.Text));
+                TPElement.Add(new XAttribute("Remark", Remark.Text));
                 TPElement.Add(new XAttribute("SelectType", TransportType.SelectedValue));
 
 
@@ -364,6 +375,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
                 if (TransportType.SelectedValue == "5")
                 {
                     TPElement.Add(new XAttribute("TransportType", ptkhac.Text));
+                    TPElement.SetAttributeValue("SelectType", TransportType.SelectedValue);
                 }
                 else
                 {
@@ -379,7 +391,6 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
                     TPElement.Add(new XAttribute("ApplyCar", "0"));
                 }
 
-                TPElement.Add(new XAttribute("Remark", Remark.Text));
 
                 return TPElement.ToString();
             }
@@ -432,10 +443,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         Remark.Enabled = Enabled;
         STime.Enabled = Enabled;
         ETime.Enabled = Enabled;
-
-        ptkhac.Enabled = Enabled;
         documents.Enabled = Enabled;
-        ptkhac.Visible = false;
     }
     private void SetCustomField(XElement xeTP)
     {
@@ -453,6 +461,8 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         Days.Text = xeTP.Attribute("Days").Value;
         Remark.Text = xeTP.Attribute("Remark").Value;
         Time.Text = xeTP.Attribute("Time").Value;
+        string SelectType = xeTP.Attribute("SelectType").Value;
+        TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
 
         if (xeTP.Attribute("STime") != null)
         {
@@ -462,22 +472,21 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         {
             ETime.Text = xeTP.Attribute("ETime").Value;
         }
-
-        string SelectType = xeTP.Attribute("SelectType").Value;
+        //////////////////////////////////////////////////////
         if (SelectType == "Xe hơi" || SelectType == "Máy bay" ||
-                SelectType == "Thuyền" || SelectType == "Xe buýt")
+            SelectType == "Thuyền" || SelectType == "Xe buýt")
         {
-            ptkhac.Visible = false;
             TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
+            ptkhac.Text = xeTP.Attribute("TransportType").Value;
+            ptkhac.Enabled = false;
         }
         else
         {
-            ptkhac.Visible = true;
             TransportType.SelectedValue = xeTP.Attribute("SelectType").Value;
             ptkhac.Text = xeTP.Attribute("TransportType").Value;
+            ptkhac.Enabled = true;
         }
-
-        TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
+        //////////////////////////////////////////////////////
         if (xeTP.Attribute("ApplyCar").Value == "1")
         {
             ApplyCar.Checked = true;

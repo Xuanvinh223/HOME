@@ -3,60 +3,18 @@
 
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.css" type="text/css" rel="stylesheet" />
 <script src="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.js"></script>
+
+<link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/BusinessTripOD/style.css" type="text/css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<style type="text/css">
-    .FormGrid td, .FormGrid th {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-
-    .Form {
-        border-collapse: collapse; /* Đặt border-collapse thành collapse */
-    }
-
-        .Form td {
-            padding-top: 8px;
-            padding-bottom: 8px; /* Thêm padding để làm đẹp */
-        }
-
-    .panel1 {
-        width: 100%;
-        display: flex;
-    }
-
-    .btnFunc {
-        border: 1px solid #0E2D5F; /* Màu khung khi enabled */
-        background-color: paleturquoise;
-        margin-block: 8px;
-        margin-right: 30px;
-        border-radius: 10px; /* Bo tròn góc khi enabled */
-        padding: 10px;
-        width: max-content;
-    }
-
-        .btnFunc:hover {
-            background-color: aqua;
-        }
-
-    .radio {
-        width: 60%;
-        text-align: left;
-    }
-
-        .radio th, .radio td {
-            width: 20%;
-            vertical-align: top;
-        }
-</style>
 
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
     <ContentTemplate>
         <asp:Panel ID="panel1" runat="server" CssClass="panel1">
             <asp:Panel ID="pPrint" runat="server" DefaultButton="Print" CssClass="btnFunc" Visible="false">
                 <asp:ImageButton ID="Print" runat="server" ImageUrl="../General/Images/print.png" OnClick="Print_Click" />
-                <asp:Label ID="lbPrint" runat="server" Text="Print" AssociatedControlID="Print" />
+                <asp:Label ID="lbPrint" runat="server" Text="In 人" AssociatedControlID="Print" />
             </asp:Panel>
             <asp:HiddenField ID="hfLYV" runat="server" />
             <asp:HiddenField ID="hfTASK_RESULT" runat="server" />
@@ -88,7 +46,7 @@
                     <label for="Name_ID" class="form-label">
                         <b>
                             <label class="text-danger">* </label>
-                            Số thẻ</b></label>
+                            Số thẻ 工號</b></label>
                     <asp:TextBox ID="Name_ID" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" />
                 </div>
                 <!-- Họ tên -->
@@ -96,12 +54,12 @@
                     <label for="Name" class="form-label">
                         <b>
                             <label class="text-danger">* </label>
-                            Họ tên</b></label>
+                            Họ tên 姓名</b></label>
                     <asp:TextBox ID="Name" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" Enabled="false" />
                 </div>
                 <!-- Đơn vị -->
                 <div class="col-md-4">
-                    <label for="Name_DepID" class="form-label"><b>Đơn vị</b></label>
+                    <label for="Name_DepID" class="form-label"><b>Đơn vị 部門</b></label>
                     <div class="input-group">
                         <asp:TextBox ID="Name_DepID" runat="server" MaxLength="50" CssClass="form-control" Enabled="false" />
                         <span class="input-group-text">
@@ -117,7 +75,7 @@
                     <label for="Agent_ID" class="form-label">
                         <b>
                             <label class="text-danger">* </label>
-                            Số thẻ người thay thế</b>
+                            Số thẻ người thay thế 工號</b>
                     </label>
                     <asp:TextBox ID="Agent_ID" runat="server" MaxLength="20" AutoPostBack="true" OnTextChanged="Agent_ID_TextChanged" CssClass="form-control" />
                 </div>
@@ -127,7 +85,7 @@
                     <label for="Agent" class="form-label">
                         <b>
                             <label class="text-danger">* </label>
-                            Họ tên người thay thế</b>
+                            Họ tên người thay thế 職務代理人</b>
                     </label>
                     <asp:TextBox ID="Agent" runat="server" MaxLength="50" Enabled="false" CssClass="form-control" />
                 </div>
@@ -135,7 +93,7 @@
                 <!-- Tài liệu kèm theo -->
                 <div class="col-md-4">
                     <label for="documents" class="form-label">
-                        <b>Tài liệu kèm theo</b>
+                        <b>Tài liệu kèm theo 檢附有關文件</b>
                     </label>
                     <asp:TextBox ID="documents" runat="server" MaxLength="20" AutoPostBack="true" CssClass="form-control" />
                 </div>
@@ -146,99 +104,95 @@
                 <label for="Purpose" class="form-label">
                     <b>
                         <label class="text-danger">* </label>
-                        Lý do đi</b></label>
+                        Lý do đi 事由</b></label>
                 <asp:TextBox ID="Purpose" runat="server" CssClass="form-control" Enabled="false" TextMode="MultiLine" Rows="3" MaxLength="500"></asp:TextBox>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <label class="text-danger">*</label>
-                    <b>Địa điểm công tác</b>
-                </div>
-                <div class="col-md-10">
-                    <asp:TextBox ID="FLocation" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
-                </div>
+            <div class="row mb-4">
+                <label for="FLocation" class="form-label">
+                    <b>
+                        <label class="text-danger">* </label>
+                        Địa điểm công tác 地點
+                    </b>
+                </label>
+                <asp:TextBox ID="FLocation" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <b>Thời gian đi<br />
-                        時間</b>
-                </div>
-                <div class="col-md-4">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <b>
+                        <label class="text-danger">* </label>
+                        Thời gian đi 時間</b>
                     <asp:TextBox ID="Time" runat="server" TextMode="DateTime" CssClass="form-control" AutoPostBack="true" OnTextChanged="Time_TextChanged"></asp:TextBox>
                 </div>
-                <div class="col-md-6 d-flex align-items-center">
-                    <b class="me-2">Giờ đi 出發時間</b>
-                    <asp:TextBox ID="STime" runat="server" TextMode="Time" CssClass="form-control me-2"></asp:TextBox>
-                    <b class="me-2">Giờ về 回程時間</b>
+                <div class="col-md-3">
+                    <b>
+                        <label class="text-danger">* </label>
+                        Giờ đi 出發時間</b>
+                    <asp:TextBox ID="STime" runat="server" TextMode="Time" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="col-md-3">
+                    <b>
+                        <label class="text-danger">* </label>
+                        Giờ về 回程時間</b>
                     <asp:TextBox ID="ETime" runat="server" TextMode="Time" CssClass="form-control"></asp:TextBox>
                 </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <b>Ngày đi<br />
-                        天數</b>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <b>Ngày đi 天數</b>
                     <asp:TextBox ID="Days" runat="server" ReadOnly="true" CssClass="form-control" Text="1"></asp:TextBox>
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <label class="text-danger">*</label>
-                    <b>Hành trình</b>
-                </div>
-                <div class="col-md-10">
-                    <asp:TextBox ID="Journey" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
-                </div>
+            <div class="row mb-4">
+                <label for="Journey" class="form-label">
+                    <b>
+                        <label class="text-danger">* </label>
+                        Hành trình 行程
+                    </b>
+                </label>
+                <asp:TextBox ID="Journey" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-2">
-                    <label class="text-danger">*</label>
-                    <b>Đi bằng phương tiện</b>
-                </div>
-                <div class="col-md-4">
-                    <asp:DropDownList ID="TransportType" runat="server" CssClass="form-select" AutoPostBack="true">
-                        <asp:ListItem Text="---please select---" Value="Default"></asp:ListItem>
-                        <asp:ListItem Text="Xe hơi" Value="Xe hơi"></asp:ListItem>
-                        <asp:ListItem Text="Máy bay" Value="Máy bay"></asp:ListItem>
-                        <asp:ListItem Text="Thuyền" Value="Thuyền"></asp:ListItem>
-                        <asp:ListItem Text="Xe buýt" Value="Xe buýt"></asp:ListItem>
-                        <asp:ListItem Text="Phương tiện khác" Value="5"></asp:ListItem>
+                <!-- Phương tiện di chuyển -->
+                <div class="col-md-6">
+                    <label for="TransportType" class="form-label">
+                        <b>
+                            <label class="text-danger">* </label>
+                            Đi bằng phương tiện 擬乘交 通工具</b></label>
+                    <asp:DropDownList ID="TransportType" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="TransportTypeSelect">
+                        <asp:ListItem Text="---please select---" Value=""></asp:ListItem>
+                        <asp:ListItem Text="Xe hơi 汽車" Value="Xe hơi"></asp:ListItem>
+                        <asp:ListItem Text="Máy bay 飛機" Value="Máy bay"></asp:ListItem>
+                        <asp:ListItem Text="Thuyền 船舶" Value="Thuyền"></asp:ListItem>
+                        <asp:ListItem Text="Xe buýt 公車" Value="Xe buýt"></asp:ListItem>
+                        <asp:ListItem Text="Phương tiện khác 其他" Value="5"></asp:ListItem>
                     </asp:DropDownList>
-                    <asp:TextBox ID="ptkhac" runat="server" CssClass="form-control mt-2 d-none" MaxLength="20" AutoPostBack="true"></asp:TextBox>
+                </div>
+                <!-- Phương tiện khác -->
+                <div class="col-md-6">
+                    <label for="ptkhac" class="form-label"><b>Mô tả phương tiện khác 其他</b></label>
+                    <asp:TextBox ID="ptkhac" runat="server" CssClass="form-control" MaxLength="20" AutoPostBack="true" Enabled="false" />
                 </div>
             </div>
 
+            <!-- Xe công ty -->
             <div class="row mb-3">
-                <div class="col-md-2">
-                    <b>Xe công ty</b>
-                </div>
-                <div class="col-md-4">
-                    <asp:CheckBox ID="ApplyCar" runat="server" CssClass="form-check-input" />
-                </div>
+                <label for="ApplyCar" class="form-label"><b>Xe công ty 公司派車</b></label>
+                <asp:CheckBox ID="ApplyCar" runat="server" CssClass="form-check-box" />
             </div>
+
+            <!-- Ghi chú nếu đi máy bay hoặc thuyền -->
             <div class="row mb-3">
-                <div class="col-md-2">
-                    <b>Ghi rõ nguyên nhân đi máy bay,<br />
-                        thuyền (Đi xe lửa, xe hơi không
-                        <br />
-                        cần ghi chú)</b>
-                </div>
-                <div class="col-md-4">
-                    <asp:TextBox ID="Remark" runat="server" Enabled="false" TextMode="MultiLine" CssClass="form-control" Rows="4" MaxLength="500"></asp:TextBox>
-                </div>
+                <label for="Remark" class="form-label"><b>Ghi rõ nguyên nhân đi máy bay, thuyền</b></label>
+                <asp:TextBox ID="Remark" runat="server" CssClass="form-control" Enabled="false" TextMode="MultiLine" Rows="3" MaxLength="500"></asp:TextBox>
             </div>
         </div>
 
         <script type="text/javascript">
             function pageLoad() {
                 flatpickr('#<%= Time.ClientID %>', {
-                    dateFormat: "Y-m-d"
+                    dateFormat: "d-m-Y"
                 });
                 flatpickr('#<%= STime.ClientID %>', {
                     enableTime: true,

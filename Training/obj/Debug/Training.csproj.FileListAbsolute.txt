@@ -1796,3 +1796,5 @@ D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.CoreCompileInputs.cac
 D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.Up2Date
 D:\Project\UOF_Training\Training\obj\Debug\Training.dll
 D:\Project\UOF_Training\Training\obj\Debug\Training.pdb
+D:\Project\UOF_Training\Training\bin\Debug\Training.dll.CodeAnalysisLog.xml
+D:\Project\UOF_Training\Training\bin\Debug\Training.dll.lastcodeanalysissucceeded

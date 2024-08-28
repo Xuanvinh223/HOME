@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="BusinessTrip_Form.ascx.cs" Inherits="WKF_BusinessTrip_Form" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="GUI.ascx.cs" Inherits="WKF_BusinessTrip_Form" %>
 <%@ Reference Control="~/WKF/FormManagement/VersionFieldUserControl/VersionFieldUC.ascx" %>
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/BusinessTrip/style.css" type="text/css" rel="stylesheet" />
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.css" type="text/css" rel="stylesheet" />
@@ -6,60 +6,31 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<style>
+    .bg{
+        color: red;
+    }
+    </style>
+
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
     <ContentTemplate>
         <asp:Panel ID="panel1" runat="server" CssClass="panel1">
             <asp:Panel ID="pPrint" runat="server" DefaultButton="Print" CssClass="btnFunc" Visible="false">
-                <asp:ImageButton ID="Print" runat="server" ImageUrl="../General/Images/print.png" OnClick="Print_Click" />
+                <asp:ImageButton ID="Print" runat="server" ImageUrl="../General/Images/print.png" />
                 <asp:Label ID="lbPrint" runat="server" Text="Print" AssociatedControlID="Print" />
             </asp:Panel>
             <asp:HiddenField ID="hfLYV" runat="server" />
             <asp:HiddenField ID="hfTASK_RESULT" runat="server" />
         </asp:Panel>
         <form class="form-horizontal">
-            <div class="container">
-                <!-- Panel Dep -->
-                <asp:Panel ID="Dep" runat="server" Visible="false">
-                    <div class="mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <asp:TextBox ID="DV_MA_Search" runat="server" CssClass="form-control" placeholder="Tìm mã đơn vị" AutoPostBack="true" OnTextChanged="DV_Search_TextChanged" />
-                            </div>
-                            <div class="col">
-                                <asp:TextBox ID="DV_TEN_Search" runat="server" CssClass="form-control" placeholder="Tìm tên đơn vị" AutoPostBack="true" OnTextChanged="DV_Search_TextChanged" />
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <asp:GridView ID="gvDep" runat="server" AutoGenerateColumns="False" AllowPaging="True" PageSize="5" OnPageIndexChanging="gvDep_PageIndexChanging" CssClass="FormGrid" Width="100%"
-                                CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvDep_SelectedIndexChanged" AutoPostBack="true"
-                                OnRowDataBound="gvDep_RowDataBound">
-                                <AlternatingRowStyle BackColor="White" />
-                                <Columns>
-                                    <asp:BoundField DataField="DV_MA" HeaderText="Mã đơn vị" />
-                                    <asp:BoundField DataField="DV_TEN" HeaderText="Tên đơn vị" />
-                                </Columns>
-                                <EditRowStyle BackColor="#2461BF" />
-                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                <RowStyle BackColor="#EFF3FB" />
-                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                            </asp:GridView>
-                        </div>
-                    </div>
-                </asp:Panel>
-
+            <div class="container ">
                 <div class="row mb-3">
                     <!-- Số thẻ -->
                     <div class="col-md-4">
                         <label for="Name_ID" class="form-label"><b>
                             <label class="text-danger">* </label>
                             Số thẻ 工號</b></label>
-                        <asp:TextBox ID="Name_ID" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" OnTextChanged="Name_ID_TextChanged" />
+                        <asp:TextBox ID="Name_ID" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" />
                     </div>
 
                     <!-- Họ tên -->
@@ -74,7 +45,7 @@
                         <div class="input-group">
                             <asp:TextBox ID="Name_DepID" runat="server" MaxLength="50" CssClass="form-control" Enabled="false" />
                             <span class="input-group-text">
-                                <asp:ImageButton ID="SearchDep" runat="server" ImageUrl="../General/Images/select.png" OnClick="SearchDep_Click" CssClass="btn btn-outline-secondary" />
+                                <asp:ImageButton ID="SearchDep" runat="server" ImageUrl="../General/Images/select.png"  CssClass="btn btn-outline-secondary" />
                             </span>
                         </div>
                     </div>
@@ -87,7 +58,7 @@
                         <label for="Agent_ID" class="form-label"><b>
                             <label class="text-danger">* </label>
                             Số thẻ người thay thế 工號</b></label>
-                        <asp:TextBox ID="Agent_ID" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true" OnTextChanged="Agent_ID_TextChanged" />
+                        <asp:TextBox ID="Agent_ID" runat="server" MaxLength="20" CssClass="form-control" AutoPostBack="true"/>
                     </div>
 
                     <!-- Họ tên người thay thế -->
@@ -126,7 +97,7 @@
                         <label for="BTime" class="form-label"><b>
                             <label class="text-danger">* </label>
                             Bắt đầu 自</b></label>
-                        <asp:TextBox ID="BTime" runat="server" CssClass="form-control" TextMode="DateTime" AutoPostBack="true" OnTextChanged="ETime_TextChanged" />
+                        <asp:TextBox ID="BTime" runat="server" CssClass="form-control" TextMode="DateTime" AutoPostBack="true" />
                     </div>
 
                     <!-- Thời gian kết thúc -->
@@ -134,7 +105,7 @@
                         <label for="ETime" class="form-label"><b>
                             <label class="text-danger">* </label>
                             Kết thúc 至</b></label>
-                        <asp:TextBox ID="ETime" runat="server" CssClass="form-control" TextMode="DateTime" AutoPostBack="true" OnTextChanged="ETime_TextChanged" />
+                        <asp:TextBox ID="ETime" runat="server" CssClass="form-control" TextMode="DateTime" AutoPostBack="true" />
                     </div>
 
                     <!-- Số ngày -->
