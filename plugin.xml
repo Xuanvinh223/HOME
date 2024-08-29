@@ -5,6 +5,15 @@
     <Field>
       <OptionalField>
 
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/GUI/GUI.ascx" FieldName="GUI">
+			  <Display>
+				  <Value Culture="zh-TW" Name="GUI"/>
+				  <Value Culture="zh-CN" Name="GUI"/>
+				  <Value Culture="en-US" Name="GUI"/>
+				  <Value Culture="vi" Name="GUI"/>
+			  </Display>
+		  </FieldItem>
+
 		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BusinessTripReport/BusinessTripReport.ascx" FieldName="BusinessTripReport">
 			  <Display>
 				  <Value Culture="zh-TW" Name="BusinessTripReport"/>
@@ -32,12 +41,12 @@
 			  </Display>
 		  </FieldItem>
 		  
-		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Supplier/LYN_Supplier.ascx" FieldName="Supplier">
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Supplier/Supplier.ascx" FieldName="Supplier">
 			  <Display>
-				  <Value Culture="zh-TW" Name="Nhà cung ứng"/>
-				  <Value Culture="zh-CN" Name="Nhà cung ứng"/>
-				  <Value Culture="en-US" Name="Nhà cung ứng"/>
-				  <Value Culture="vi" Name="Nhà cung ứng"/>
+				  <Value Culture="zh-TW" Name="Supplier"/>
+				  <Value Culture="zh-CN" Name="Supplier"/>
+				  <Value Culture="en-US" Name="Supplier"/>
+				  <Value Culture="vi" Name="Supplier"/>
 			  </Display>
 		  </FieldItem>
 

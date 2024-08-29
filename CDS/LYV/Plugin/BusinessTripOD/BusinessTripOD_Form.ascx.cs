@@ -62,7 +62,9 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
     }
     protected void TransportTypeSelect(object sender, EventArgs e)
     {
-        if (TransportType.SelectedValue == "5")
+        string type = TransportType.SelectedValue;
+
+        if (type == "5")
         {
             ptkhac.Enabled = true;
             ptkhac.Text = "";
@@ -70,10 +72,18 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
         else
         {
             ptkhac.Enabled = false;
-            ptkhac.Text = TransportType.SelectedValue;
+
+            if (type == "Xe hơi" || type == "Máy bay" || type == "Thuyền" || type == "Xe buýt")
+            {
+                ptkhac.Text = "";
+            }
+            else
+            {
+                ptkhac.Text = type;
+            }
         }
 
-        if (TransportType.SelectedValue == "Xe hơi")
+        if (type == "Xe hơi")
         {
             ApplyCar.Checked = true;
         }
@@ -477,7 +487,7 @@ public partial class WKF_BusinessTripOD_Form : WKF_FormManagement_VersionFieldUs
             SelectType == "Thuyền" || SelectType == "Xe buýt")
         {
             TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
-            ptkhac.Text = xeTP.Attribute("TransportType").Value;
+            ptkhac.Text = "";
             ptkhac.Enabled = false;
         }
         else

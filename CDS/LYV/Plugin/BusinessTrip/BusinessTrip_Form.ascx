@@ -1,10 +1,15 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="BusinessTrip_Form.ascx.cs" Inherits="WKF_BusinessTrip_Form" %>
 <%@ Reference Control="~/WKF/FormManagement/VersionFieldUserControl/VersionFieldUC.ascx" %>
+
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/BusinessTrip/style.css" type="text/css" rel="stylesheet" />
 <link href="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.css" type="text/css" rel="stylesheet" />
 <script src="<%=Request.ApplicationPath %>/CDS/LYV/Plugin/General/css/node_modules/flatpickr/dist/flatpickr.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockui/2.70/jquery.blockUI.min.js"></script>
 
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
     <ContentTemplate>
@@ -140,7 +145,7 @@
                     <!-- Số ngày -->
                     <div class="col-md-4">
                         <label for="Days" class="form-label"><b>Số ngày 共</b></label>
-                        <asp:TextBox ID="Days" runat="server" CssClass="form-control" Text="1" ReadOnly="true" />
+                        <asp:TextBox ID="Days" type="number" runat="server" CssClass="form-control" Text="1" ReadOnly="true" />
                     </div>
                 </div>
 
@@ -190,7 +195,7 @@
         <script type="text/javascript">
             function pageLoad() {
                 flatpickr('#<%= BTime.ClientID %>', {
-                    dateFormat: "H:i d-m-Y", // "H" là để hiển thị giờ và "i" là để hiển thị phút
+                    dateFormat: "Y-m-d H:i", // "H" là để hiển thị giờ và "i" là để hiển thị phút
                     enableTime: true, // Bật chế độ hiển thị giờ và phút
                     time_24hr: true,
                     onChange: function (rawdate, altdate, FPOBJ) {
@@ -199,13 +204,22 @@
                 });
 
                 flatpickr('#<%= ETime.ClientID %>', {
-                    dateFormat: "H:i d-m-Y", // "H" là để hiển thị giờ và "i" là để hiển thị phút
+                    dateFormat: "Y-m-d H:i", // "H" là để hiển thị giờ và "i" là để hiển thị phút
                     enableTime: true, // Bật chế độ hiển thị giờ và phút
                     time_24hr: true,
                     onChange: function (rawdate, altdate, FPOBJ) {
                         FPOBJ.close();
                     }
                 });
+            }
+            function showMessage(message) {
+                toastr.error(message, 'Không tìm thấy!', {
+                    timeOut: 3000, // Hiển thị trong 5 giây
+                    extendedTimeOut: 3000, // Thêm 3 giây nếu di chuột qua
+                    closeButton: true, // Hiển thị nút đóng
+                    progressBar: true
+                });
+                //success, warning, info, error
             }
         </script>
         <asp:Label ID="lblHasNoAuthority" runat="server" Text="無填寫權限" ForeColor="Red" Visible="False" meta:resourcekey="lblHasNoAuthorityResource1"></asp:Label>

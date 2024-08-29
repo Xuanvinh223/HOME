@@ -9,33 +9,30 @@ ORDER BY BEGIN_TIME DESC
 SELECT *FROM dbo.LYV_BusinessTripReport
 SELECT * FROM dbo.LYV_BusinessTripOD
 SELECT * FROM dbo.LYV_BusinessTrip
+SELECT * FROM [dbo].[LYV_Supplier]
 
-	 SELECT LYV, ISNULL(Type, '')  Type,Name, Name_ID,Name_DepID, Name_DepName, Agent, Agent_ID, Purpose, FLocation, Convert(varchar,Time,120) as Time, STime, ETime, Days,Journey,ISNULL(TransportType, '') TransportType, ISNULL(ApplyCar, '') ApplyCar, Remark,
-				 USERID, USERDATE,ISNULL( (Select ISNULL(FILE_NAME, '') +'   ' from TB_EB_FILE_STORE where  FILE_GROUP_ID = TB_WKF_TASK.ATTACH_ID   FOR XML PATH ('')), N'Không') FILENAME 
-				 , Applicant, ApplicantDate, Supervisor, SupervisorDate, Supervisor1, SupervisorDate1, Manager, 
-	   ManagerDate, HR, HRDate, GD, GDDate,CNBP, CNBPDate
-FROM LYV_BusinessTripOD
-LEFT JOIN TB_WKF_TASK on LYV_BusinessTripOD.LYV=TB_WKF_TASK.DOC_NBR
-LEFT JOIN (
-  SELECT 
-                MAX(APPNAME) AS Applicant, 
-                MAX(CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
-                MAX(CASE WHEN SITE_CODE='S1' THEN NAME END) AS Supervisor, 
-                MAX(CASE WHEN SITE_CODE='S1' THEN FINISH_TIME END) AS SupervisorDate,  
-                MAX(CASE WHEN SITE_CODE='S2' THEN NAME END) AS Supervisor1, 
-                MAX(CASE WHEN SITE_CODE='S2' THEN FINISH_TIME END) AS SupervisorDate1,  
-                MAX(CASE WHEN SITE_CODE='S3' THEN NAME END) AS Manager, 
-                MAX(CASE WHEN SITE_CODE='S3' THEN FINISH_TIME END) AS ManagerDate,  
-                MAX(CASE WHEN SITE_CODE='HR' THEN NAME END) AS HR, 
-                MAX(CASE WHEN SITE_CODE='HR' THEN FINISH_TIME END) AS HRDate, 
-                MAX(CASE WHEN SITE_CODE='GD' THEN NAME END) AS GD, 
-                MAX(CASE WHEN SITE_CODE='GD' THEN FINISH_TIME END) AS GDDate,
-				MAX(CASE WHEN SITE_CODE='CNBP' THEN NAME END) AS CNBP, 
-                MAX(CASE WHEN SITE_CODE='CNBP' THEN FINISH_TIME END) AS CNBPDate
+
+ DECLARE @SNO NVARCHAR(100);
+-- Giả sử {?PNO} là một giá trị thay thế cho giá trị thực của LNO
+SET @SNO = '{?SNO}';
+
+SELECT LYN_SkillAssement.SNO, LYN_SkillAssement.UserID,LYN_SkillAssement.UserDate,LYN_SkillAssement.DepID,LYN_SkillAssement.ID,LYN_SkillAssement.Name,
+LYN_SkillAssement.Dep,LYN_SkillAssement.JoinDate,LYN_SkillAssement.Position,LYN_SkillAssement.Promotion,LYN_SkillAssement.Specialize,LYN_SkillAssement.Comment,
+Supervisor1, SupervisorDate1,Supervisor2, SupervisorDate2,Manager,ManagerDate from LYN_SkillAssement
+LEFT JOIN 
+        (
+            -- Truy vấn con để lấy dữ liệu phê duyệt
+            SELECT 
+                MAX(CASE WHEN SITE_CODE='S1' THEN NAME END) AS Supervisor1, 
+                MAX(CASE WHEN SITE_CODE='S1' THEN FINISH_TIME END) AS SupervisorDate1,  
+                MAX(CASE WHEN SITE_CODE='S2' THEN NAME END) AS Supervisor2, 
+                MAX(CASE WHEN SITE_CODE='S2' THEN FINISH_TIME END) AS SupervisorDate2,  
+                MAX(CASE WHEN SITE_CODE='SE' THEN NAME END) AS Manager, 
+                MAX(CASE WHEN SITE_CODE='SE' THEN FINISH_TIME END) AS  ManagerDate 
             FROM 
                 ( 
                     SELECT 
-                        case when TB_WKF_TASK_NODE.ACTUAL_SIGNER<>TB_WKF_TASK_NODE.ORIGINAL_SIGNER then TB_EB_USER.NAME + '(*)' else TB_EB_USER.NAME end as NAME, 
+                        TB_EB_USER.NAME, 
                         CAST(FINISH_TIME AS DATE) FINISH_TIME, 
                         US.NAME AS APPNAME, 
                         TB_WKF_TASK.BEGIN_TIME,
@@ -53,71 +50,10 @@ LEFT JOIN (
                         TB_EB_USER US ON US.USER_GUID = TB_WKF_TASK.AGENT_USER
                     WHERE 
                         ACTUAL_SIGNER IS NOT NULL AND 
-                        SITE_CODE NOT IN ('Applicant','END_FORM') AND 
-                        TB_WKF_TASK.DOC_NBR = 'LYV240800205'
+                        SITE_CODE <> 'Applicant' AND SITE_CODE NOT IN ('Applicant','END_FORM') AND 
+                        TB_WKF_TASK.DOC_NBR = @SNO 
                 ) AS ApproveData 
             WHERE 
                 RowID = 1 
- ) AS ApproveData ON 1 = 1 
- WHERE LYV='LYV240800205'
-
-						   
-SELECT LYV, ISNULL(Type, '')  Type,Name, Name_ID,Name_DepID, Name_DepName, Agent, Agent_ID, Purpose, FLocation, Convert(varchar,BTime,120) as BTime,
-       ISNULL(Convert(varchar,ETime,120), '') as ETime, Days,Journey,ISNULL(TransportType, '') TransportType, ISNULL(ApplyCar, '') ApplyCar, Remark,
-	   USERID, USERDATE,ISNULL( (Select ISNULL(FILE_NAME, '') +'   ' from TB_EB_FILE_STORE where  FILE_GROUP_ID = TB_WKF_TASK.ATTACH_ID   FOR XML PATH ('')), N'Không') FILENAME, 
-	   Applicant, ApplicantDate, Supervisor, SupervisorDate, Supervisor1, SupervisorDate1, 
-	   Manager, ManagerDate, HR, HRDate, GD, GDDate, CNBP, CNBPDate, TLGD, TLGDDate, GDDH, GDDHDate, TGD, TGDDate, ChuTich, ChuTichDate
-FROM LYV_BusinessTrip
-LEFT JOIN TB_WKF_TASK on LYV_BusinessTrip.LYV=TB_WKF_TASK.DOC_NBR
-LEFT JOIN (
-  SELECT 
-                MAX(APPNAME) AS Applicant, 
-                MAX(CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
-                MAX(CASE WHEN SITE_CODE='S1' THEN NAME END) AS Supervisor, 
-                MAX(CASE WHEN SITE_CODE='S1' THEN FINISH_TIME END) AS SupervisorDate,  
-                MAX(CASE WHEN SITE_CODE='S2' THEN NAME END) AS Supervisor1, 
-                MAX(CASE WHEN SITE_CODE='S2' THEN FINISH_TIME END) AS SupervisorDate1,  
-                MAX(CASE WHEN SITE_CODE='S3' THEN NAME END) AS Manager, 
-                MAX(CASE WHEN SITE_CODE='S3' THEN FINISH_TIME END) AS ManagerDate, 
-                MAX(CASE WHEN SITE_CODE='HR' THEN NAME END) AS HR, 
-                MAX(CASE WHEN SITE_CODE='HR' THEN FINISH_TIME END) AS HRDate, 
-				MAX(CASE WHEN SITE_CODE='GD' THEN NAME END) AS GD, 
-                MAX(CASE WHEN SITE_CODE='GD' THEN FINISH_TIME END) AS GDDate,
-				MAX(CASE WHEN SITE_CODE='CNBP' THEN NAME END) AS CNBP, 
-                MAX(CASE WHEN SITE_CODE='CNBP' THEN FINISH_TIME END) AS CNBPDate,
-				MAX(CASE WHEN SITE_CODE='TLGD' THEN NAME END) AS TLGD, 
-                MAX(CASE WHEN SITE_CODE='TLGD' THEN FINISH_TIME END) AS TLGDDate,
-				MAX(CASE WHEN SITE_CODE='GDDH' THEN NAME END) AS GDDH, 
-                MAX(CASE WHEN SITE_CODE='GDDH' THEN FINISH_TIME END) AS GDDHDate,
-				MAX(CASE WHEN SITE_CODE='TGD' THEN NAME END) AS TGD, 
-                MAX(CASE WHEN SITE_CODE='TGD' THEN FINISH_TIME END) AS TGDDate,
-				MAX(CASE WHEN SITE_CODE='ChuTich' THEN NAME END) AS ChuTich, 
-                MAX(CASE WHEN SITE_CODE='ChuTich' THEN FINISH_TIME END) AS ChuTichDate
-            FROM 
-                ( 
-                    SELECT 
-                        case when TB_WKF_TASK_NODE.ACTUAL_SIGNER<>TB_WKF_TASK_NODE.ORIGINAL_SIGNER then TB_EB_USER.NAME + '(*)' else TB_EB_USER.NAME end as NAME, 
-                        CAST(FINISH_TIME AS DATE) FINISH_TIME, 
-                        US.NAME AS APPNAME, 
-                        TB_WKF_TASK.BEGIN_TIME,
-                        ROW_NUMBER() OVER (PARTITION BY FINISH_TIME ORDER BY FINISH_TIME DESC) AS RowID, 
-                        TB_WKF_TASK_TRIGGER_RECORD.SITE_CODE
-                    FROM 
-                        TB_WKF_TASK
-                    LEFT JOIN 
-                        TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID
-                    LEFT JOIN 
-                        TB_WKF_TASK_TRIGGER_RECORD ON TB_WKF_TASK_TRIGGER_RECORD.SITE_ID = TB_WKF_TASK_NODE.SITE_ID AND TB_WKF_TASK_NODE.TASK_ID = TB_WKF_TASK_TRIGGER_RECORD.TASK_ID
-                    LEFT JOIN 
-                        TB_EB_USER ON TB_EB_USER.USER_GUID = TB_WKF_TASK_NODE.ACTUAL_SIGNER
-                    LEFT JOIN 
-                        TB_EB_USER US ON US.USER_GUID = TB_WKF_TASK.AGENT_USER
-                    WHERE 
-                        ACTUAL_SIGNER IS NOT NULL AND 
-                        SITE_CODE NOT IN ('Applicant','END_FORM') AND 
-                        TB_WKF_TASK.DOC_NBR = '{?LYV}'
-                ) AS ApproveData 
-            WHERE 
-                RowID = 1 
- ) AS ApproveData ON 1 = 1 
- WHERE LYV='{?LYV}'
+        ) AS ApproveData ON 1 = 1 
+where LYN_SkillAssement.SNO=@SNO

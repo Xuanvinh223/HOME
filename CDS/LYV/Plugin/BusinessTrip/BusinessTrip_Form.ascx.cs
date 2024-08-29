@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ede.Uof.WKF.Design;
@@ -13,7 +9,6 @@ using System.Xml.Linq;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Ede.Uof.Utility.Page.Common;
 using System.Dynamic;
-using LYV.BusinessTrip.UCO;
 
 public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
 {
@@ -133,12 +128,11 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         string qexpert = data.Split(";")[2];
         if (UserName == "")
         {
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alert('Nhân viên này không tồn tại | 此工號不在選擇的部門內或不存在')", true);
             Name_DepID.Text = "";
             Name_DepID.Attributes["DepID"] = "";
             Name_ID.Text = "";
             Name.Text = "";
-
+            ShowErrorMessage("Nhân viên này không tồn tại | 此工號不在選擇的部門內或不存在");
         }
         else
         {
@@ -169,7 +163,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         {
             Agent_ID.Text = "";
             Agent.Text = "";
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertMessage", "alert('Nhân viên này không tồn tại | 此工號不在選擇的部門內或不存在')", true);
+            ShowErrorMessage("Nhân viên này không tồn tại | 此工號不在選擇的部門內或不存在");
         }
         else
         {
@@ -220,7 +214,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
     }
     /// <summary>
-    /// 外掛欄位的條件值
+    /// 外掛欄位的條件值 | Giá trị có điều kiện của trường plug-in
     /// </summary>
     public override string ConditionValue
     {
@@ -246,7 +240,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     }
 
     /// <summary>
-    /// 是否被修改
+    /// 是否被修改 | Nếu nó đã được sửa đổi
     /// </summary>
     public override bool IsModified
     {
@@ -263,13 +257,13 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     }
 
     /// <summary>
-    /// 查詢顯示的標題
+    /// 查詢顯示的標題 Truy vấn tiêu đề được hiển thị
     /// </summary>
     public override string DisplayTitle
     {
         get
         {
-            //表單查詢或WebPart顯示的標題
+            //表單查詢或WebPart顯示的標題 Tiêu đề được hiển thị theo truy vấn biểu mẫu hoặc WebPart
             //回傳字串
             return String.Empty;
             //return "<table><tr><td>balabala</td></tr></table>";
@@ -283,9 +277,9 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     {
         get
         {
-            //表單訊息通知顯示的內容
+            //表單訊息通知顯示的內容 Những gì được hiển thị trong thông báo tin nhắn biểu mẫu
             //回傳字串
-            return String.Empty;
+            return String.Empty; 
             //return "<table><tr><td>123456</td></tr></table>";
         }
     }
@@ -368,14 +362,16 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         }
         set
         {
-            //這個屬性不用修改
+            //這個屬性不用修改 | Thuộc tính này không cần phải sửa đổi
             base.m_fieldValue = value;
         }
     }
 
     protected void TransportTypeSelect(object sender, EventArgs e)
     {
-        if (TransportType.SelectedValue == "5")
+        string type = TransportType.SelectedValue;
+
+        if (type == "5")
         {
             ptkhac.Enabled = true;
             ptkhac.Text = "";
@@ -383,10 +379,18 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         else
         {
             ptkhac.Enabled = false;
-            ptkhac.Text = TransportType.SelectedValue;
+
+            if (type == "Xe hơi" || type == "Máy bay" || type == "Thuyền" || type == "Xe buýt")
+            {
+                ptkhac.Text = "";
+            }
+            else
+            {
+                ptkhac.Text = type;
+            }
         }
 
-        if (TransportType.SelectedValue == "Xe hơi")
+        if (type == "Xe hơi")
         {
             ApplyCar.Checked = true;
         }
@@ -396,8 +400,14 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         }
     }
 
+    void ShowErrorMessage(string message)
+    {
+        string script = "showMessage('" + message + "');";
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "callShowMessage", script, true);
+    }
+
     /// <summary>
-    /// 是否為第一次填寫
+    /// 是否為第一次填寫 Đây có phải là lần đầu tiên điền vào
     /// </summary>
     public override bool IsFirstTimeWrite
     {
@@ -461,7 +471,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             SelectType == "Thuyền" || SelectType == "Xe buýt")
         {
             TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
-            ptkhac.Text = xeTP.Attribute("TransportType").Value;
+            ptkhac.Text = "";
             ptkhac.Enabled = false;
         }
         else
@@ -520,7 +530,6 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             case FieldMode.Design:
                 break;
             default:
-
                 break;
         }
 

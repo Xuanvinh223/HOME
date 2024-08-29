@@ -1,6 +1,4 @@
-﻿using Ede.Uof.WKF.Utility;
-using System.Data;
-using System.Text.RegularExpressions;
+﻿using System.Data;
 using System.Xml.Linq;
 
 namespace LYV.BusinessTrip.PO
@@ -266,11 +264,12 @@ namespace LYV.BusinessTrip.PO
         internal void UpdateFormStatus(string LYV, string EmployeeType, string RequestDate, string Type, string SiteCode, string signStatus, XElement xE)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
+            DataTable dt = new DataTable();
+
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
             string cmdflowflag = @"SELECT flowflag FROM LYV_BusinessTrip WHERE LYV = @LYV";
 
-            DataTable dt = new DataTable();
             this.m_db.AddParameter("@LYV", LYV);
             dt.Load(this.m_db.ExecuteReader(cmdflowflag));
 

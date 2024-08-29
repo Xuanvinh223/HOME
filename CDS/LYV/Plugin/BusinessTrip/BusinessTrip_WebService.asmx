@@ -10,24 +10,18 @@ using System.Xml;
 [WebService(Namespace = "http://tempuri.org/")]
 [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
 // 若要允許使用 ASP.NET AJAX 從指令碼呼叫此 Web 服務，請取消註解下列一行。
-// [System.Web.Script.Services.ScriptService]
-public class WebServiceLYN  : System.Web.Services.WebService {
+//[System.Web.Script.Services.ScriptService]
+public class WebServiceLYN : System.Web.Services.WebService
+{
 
     public WebServiceLYN()
     {
 
-        //Uncomment the following line if using designed components 
-        //InitializeComponent(); 
     }
 
     [WebMethod]
     public string CheckBusinessTrip(string formInfo)
     {
-        formInfo = HttpUtility.UrlDecode(formInfo);
-
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.LoadXml(formInfo);
-
         XmlDocument returnXmlDoc = new XmlDocument();
         XmlElement returnValueElement = returnXmlDoc.CreateElement("ReturnValue");
         XmlElement statusElement = returnXmlDoc.CreateElement("Status");
@@ -41,96 +35,104 @@ public class WebServiceLYN  : System.Web.Services.WebService {
 
         try
         {
-            string Name_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Name_ID"].Value.ToString();
-            string Agent_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Agent_ID"].Value.ToString();
+            // Giải mã thông tin từ URL
+            formInfo = HttpUtility.UrlDecode(formInfo);
 
-            string Purpose = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Purpose"].Value.ToString();
-            string FLocation = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["FLocation"].Value.ToString();
-            string Journey = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Journey"].Value.ToString();
+            // Tạo đối tượng XmlDocument và tải XML từ formInfo
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(formInfo);
 
-            string Days = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Days"].Value.ToString();
-            string ETime = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["ETime"].Value.ToString();
+            // Lấy dữ liệu từ XML
+            string Name_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Name_ID"].Value;
+            string Agent_ID = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Agent_ID"].Value;
+            string Purpose = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Purpose"].Value;
+            string FLocation = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["FLocation"].Value;
+            string Journey = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Journey"].Value;
+            string Days = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Days"].Value;
+            string ETime = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["ETime"].Value;
+            string TransportType = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["TransportType"].Value;
+            string SelectType = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["SelectType"].Value;
 
-            string TransportType = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["TransportType"].Value.ToString();
-            string SelectType = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["SelectType"].Value.ToString();
-
-            if (Name_ID == "")
+            // Kiểm tra và thiết lập thông báo lỗi
+            if (string.IsNullOrEmpty(Name_ID))
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the ID user !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the ID user!";
             }
-            else if (Agent_ID == "")
+            else if (string.IsNullOrEmpty(Agent_ID))
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the ID user !";
-            }else if (Name_ID == Agent_ID)
-            {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "ID No duplicates !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the ID user!";
             }
-            else if (Purpose == "")
+            else if (Name_ID == Agent_ID)
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the Purpose !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "ID No duplicates!";
             }
-            else if (FLocation == "")
+            else if (string.IsNullOrEmpty(Purpose))
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the Location !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the Purpose!";
             }
-            else if (Journey == "")
+            else if (string.IsNullOrEmpty(FLocation))
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the Journey !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the Location!";
             }
-            else if (Days == "0" || (Days.Trim() == "" && ETime != ""))
+            else if (string.IsNullOrEmpty(Journey))
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the correct Date Time !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the Journey!";
+            }
+            else if (Days == "0" || (string.IsNullOrWhiteSpace(Days) && !string.IsNullOrEmpty(ETime)))
+            {
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the correct Date Time!";
             }
             else if (TransportType == "Default")
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please select the TransportType !";
+                statusElement.InnerText = "0";
+                messageElement.InnerText = "Please select the TransportType!";
             }
             else if (SelectType == "5")
             {
-                if (TransportType == "")
+                if (string.IsNullOrEmpty(TransportType))
                 {
-                    returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                    returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please input the TransportType !";
+                    statusElement.InnerText = "0";
+                    messageElement.InnerText = "Please input the TransportType!";
                 }
                 else
                 {
-                    returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "1";
+                    statusElement.InnerText = "1";
                 }
             }
             else if (TransportType == "Máy bay" || TransportType == "Thuyền")
             {
-                string rmk = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYN_LYV_BusinessTrip_Form").Attributes["Remark"].Value.ToString();
-                if (rmk == "")
+                string rmk = xmlDoc.SelectSingleNode("/Form/FormFieldValue/FieldItem[@fieldId='Form']/LYV_BusinessTrip_Form").Attributes["Remark"].Value;
+                if (string.IsNullOrEmpty(rmk))
                 {
-                    returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-                    returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = "Please input the Remark !";
+                    statusElement.InnerText = "0";
+                    messageElement.InnerText = "Please input the Remark!";
                 }
                 else
                 {
-                    returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "1";
+                    statusElement.InnerText = "1";
                 }
             }
             else
             {
-                returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "1";
+                statusElement.InnerText = "1";
             }
 
         }
-        catch (Exception ce)
+        catch (Exception ex)
         {
-            returnValueElement.SelectSingleNode("/ReturnValue/Status").InnerText = "0";
-            //returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = ce.Message;
-            returnValueElement.SelectSingleNode("/ReturnValue/Exception/Message").InnerText = formInfo;
+            statusElement.InnerText = "0";
+            messageElement.InnerText = ex.Message;
         }
+
         return returnValueElement.OuterXml;
     }
+
 }
 

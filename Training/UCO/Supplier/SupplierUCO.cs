@@ -1,11 +1,9 @@
-﻿using Training.Supplier.PO;
-using System.Data;
-using Training.Data;
-using System.Xml.Linq;
+﻿using System.Data;
 using Ede.Uof.WKF.ExternalUtility;
+using LYV.Supplier.PO;
 
 
-namespace Training.Supplier.UCO
+namespace LYV.Supplier.UCO
 {
     public class SupplierUCO
     {

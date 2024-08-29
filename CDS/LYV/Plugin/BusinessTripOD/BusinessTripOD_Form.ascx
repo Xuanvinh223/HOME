@@ -192,7 +192,7 @@
         <script type="text/javascript">
             function pageLoad() {
                 flatpickr('#<%= Time.ClientID %>', {
-                    dateFormat: "d-m-Y"
+                    dateFormat: "Y-m-d"
                 });
                 flatpickr('#<%= STime.ClientID %>', {
                     enableTime: true,

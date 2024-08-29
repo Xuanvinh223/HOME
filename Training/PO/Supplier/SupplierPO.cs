@@ -1,12 +1,8 @@
-﻿using Training.Data;
-using System;
-using System.Data;
+﻿using System.Data;
 using Ede.Uof.WKF.ExternalUtility;
 using System.Xml.Linq;
-using System.Data.SqlClient;
-using System.Linq;
 
-namespace Training.Supplier.PO
+namespace LYV.Supplier.PO
 {
     internal class SupplierPO : Ede.Uof.Utility.Data.BasePersistentObject
     {
@@ -15,9 +11,9 @@ namespace Training.Supplier.PO
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
-            XElement XElement = XElement.Parse(applyTask.Task.CurrentDocument.Fields["LYN_Supplier"].FieldValue);
+            XElement XElement = XElement.Parse(applyTask.Task.CurrentDocument.Fields["Form"].FieldValue);
 
-            string LNO = applyTask.FormNumber;
+            string LYV = applyTask.FormNumber;
             string Type = XElement.Attribute("Type").Value;
             string SupplierID = XElement.Attribute("SupplierID").Value;
             string SupplierName = XElement.Attribute("SupplierName").Value;
@@ -40,9 +36,9 @@ namespace Training.Supplier.PO
             string Effective = XElement.Attribute("Effective").Value;
             string Remark = XElement.Attribute("Remark").Value;
 
-            string cmdTxt = @"INSERT INTO [dbo].[LYN_Supplier]  
+            string cmdTxt = @"INSERT INTO [dbo].[LYV_Supplier]  
             (	        
-            [LNO] , 
+            [LYV] , 
 	        [Type] , 
 	        [SupplierID] , 
 	        [SupplierName],
@@ -70,7 +66,7 @@ namespace Training.Supplier.PO
             )   
                 VALUES 
             (
-            @LNO , 
+            @LYV , 
 	        @Type , 
 	        @SupplierID , 
 	        @SupplierName,  
@@ -97,7 +93,7 @@ namespace Training.Supplier.PO
 	        GETDATE()
             )";
 
-            this.m_db.AddParameter("@LNO", LNO);
+            this.m_db.AddParameter("@LYV", LYV);
             this.m_db.AddParameter("@Type", Type);
             this.m_db.AddParameter("@SupplierID", SupplierID);
             this.m_db.AddParameter("@SupplierName", SupplierName);
@@ -123,23 +119,22 @@ namespace Training.Supplier.PO
             this.m_db.ExecuteNonQuery(cmdTxt);
             this.m_db.Dispose();
         }
-
         internal void UpdateFormStatus(ApplyTask applyTask)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string LNO = applyTask.FormNumber;
+            string LYV = applyTask.FormNumber;
             string SiteCode = applyTask.SiteCode;
             string signStatus = applyTask.FormResult.ToString();
-            string cmdflowflag = @"SELECT flowflag FROM LYN_Supplier WHERE LNO = @LNO";
+            string cmdflowflag = @"SELECT flowflag FROM LYV_Supplier WHERE LYV = @LYV";
             DataTable dt = new DataTable();
-            this.m_db.AddParameter("@LNO", LNO);
+            this.m_db.AddParameter("@LYV", LYV);
             dt.Load(this.m_db.ExecuteReader(cmdflowflag));
 
             string flowflag = dt.Rows[0][0].ToString();
             if ((flowflag == "NP" || flowflag == "N") && SiteCode != "ReturnToApplicant")
             {
-                XElement XElement = XElement.Parse(applyTask.Task.CurrentDocument.Fields["LYN_Supplier"].FieldValue);
+                XElement XElement = XElement.Parse(applyTask.Task.CurrentDocument.Fields["Form"].FieldValue);
                 string Type = XElement.Attribute("Type").Value;
                 string SupplierID = XElement.Attribute("SupplierID").Value;
                 string SupplierName = XElement.Attribute("SupplierName").Value;
@@ -162,7 +157,7 @@ namespace Training.Supplier.PO
                 string Effective = XElement.Attribute("Effective").Value;
                 string Remark = XElement.Attribute("Remark").Value;
 
-                string cmdTxt = @"  UPDATE [dbo].[LYN_Supplier] SET 
+                string cmdTxt = @"  UPDATE [dbo].[LYV_Supplier] SET 
 	            [Type] = @Type, 
 	            [SupplierID] = @SupplierID, 
 	            [SupplierName] = @SupplierName,
@@ -186,7 +181,7 @@ namespace Training.Supplier.PO
                 [Remark] = @Remark,
                 [flowflag] = 'N'";
 
-                this.m_db.AddParameter("@LNO", LNO);
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.AddParameter("@Type", Type);
                 this.m_db.AddParameter("@SupplierID", SupplierID);
                 this.m_db.AddParameter("@SupplierName", SupplierName);
@@ -213,46 +208,45 @@ namespace Training.Supplier.PO
 
                 if (!string.IsNullOrEmpty(SiteCode))
                 {
-                    string cmdTxt1 = "UPDATE LYN_Supplier SET flowflag = 'P' WHERE LNO = @LNO ";
-                    this.m_db.AddParameter("@LNO", LNO);
+                    string cmdTxt1 = "UPDATE LYV_Supplier SET flowflag = 'P' WHERE LYV = @LYV ";
+                    this.m_db.AddParameter("@LYV", LYV);
                     this.m_db.ExecuteNonQuery(cmdTxt1);
                 }
             }
             if (SiteCode == "ReturnToApplicant")
             {
-                string cmdTxt = "UPDATE LYN_Supplier SET flowflag = 'NP' WHERE LNO = @LNO ";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = "UPDATE LYV_Supplier SET flowflag = 'NP' WHERE LYV = @LYV ";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (SiteCode == "SE" && signStatus == "Approve")
             {
-                string cmdTxt = @"UPDATE LYN_Supplier SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_Supplier SET flowflag='Z' WHERE LYV = @LYV AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (signStatus == "Disapprove")
             {
-                string cmdTxt = @"UPDATE LYN_Supplier SET flowflag='X' WHERE LNO = @LNO";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_Supplier SET flowflag='X' WHERE LYV = @LYV";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             this.m_db.Dispose();
         }
-
-        internal void UpdateFormResult(string LNO, string signStatus)
+        internal void UpdateFormResult(string LYV, string signStatus)
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             if (signStatus == "Adopt")
             {
-                string cmdTxt = @"UPDATE LYN_Supplier SET flowflag='Z' WHERE LNO = @LNO AND flowflag IN ('N','P')";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_Supplier SET flowflag='Z' WHERE LYV = @LYV AND flowflag IN ('N','P')";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (signStatus == "Reject" || signStatus == "Cancel")
             {
-                string cmdTxt = @"UPDATE LYN_Supplier SET flowflag='X' WHERE LNO = @LNO";
-                this.m_db.AddParameter("@LNO", LNO);
+                string cmdTxt = @"UPDATE LYV_Supplier SET flowflag='X' WHERE LYV = @LYV";
+                this.m_db.AddParameter("@LYV", LYV);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             this.m_db.Dispose();
@@ -283,12 +277,12 @@ namespace Training.Supplier.PO
             if (SupplierID != "") where += " and LOWER(SupplierID) like LOWER('%" + SupplierID + "%') ";
             if (SupplierName != "") where += " and LOWER(SupplierName) like LOWER('%" + SupplierName + "%') ";
 
-            string SQL = @" SELECT LYN_Supplier.LNO, LYN_Supplier.Type, LYN_Supplier.SupplierID, LYN_Supplier.SupplierName, LYN_Supplier.CompanyAddress, LYN_Supplier.FactoryAddress, LYN_Supplier.Product, 
-                                   convert(varchar,LYN_Supplier.Established,102) Established, LYN_Supplier.License, LYN_Supplier.PersonInCharge, LYN_Supplier.ContactPerson, LYN_Supplier.Tel, 
-                                   LYN_Supplier.Fax, LYN_Supplier.Email, LYN_Supplier.UserID, convert(varchar,LYN_Supplier.UserDate,102) UserDate, TB_WKF_TASK.TASK_ID 
-                            FROM LYN_Supplier LEFT JOIN TB_WKF_TASK on LYN_Supplier.LNO=TB_WKF_TASK.DOC_NBR 
+            string SQL = @" SELECT LYV_Supplier.LYV, LYV_Supplier.Type, LYV_Supplier.SupplierID, LYV_Supplier.SupplierName, LYV_Supplier.CompanyAddress, LYV_Supplier.FactoryAddress, LYV_Supplier.Product, 
+                                   convert(varchar,LYV_Supplier.Established,102) Established, LYV_Supplier.License, LYV_Supplier.PersonInCharge, LYV_Supplier.ContactPerson, LYV_Supplier.Tel, 
+                                   LYV_Supplier.Fax, LYV_Supplier.Email, LYV_Supplier.UserID, convert(varchar,LYV_Supplier.UserDate,102) UserDate, TB_WKF_TASK.TASK_ID 
+                            FROM LYV_Supplier LEFT JOIN TB_WKF_TASK on LYV_Supplier.LYV=TB_WKF_TASK.DOC_NBR 
                             WHERE 1=1 " + where + @" 
-                            ORDER BY LYN_Supplier.LNO desc ";
+                            ORDER BY LYV_Supplier.LYV desc ";
 
             DataTable dt = new DataTable();
             dt.Load(this.m_db.ExecuteReader(SQL));
