@@ -11,28 +11,38 @@ SELECT * FROM dbo.LYV_BusinessTripOD
 SELECT * FROM dbo.LYV_BusinessTrip
 SELECT * FROM [dbo].[LYV_Supplier]
 
+SELECT * FROM [LYV_BoSungNhanSu]
 
- DECLARE @SNO NVARCHAR(100);
--- Giả sử {?PNO} là một giá trị thay thế cho giá trị thực của LNO
-SET @SNO = '{?SNO}';
+SELECT * FROM [LYV_BoSungNhanSus]
 
-SELECT LYN_SkillAssement.SNO, LYN_SkillAssement.UserID,LYN_SkillAssement.UserDate,LYN_SkillAssement.DepID,LYN_SkillAssement.ID,LYN_SkillAssement.Name,
-LYN_SkillAssement.Dep,LYN_SkillAssement.JoinDate,LYN_SkillAssement.Position,LYN_SkillAssement.Promotion,LYN_SkillAssement.Specialize,LYN_SkillAssement.Comment,
-Supervisor1, SupervisorDate1,Supervisor2, SupervisorDate2,Manager,ManagerDate from LYN_SkillAssement
-LEFT JOIN 
-        (
-            -- Truy vấn con để lấy dữ liệu phê duyệt
-            SELECT 
-                MAX(CASE WHEN SITE_CODE='S1' THEN NAME END) AS Supervisor1, 
-                MAX(CASE WHEN SITE_CODE='S1' THEN FINISH_TIME END) AS SupervisorDate1,  
-                MAX(CASE WHEN SITE_CODE='S2' THEN NAME END) AS Supervisor2, 
-                MAX(CASE WHEN SITE_CODE='S2' THEN FINISH_TIME END) AS SupervisorDate2,  
-                MAX(CASE WHEN SITE_CODE='SE' THEN NAME END) AS Manager, 
-                MAX(CASE WHEN SITE_CODE='SE' THEN FINISH_TIME END) AS  ManagerDate 
-            FROM 
-                ( 
-                    SELECT 
-                        TB_EB_USER.NAME, 
+
+
+SELECT LYV_BoSungNhanSu.*, Applicant,ApplicantDate, Supervisor, SupervisorDate, Supervisor1, SupervisorDate1,  Manager , 
+	   ISNull (ManagerDate,SupervisorDate) as ManagerDate, HR, HRDate,HRSupervisor, HRSupervisorDate, HRManager, HRManagerDate
+FROM LYV_BoSungNhanSu
+LEFT JOIN TB_WKF_TASK on LYV_BoSungNhanSu.LYV=TB_WKF_TASK.DOC_NBR
+LEFT JOIN (
+   SELECT 
+                MAX(APPNAME) AS Applicant, 
+                MAX(CAST(BEGIN_TIME AS DATE)) AS ApplicantDate,  
+                MAX(CASE WHEN SITE_CODE='S1' THEN NAME END) AS Supervisor, 
+                MAX(CASE WHEN SITE_CODE='S1' THEN FINISH_TIME END) AS SupervisorDate,  
+                MAX(CASE WHEN SITE_CODE='S2' THEN NAME END) AS Supervisor1, 
+                MAX(CASE WHEN SITE_CODE='S2' THEN FINISH_TIME END) AS SupervisorDate1,  
+                MAX(CASE WHEN SITE_CODE='S3' THEN NAME END) AS Manager, 
+                MAX(CASE WHEN SITE_CODE='S3' THEN FINISH_TIME END) AS ManagerDate, 
+                MAX(CASE WHEN SITE_CODE='HR' THEN NAME END) AS HR, 
+                MAX(CASE WHEN SITE_CODE='HR' THEN FINISH_TIME END) AS HRDate,
+				MAX(CASE WHEN SITE_CODE='HRSupervisor' THEN NAME END) AS HRSupervisor, 
+                MAX(CASE WHEN SITE_CODE='HRSupervisor' THEN FINISH_TIME END) AS HRSupervisorDate,
+				MAX(CASE WHEN SITE_CODE='HRManager' THEN NAME END) AS HRManager, 
+                MAX(CASE WHEN SITE_CODE='HRManager' THEN FINISH_TIME END) AS HRManagerDate, 
+				MAX(CASE WHEN SITE_CODE='GD' THEN NAME END) AS GD, 
+                MAX(CASE WHEN SITE_CODE='GD' THEN FINISH_TIME END) AS GDDate
+				
+	FROM ( 
+		SELECT 
+                        case when TB_WKF_TASK_NODE.ACTUAL_SIGNER<>TB_WKF_TASK_NODE.ORIGINAL_SIGNER then TB_EB_USER.NAME + '(*)' else TB_EB_USER.NAME end as NAME, 
                         CAST(FINISH_TIME AS DATE) FINISH_TIME, 
                         US.NAME AS APPNAME, 
                         TB_WKF_TASK.BEGIN_TIME,
@@ -50,10 +60,14 @@ LEFT JOIN
                         TB_EB_USER US ON US.USER_GUID = TB_WKF_TASK.AGENT_USER
                     WHERE 
                         ACTUAL_SIGNER IS NOT NULL AND 
-                        SITE_CODE <> 'Applicant' AND SITE_CODE NOT IN ('Applicant','END_FORM') AND 
-                        TB_WKF_TASK.DOC_NBR = @SNO 
+                        SITE_CODE NOT IN ('Applicant','END_FORM') AND 
+                        TB_WKF_TASK.DOC_NBR = 'LYV240800245'
                 ) AS ApproveData 
-            WHERE 
-                RowID = 1 
-        ) AS ApproveData ON 1 = 1 
-where LYN_SkillAssement.SNO=@SNO
+  WHERE RowID = 1 
+ ) AS ApproveData ON 1 = 1 
+ WHERE LYV='LYV240800245'
+
+
+
+
+

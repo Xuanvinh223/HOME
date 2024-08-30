@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Data;
+using System.Dynamic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Ede.Uof.WKF.Design;
-using Ede.Uof.EIP.Organization.Util;
-using Ede.Uof.EIP.SystemInfo;
 using System.Xml.Linq;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Ede.Uof.EIP.Organization.Util;
+using Ede.Uof.EIP.SystemInfo;
 using Ede.Uof.Utility.Page.Common;
-using System.Dynamic;
+using Ede.Uof.WKF.Design;
 
-public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
+public partial class WKF_BusinessTrip_Form
+    : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
 {
-
     #region ==============公開方法及屬性==============
     //表單設計時
     //如果為False時,表示是在表單設計時
@@ -55,6 +55,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         else
             Dep.Visible = false;
     }
+
     public void gvDep_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvDep.DataSource = (DataTable)ViewState["formsDT"];
@@ -62,6 +63,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         gvDep.PageIndex = e.NewPageIndex;
         gvDep.DataBind();
     }
+
     protected void gvDep_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (gvDep.SelectedRow != null)
@@ -70,17 +72,22 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             Name_DepID.Text = System.Web.HttpUtility.HtmlDecode(gvDep.SelectedRow.Cells[1].Text); // Lấy giá trị từ cột đầu tiên
             Name_ID.Text = "";
             Name.Text = "";
-            Dep.Visible = false;                                                     // Thêm các cột khác nếu cần
+            Dep.Visible = false; // Thêm các cột khác nếu cần
         }
     }
+
     protected void gvDep_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(gvDep, "Select$" + e.Row.RowIndex);
+            e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(
+                gvDep,
+                "Select$" + e.Row.RowIndex
+            );
             e.Row.Attributes["style"] = "cursor:pointer";
         }
     }
+
     public void DV_Search_TextChanged(object sender, EventArgs e)
     {
         DataTable dt = (DataTable)ViewState["formsDT"];
@@ -102,6 +109,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         }
         gvDep.DataBind();
     }
+
     private void LoadDataDep()
     {
         LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
@@ -110,6 +118,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         ViewState["formsDT"] = dt;
         gvDep.DataBind();
     }
+
     public void Name_ID_TextChanged(object sender, EventArgs e)
     {
         if (Name_ID.Text == "")
@@ -144,9 +153,9 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             Name_DepID.Attributes["DepID"] = gvDep.Rows[0].Cells[0].Text;
             Name_DepID.Text = System.Web.HttpUtility.HtmlDecode(gvDep.Rows[0].Cells[1].Text);
             Name.Text = UserName;
-
         }
     }
+
     public void Agent_ID_TextChanged(object sender, EventArgs e)
     {
         if (Agent_ID.Text == "")
@@ -170,6 +179,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             Agent.Text = UserName;
         }
     }
+
     public double DateDifference(string StartDate, string EndDate)
     {
         DateTime SDate = DateTime.ParseExact(StartDate, "yyyy-MM-dd HH:mm", null).Date;
@@ -191,28 +201,54 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
 
         return totalDays;
     }
+
     public void ETime_TextChanged(object sender, EventArgs e)
     {
         string SDate = BTime.Text;
         string EDate = ETime.Text;
-        if (SDate != "" && EDate != "" && DateDifference(SDate, EDate) >= 1)
+
+        DateTime startDate,
+            endDate;
+
+        // Kiểm tra xem SDate và EDate có phải là ngày hợp lệ không
+        bool isStartDateValid = DateTime.TryParse(SDate, out startDate);
+        bool isEndDateValid = DateTime.TryParse(EDate, out endDate);
+
+        if (isStartDateValid && isEndDateValid)
         {
-            Days.Text = DateDifference(SDate, EDate).ToString();
+            if (DateDifference(SDate, EDate) >= 1)
+            {
+                Days.Text = DateDifference(SDate, EDate).ToString();
+            }
+            else
+            {
+                ShowErrorMessage("Ngày kết thúc nhỏ hơn hoặc bằng ngày bắt đầu");
+            }
         }
-        else if (SDate != "" && EDate == "")
+        else if (isStartDateValid && !isEndDateValid)
         {
-            Days.Text = "";
+            ShowErrorMessage("Chưa nhập ngày kết thúc");
         }
         else
         {
-            Days.Text = "0";
+            ShowErrorMessage("Ngày bắt đầu không hợp lệ hoặc trống");
         }
     }
+
     public void Print_Click(object sender, EventArgs e)
     {
         ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
-        Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        Dialog.Open2(
+            Print,
+            "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx",
+            "",
+            950,
+            600,
+            Dialog.PostBackType.None,
+            param
+        );
     }
+
     /// <summary>
     /// 外掛欄位的條件值 | Giá trị có điều kiện của trường plug-in
     /// </summary>
@@ -220,7 +256,11 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     {
         get
         {
-            if ("Applicant,ReturnToApplicant,ReturnApplicant".IndexOf((string)ViewState["fieldMode"]) == -1)
+            if (
+                "Applicant,ReturnToApplicant,ReturnApplicant".IndexOf(
+                    (string)ViewState["fieldMode"]
+                ) == -1
+            )
             {
                 return (string)ViewState["customCondition"];
             }
@@ -228,15 +268,13 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             {
                 string account = Current.UserGUID;
                 string group = ApplicantGroupId;
-                LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
+                LYV.BusinessTrip.UCO.BusinessTripUCO uco =
+                    new LYV.BusinessTrip.UCO.BusinessTripUCO();
                 string LEV = uco.GetLEV(account, group);
                 return LEV;
             }
         }
-        set
-        {
-            base.ConditionValue = value;
-        }
+        set { base.ConditionValue = value; }
     }
 
     /// <summary>
@@ -279,11 +317,10 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         {
             //表單訊息通知顯示的內容 Những gì được hiển thị trong thông báo tin nhắn biểu mẫu
             //回傳字串
-            return String.Empty; 
+            return String.Empty;
             //return "<table><tr><td>123456</td></tr></table>";
         }
     }
-
 
     /// <summary>
     /// 真實的值
@@ -304,7 +341,6 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         }
     }
 
-
     /// <summary>
     /// 欄位的內容
     /// </summary>
@@ -312,7 +348,11 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
     {
         get
         {
-            if ("Applicant,ReturnToApplicant,ReturnApplicant".IndexOf((string)ViewState["fieldMode"]) == -1)
+            if (
+                "Applicant,ReturnToApplicant,ReturnApplicant".IndexOf(
+                    (string)ViewState["fieldMode"]
+                ) == -1
+            )
             {
                 return (string)ViewState["customField"];
             }
@@ -322,7 +362,9 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
 
                 TPElement.Add(new XAttribute("Name_ID", Name_ID.Text));
                 TPElement.Add(new XAttribute("Name", Name.Text));
-                TPElement.Add(new XAttribute("Name_DepID", Name_DepID.Attributes["DepID"].ToString()));
+                TPElement.Add(
+                    new XAttribute("Name_DepID", Name_DepID.Attributes["DepID"].ToString())
+                );
                 TPElement.Add(new XAttribute("Name_DepName", Name_DepID.Text));
                 TPElement.Add(new XAttribute("Agent_ID", Agent_ID.Text));
                 TPElement.Add(new XAttribute("Agent", Agent.Text));
@@ -355,7 +397,6 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
                 {
                     TPElement.Add(new XAttribute("ApplyCar", "0"));
                 }
-
 
                 return TPElement.ToString();
             }
@@ -447,6 +488,7 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         Remark.Enabled = Enabled;
         documents.Enabled = Enabled;
     }
+
     private void SetCustomField(XElement xeTP)
     {
         LYV.BusinessTrip.UCO.BusinessTripUCO uco = new LYV.BusinessTrip.UCO.BusinessTripUCO();
@@ -467,8 +509,12 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
         Remark.Text = xeTP.Attribute("Remark").Value;
 
         string SelectType = xeTP.Attribute("SelectType").Value;
-        if (SelectType == "Xe hơi" || SelectType == "Máy bay" ||
-            SelectType == "Thuyền" || SelectType == "Xe buýt")
+        if (
+            SelectType == "Xe hơi"
+            || SelectType == "Máy bay"
+            || SelectType == "Thuyền"
+            || SelectType == "Xe buýt"
+        )
         {
             TransportType.SelectedValue = xeTP.Attribute("TransportType").Value;
             ptkhac.Text = "";
@@ -480,7 +526,6 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             ptkhac.Text = xeTP.Attribute("TransportType").Value;
             ptkhac.Enabled = true;
         }
-
 
         if (xeTP.Attribute("ApplyCar").Value == "1")
         {
@@ -498,14 +543,25 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             string pflowflag = uco.getFlowflag(hfLYV.Value);
             if (pflowflag == "Z")
             {
-                if (hfTASK_RESULT.Value.ToString() == "Reject" || hfTASK_RESULT.Value.ToString() == "Cancel")
+                if (
+                    hfTASK_RESULT.Value.ToString() == "Reject"
+                    || hfTASK_RESULT.Value.ToString() == "Cancel"
+                )
                 {
                     pPrint.Visible = false;
                 }
                 else
                 {
                     ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
-                    Dialog.Open2(Print, "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+                    Dialog.Open2(
+                        Print,
+                        "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx",
+                        "",
+                        950,
+                        600,
+                        Dialog.PostBackType.None,
+                        param
+                    );
                     pPrint.Visible = true;
                 }
             }
@@ -563,7 +619,6 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             else
             {
                 //沒有申請資料，第一次載入
-
             }
             //草稿
             if (!fieldOptional.IsAudit)
@@ -587,8 +642,12 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
                 if (fieldOptional.Filler != null)
                 {
                     //判斷填寫的站點和當前是否相同
-                    if (base.taskObj != null && base.taskObj.CurrentSite != null &&
-                        base.taskObj.CurrentSite.SiteId == fieldOptional.FillSiteId && fieldOptional.Filler.UserGUID == Ede.Uof.EIP.SystemInfo.Current.UserGUID)
+                    if (
+                        base.taskObj != null
+                        && base.taskObj.CurrentSite != null
+                        && base.taskObj.CurrentSite.SiteId == fieldOptional.FillSiteId
+                        && fieldOptional.Filler.UserGUID == Ede.Uof.EIP.SystemInfo.Current.UserGUID
+                    )
                     {
                         //判斷填寫權限
                         if (fieldOptional.HasAuthority)
@@ -604,10 +663,8 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
                     }
                     else
                     {
-
                         //沒修改權限的處理
                         EnabledControl(false);
-
                     }
                 }
                 else
@@ -623,7 +680,6 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
                         //沒填寫權限的處理
                         EnabledControl(false);
                     }
-
                 }
             }
 
@@ -678,10 +734,12 @@ public partial class WKF_BusinessTrip_Form : WKF_FormManagement_VersionFieldUser
             {
                 lblModifier.Visible = true;
                 lblModifier.ForeColor = System.Drawing.Color.FromArgb(0x52, 0x52, 0x52);
-                lblModifier.Text = System.Web.Security.AntiXss.AntiXssEncoder.HtmlEncode(fieldOptional.Modifier.Name, true);
+                lblModifier.Text = System.Web.Security.AntiXss.AntiXssEncoder.HtmlEncode(
+                    fieldOptional.Modifier.Name,
+                    true
+                );
             }
             #endregion
         }
     }
-
 }

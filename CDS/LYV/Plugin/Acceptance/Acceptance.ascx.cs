@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Data;
+using System.Dynamic;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using Ede.Uof.WKF.Design;
-using Ede.Uof.EIP.SystemInfo;
+using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using DocumentFormat.OpenXml.Spreadsheet;
-using Ede.Uof.Utility.Page.Common;
-using System.Dynamic;
-using Training.LYVAcceptance.UCO;
 using Ede.Uof.EIP.Organization.Util;
-public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
+using Ede.Uof.EIP.SystemInfo;
+using Ede.Uof.Utility.Page.Common;
+using Ede.Uof.WKF.Design;
+using Training.LYVAcceptance.UCO;
+
+public partial class CDS_LYV_Plugins_Acceptance_Acceptance
+    : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
 {
     #region ==============公開方法及屬性==============
     //表單設計時
@@ -36,18 +38,20 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             LoadGridView(tbRKNO.Text);
         }
     }
+
     protected void gvBCShoesIn_SelectedIndexChanged(object sender, EventArgs e)
     {
         tbRKNO.Text = gvMaster.SelectedDataKey.Value.ToString();
         //
         // tbRKNO_TextChanged(tbRKNO, EventArgs.Empty);
-
     }
+
     protected void gvMaster_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvMaster.PageIndex = e.NewPageIndex;
         LoadGridView(tbRKNO.Text);
     }
+
     protected void gvMaster_OnRowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.Header)
@@ -55,7 +59,6 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             //show the checkbox only when "pending" mode
             HtmlInputCheckBox cb = (HtmlInputCheckBox)e.Row.FindControl("CheckBox");
             cb.Visible = false;
-
         }
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
@@ -63,16 +66,16 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             cb.Visible = false;
         }
     }
+
     private void LoadGridView(string RKNO)
     {
         AccpetanceUCO uco = new AccpetanceUCO();
         DataTable dt = uco.GetData(RKNO);
         gvMaster.DataSource = dt;
         gvMaster.DataBind();
-
     }
 
-    // Bat su kien nhap so the 
+    // Bat su kien nhap so the
     protected void tbRKNO_Changed(object sender, EventArgs e)
     {
         AccpetanceUCO uco = new AccpetanceUCO();
@@ -83,7 +86,6 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             {
                 tbZSNO.Text = dt.Rows[0]["ZSNO"].ToString();
                 tbZSYWJC.Text = dt.Rows[0]["zsjc_yw"].ToString();
-
             }
             LoadGridView(tbRKNO.Text);
         }
@@ -95,14 +97,19 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
         }
     }
 
-
-
     public void Print_Click(object sender, EventArgs e)
     {
         ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
-        Dialog.Open2(btnPrint, "~/CDS/LYV/Plugin/Acceptance/LYV_Acceptance_Reports.aspx", "", 950, 600, Dialog.PostBackType.None, param);
+        Dialog.Open2(
+            btnPrint,
+            "~/CDS/LYV/Plugin/Acceptance/LYV_Acceptance_Reports.aspx",
+            "",
+            950,
+            600,
+            Dialog.PostBackType.None,
+            param
+        );
     }
-
 
     /// <summary>
     /// 外掛欄位的條件值
@@ -162,7 +169,6 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
         }
     }
 
-
     /// <summary>
     /// 真實的值
     /// </summary>
@@ -181,7 +187,6 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             base.m_fieldValue = value;
         }
     }
-
 
     /// <summary>
     /// 欄位的內容
@@ -230,11 +235,10 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
     public void EnabledControl(bool Enabled)
     {
         tbRKNO.Enabled = Enabled;
-
     }
+
     private void SetCustomField(XElement xeTP)
     {
-
         tbPurchaseRequestNo.Text = xeTP.Attribute("PurchaseRequestNo").Value;
         tbRKNO.Text = xeTP.Attribute("RKNO").Value;
         tbRKNO_Changed(tbRKNO.Text, EventArgs.Empty);
@@ -252,8 +256,8 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
         {
             pPrint.Visible = false;
         }
-
     }
+
     /// <summary>
     /// 顯示時欄位初始值
     /// </summary>
@@ -302,7 +306,6 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             else
             {
                 //沒有申請資料，第一次載入
-
             }
             //草稿
             if (!fieldOptional.IsAudit)
@@ -326,8 +329,12 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
                 if (fieldOptional.Filler != null)
                 {
                     //判斷填寫的站點和當前是否相同
-                    if (base.taskObj != null && base.taskObj.CurrentSite != null &&
-                        base.taskObj.CurrentSite.SiteId == fieldOptional.FillSiteId && fieldOptional.Filler.UserGUID == Ede.Uof.EIP.SystemInfo.Current.UserGUID)
+                    if (
+                        base.taskObj != null
+                        && base.taskObj.CurrentSite != null
+                        && base.taskObj.CurrentSite.SiteId == fieldOptional.FillSiteId
+                        && fieldOptional.Filler.UserGUID == Ede.Uof.EIP.SystemInfo.Current.UserGUID
+                    )
                     {
                         //判斷填寫權限
                         if (fieldOptional.HasAuthority)
@@ -343,10 +350,8 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
                     }
                     else
                     {
-
                         //沒修改權限的處理
                         EnabledControl(false);
-
                     }
                 }
                 else
@@ -362,7 +367,6 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
                         //沒填寫權限的處理
                         EnabledControl(false);
                     }
-
                 }
             }
             switch (fieldOptional.FieldMode)
@@ -415,7 +419,10 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_
             {
                 lblModifier.Visible = true;
                 lblModifier.ForeColor = System.Drawing.Color.FromArgb(0x52, 0x52, 0x52);
-                lblModifier.Text = System.Web.Security.AntiXss.AntiXssEncoder.HtmlEncode(fieldOptional.Modifier.Name, true);
+                lblModifier.Text = System.Web.Security.AntiXss.AntiXssEncoder.HtmlEncode(
+                    fieldOptional.Modifier.Name,
+                    true
+                );
             }
             #endregion
         }

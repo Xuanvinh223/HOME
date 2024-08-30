@@ -98,6 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DemoDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="PO\BoSungNhanSu\BoSungNhanSuPO.cs" />
     <Compile Include="PO\BusinessTripExpert\BusinessTripExpertPO.cs" />
     <Compile Include="PO\BusinessTripODPO\BusinessTripODPO.cs" />
     <Compile Include="PO\BusinessTripReport\BusinessTripReportPO.cs" />
@@ -113,6 +114,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Trigger\BoSungNhanSu\BSNS_End.cs" />
+    <Compile Include="Trigger\BoSungNhanSu\BSNS_Flow.cs" />
+    <Compile Include="Trigger\BoSungNhanSu\BSNS_Start.cs" />
     <Compile Include="Trigger\BusinessTripExpert\LYN_BusinessTripExpert_End.cs" />
     <Compile Include="Trigger\BusinessTripExpert\LYN_BusinessTripExpert_Flow.cs" />
     <Compile Include="Trigger\BusinessTripExpert\LYN_BusinessTripExpert_Start.cs" />
@@ -136,6 +140,7 @@
     <Compile Include="Trigger\Supplier\Supplier_End.cs" />
     <Compile Include="Trigger\Supplier\Supplier_Flow.cs" />
     <Compile Include="Trigger\Supplier\Supplier_Start.cs" />
+    <Compile Include="UCO\BoSungNhanSu\BoSungNhanSuUCO.cs" />
     <Compile Include="UCO\BusinessTripExpert\BusinessTripExpertUCO.cs" />
     <Compile Include="UCO\BusinessTripOD\BusinessTripODUCO.cs" />
     <Compile Include="UCO\BusinessTripReport\BusinessTripReportUCO.cs" />

@@ -5,6 +5,15 @@
     <Field>
       <OptionalField>
 
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/BoSungNhanSu/BoSungNhanSu.ascx" FieldName="BoSungNhanSu">
+			  <Display>
+				  <Value Culture="zh-TW" Name="BoSungNhanSu"/>
+				  <Value Culture="zh-CN" Name="BoSungNhanSu"/>
+				  <Value Culture="en-US" Name="BoSungNhanSu"/>
+				  <Value Culture="vi" Name="BoSungNhanSu"/>
+			  </Display>
+		  </FieldItem>
+		  
 		  <FieldItem WriteUI="~/CDS/LYV/Plugin/GUI/GUI.ascx" FieldName="GUI">
 			  <Display>
 				  <Value Culture="zh-TW" Name="GUI"/>

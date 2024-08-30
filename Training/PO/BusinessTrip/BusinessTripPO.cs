@@ -5,9 +5,10 @@ namespace LYV.BusinessTrip.PO
 {
     internal class BusinessTripPO : Ede.Uof.Utility.Data.BasePersistentObject
     {
+        private string conn = Training.Properties.Settings.Default.UOF.ToString();
+        private string connectHRM = Training.Properties.Settings.Default.HRM.ToString();
         internal string GetLEV(string UserID, string groupID)
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string cmd = @"SELECT LEV 
                            FROM TB_EB_USER 
@@ -32,7 +33,6 @@ namespace LYV.BusinessTrip.PO
         }
         internal string GetMaPhieu(string Type)
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string cmd = "";
             if (Type == "1")
@@ -84,8 +84,7 @@ namespace LYV.BusinessTrip.PO
         }
         internal DataTable GetDep()
         {
-            string conn = Training.Properties.Settings.Default.HRM.ToString();
-            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
+            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(connectHRM);
             string cmdTxt = @"SELECT ST_NHANVIEN.DV_MA,DV_TEN
                             FROM ST_DONVI left JOIN dbo.ST_NHANVIEN ON ST_NHANVIEN.DV_MA = ST_DONVI.DV_MA";
 
@@ -99,8 +98,7 @@ namespace LYV.BusinessTrip.PO
         }
         internal string GetEmployee(string UserID)
         {
-            string conn = Training.Properties.Settings.Default.HRM.ToString();
-            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
+            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(connectHRM);
 
             DataTable dt = new DataTable();
             string Department = "";
@@ -128,8 +126,7 @@ namespace LYV.BusinessTrip.PO
                 }
                 else
                 {
-                    string conn1 = Training.Properties.Settings.Default.HRM.ToString();
-                    this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
+                    this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(connectHRM);
                     DataTable dt1 = new DataTable();
 
                     string selectSql = @"
@@ -161,7 +158,6 @@ namespace LYV.BusinessTrip.PO
         }
         internal void InsertBusinessTripFormData(string LYV, string EmployeeType, string RequestDate,string type,string DepID, string UserID, XElement xE)
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
             string Name_ID = xE.Attribute("Name_ID").Value;
@@ -263,7 +259,6 @@ namespace LYV.BusinessTrip.PO
         }
         internal void UpdateFormStatus(string LYV, string EmployeeType, string RequestDate, string Type, string SiteCode, string signStatus, XElement xE)
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             DataTable dt = new DataTable();
 
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
@@ -372,8 +367,7 @@ namespace LYV.BusinessTrip.PO
         }
         internal void UpdateFormResult(string LYV, string formResult)
         {
-            string conn1 = Training.Properties.Settings.Default.UOF.ToString();
-            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
+            this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
             if (formResult == "Adopt")
             {
@@ -393,7 +387,6 @@ namespace LYV.BusinessTrip.PO
         internal DataTable getWSSignNextInfo(string docNbr, string UserGUID)
         {
             DataTable dt = new DataTable();
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string cmdTxt = @"SELECT TB_WKF_TASK.TASK_ID, TB_WKF_TASK_NODE.SITE_ID, TB_WKF_TASK_NODE.NODE_SEQ, TB_WKF_TASK_NODE.ORIGINAL_SIGNER
                             FROM TB_WKF_TASK INNER JOIN TB_WKF_TASK_NODE ON TB_WKF_TASK.TASK_ID = TB_WKF_TASK_NODE.TASK_ID
@@ -409,7 +402,6 @@ namespace LYV.BusinessTrip.PO
         }
         internal DataTable GetListBT(string LYV, string Type, string RLYV, string Name, string Name_ID, string BTime1, string BTime2)
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string where = "";
             if (Type != "ALL")
@@ -455,7 +447,6 @@ namespace LYV.BusinessTrip.PO
 
         internal string GetType(string LYV)
         {
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string SQL = @"SELECT Type FROM dbo.LYV_BusinessTrip WHERE LYV = @LYV";
 
@@ -475,7 +466,6 @@ namespace LYV.BusinessTrip.PO
         internal string getFlowflag(string LYV)
         {
 
-            string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
             string cmdflowflag = @"SELECT flowflag FROM dbo.LYV_BusinessTrip WHERE LYV = @LYV";
 

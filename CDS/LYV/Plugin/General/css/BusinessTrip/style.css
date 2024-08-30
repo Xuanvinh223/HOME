@@ -1,6 +1,4 @@
-﻿
-
-.FormGrid td,
+﻿.FormGrid td,
 .FormGrid th {
     border: 1px solid #ddd;
     padding: 8px;
@@ -10,10 +8,10 @@
     border-collapse: collapse;
 }
 
-    .Form td {
-        padding-top: 8px;
-        padding-bottom: 8px;
-    }
+.Form td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
 
 .panel1 {
     width: 100%;
@@ -30,17 +28,17 @@
     width: max-content;
 }
 
-    .btnFunc:hover {
-        background-color: aqua;
-    }
+.btnFunc:hover {
+    background-color: aqua;
+}
 
 .radio {
     width: 90%;
     text-align: left;
 }
 
-    .radio th,
-    .radio td {
-        width: 20%;
-        vertical-align: top;
-    }
+.radio th,
+.radio td {
+    width: 20%;
+    vertical-align: top;
+}

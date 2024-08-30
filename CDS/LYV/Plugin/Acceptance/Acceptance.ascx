@@ -19,25 +19,32 @@
         <asp:HiddenField ID="hfTASK_RESULT" runat="server" />
         <table class="tblTotal">
             <tr>
-                <td style="width: 620px"><b>Số phiếu đơn xin đặt mua | 請購單單號</b><br />
+                <td style="width: 620px">
+                    <b>Số phiếu đơn xin đặt mua | 請購單單號</b>
+                    <br />
                     <asp:TextBox ID="tbPurchaseRequestNo" AutoPostBack="True" runat="server" MaxLength="20" Style="width: 550px" />
                 </td>
-                <td style="width: 600px"><b>Số phiếu đơn đặt mua | 採購單單號</b><br />
-                    <asp:TextBox ID="tbZSNO" runat="server" Style="width: 550px" Enabled="false" /></td>
+                <td style="width: 600px">
+                    <b>Số phiếu đơn đặt mua | 採購單單號</b>
+                    <br />
+                    <asp:TextBox ID="tbZSNO" runat="server" Style="width: 550px" Enabled="false" />
+                </td>
             </tr>
             <tr>
-                <td style="width: 620px"><b>Số phiếu nhập kho | 入庫單單號</b><br />
-                    <asp:TextBox ID="tbRKNO" runat="server" OnTextChanged="tbRKNO_Changed" AutoPostBack="True" Style="width: 550px; background-color: yellow" /></td>
-                <td style="width: 600px"><b>Nhà cung ứng | 廠商</b><br />
-                    <asp:TextBox ID="tbZSYWJC" runat="server" Style="width: 550px" Enabled="false" /></td>
+                <td style="width: 620px">
+                    <b>Số phiếu nhập kho | 入庫單單號</b>
+                    <br />
+                    <asp:TextBox ID="tbRKNO" runat="server" OnTextChanged="tbRKNO_Changed" AutoPostBack="True" Style="width: 550px; background-color: yellow" />
+                </td>
+                <td style="width: 600px">
+                    <b>Nhà cung ứng | 廠商</b>
+                    <br />
+                    <asp:TextBox ID="tbZSYWJC" runat="server" Style="width: 550px" Enabled="false" />
+                </td>
             </tr>
             <tr>
                 <td colspan=" 2">
-                    <Ede:Grid ID="gvMaster" runat="server" CssClass="FormGrid" PageSize="20" AllowPaging="True" DataKeyNames="RKNO" AutoGenerateColumns="False"
-                        AutoGenerateCheckBoxColumn="True" CustomDropDownListPage="False" DataKeyOnClientWithCheckBox="True"
-                        DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="False" SelectedRowColor="229, 245, 159"
-                        UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowDataBound="gvMaster_OnRowDataBound"
-                        OnPageIndexChanging="gvMaster_PageIndexChanging" AllowSorting="True" Width="100%">
+                    <Ede:Grid ID="gvMaster" runat="server" CssClass="FormGrid" PageSize="20" AllowPaging="True" DataKeyNames="RKNO" AutoGenerateColumns="False" AutoGenerateCheckBoxColumn="True" CustomDropDownListPage="False" DataKeyOnClientWithCheckBox="True" DefaultSortDirection="Ascending" EmptyDataText="No data found" EnhancePager="True" KeepSelectedRows="False" SelectedRowColor="229, 245, 159" UnSelectedRowColor="238, 238, 238" ShowHeaderWhenEmpty="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowDataBound="gvMaster_OnRowDataBound" OnPageIndexChanging="gvMaster_PageIndexChanging" AllowSorting="True" Width="100%">
                         <EmptyDataRowStyle ForeColor="Red" />
                         <Columns>
                             <asp:BoundField DataField="RKNO" HeaderText="RKNO" Visible="false">
