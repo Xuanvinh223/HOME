@@ -105,3 +105,10 @@ LEFT JOIN (
                 RowID = 1 
  ) AS ApproveData ON 1 = 1 
  WHERE LYV='LYV240900001'
+=============================================================================================================================================================================================================================
+stringVar photoURL := "http://bpm.tyxuan.com.vn/UOF/common/filecenter/v3/handler/downloadhandler.ashx?id=" + 
+{CFMID2.FILE_ID}+ 
+"&path=" + {CFMID2.FILE_PATH} + 
+"&contentType=" + {CFMID2.FILE_CONTENT_TYPE}+
+"&name=" + {CFMID2.FILE_NAME};
+photoURL;
