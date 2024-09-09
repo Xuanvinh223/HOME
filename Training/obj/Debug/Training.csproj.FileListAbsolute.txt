@@ -1788,6 +1788,8 @@ D:\技轉demo\技轉公班程式檔案包裝24\UOF_Training\Training\obj\Debug\T
 D:\技轉demo\技轉公班程式檔案包裝24\UOF_Training\Training\obj\Debug\Training.csproj.CopyComplete
 D:\技轉demo\技轉公班程式檔案包裝24\UOF_Training\Training\obj\Debug\Training.dll
 D:\技轉demo\技轉公班程式檔案包裝24\UOF_Training\Training\obj\Debug\Training.pdb
+D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.AssemblyReference.cache
+D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.CoreCompileInputs.cache
 D:\Project\UOF_Training\Training\bin\Debug\Training.dll.config
 D:\Project\UOF_Training\Training\bin\Debug\Training.dll
 D:\Project\UOF_Training\Training\bin\Debug\Training.pdb
@@ -1873,8 +1875,6 @@ D:\Project\UOF_Training\Training\bin\Debug\Telerik.WinControls.dll
 D:\Project\UOF_Training\Training\bin\Debug\TelerikCommon.dll
 D:\Project\UOF_Training\Training\bin\Debug\Ede.Uof.WKF.XmlSerializers.dll
 D:\Project\UOF_Training\Training\bin\Debug\Ede.Uof.EIP.HR104.XmlSerializers.dll
-D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.AssemblyReference.cache
-D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.CoreCompileInputs.cache
 D:\Project\UOF_Training\Training\obj\Debug\Training.csproj.Up2Date
 D:\Project\UOF_Training\Training\obj\Debug\Training.dll
 D:\Project\UOF_Training\Training\obj\Debug\Training.pdb

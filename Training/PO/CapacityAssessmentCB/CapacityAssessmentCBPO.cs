@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Training.Data;
 using System.Xml.Linq;
-using Quartz.Collection;
 
-namespace Training.CapacityAssessmentCB.PO
+namespace LYV.CapacityAssessmentCB.PO
 {
     internal class CapacityAssessmentCBPO : Ede.Uof.Utility.Data.BasePersistentObject
     {
@@ -109,7 +103,7 @@ namespace Training.CapacityAssessmentCB.PO
             string TC2 = xE.Attribute("TC2").Value;
             string TC3 = xE.Attribute("TC3").Value;
 
-            string cmdTxt = @"  INSERT INTO LYN_CapacityAssessment
+            string cmdTxt = @"  INSERT INTO LYV_CapacityAssessment
                                 (	 [CNO] ,  
                                      [UserID] , 
                                      [UserDate] ,
@@ -219,7 +213,7 @@ namespace Training.CapacityAssessmentCB.PO
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
 
-            string cmdflowflag = @"SELECT flowflag FROM LYN_CapacityAssessment WHERE CNO = @CNO";
+            string cmdflowflag = @"SELECT flowflag FROM LYV_CapacityAssessment WHERE CNO = @CNO";
 
             DataTable dt = new DataTable();
             this.m_db.AddParameter("@CNO", CNO);
@@ -264,7 +258,7 @@ namespace Training.CapacityAssessmentCB.PO
                 string TC2 = xE.Attribute("TC2").Value;
                 string TC3 = xE.Attribute("TC3").Value;
 
-                string cmdTxt = @"  UPDATE LYN_CapacityAssessment SET
+                string cmdTxt = @"  UPDATE LYV_CapacityAssessment SET
                                      [flowflag] = @flowflag,
                                      [ID] = @ID ,
                                      [Name] = @Name ,
@@ -331,7 +325,7 @@ namespace Training.CapacityAssessmentCB.PO
 
                 if (!string.IsNullOrEmpty(SiteCode))
                 {
-                    string cmdTxt1 = "UPDATE LYN_CapacityAssessment SET flowflag = 'P' WHERE CNO=@CNO";
+                    string cmdTxt1 = "UPDATE LYV_CapacityAssessment SET flowflag = 'P' WHERE CNO=@CNO";
                     this.m_db.AddParameter("@CNO", CNO);
                     this.m_db.ExecuteNonQuery(cmdTxt1);
                 }
@@ -339,19 +333,19 @@ namespace Training.CapacityAssessmentCB.PO
 
             if (SiteCode == "ReturnToApplicant")
             {
-                string cmdTxt = "UPDATE LYN_CapacityAssessment SET flowflag = 'NP' WHERE CNO=@CNO";
+                string cmdTxt = "UPDATE LYV_CapacityAssessment SET flowflag = 'NP' WHERE CNO=@CNO";
                 this.m_db.AddParameter("@CNO", CNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (SiteCode == "SE" && signStatus == "Approve")
             {
-                string cmdTxt = "UPDATE LYN_CapacityAssessment SET flowflag = 'Z' WHERE CNO=@CNO AND flowflag IN ('N','P') ";
+                string cmdTxt = "UPDATE LYV_CapacityAssessment SET flowflag = 'Z' WHERE CNO=@CNO AND flowflag IN ('N','P') ";
                 this.m_db.AddParameter("@CNO", CNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (signStatus == "Disapprove")
             {
-                string cmdTxt = "UPDATE LYN_CapacityAssessment SET flowflag = 'X' WHERE CNO=@CNO ";
+                string cmdTxt = "UPDATE LYV_CapacityAssessment SET flowflag = 'X' WHERE CNO=@CNO ";
                 this.m_db.AddParameter("@CNO", CNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
@@ -365,13 +359,13 @@ namespace Training.CapacityAssessmentCB.PO
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn1);
             if (formResult == "Adopt")
             {
-                string cmdTxt = "UPDATE LYN_CapacityAssessment SET flowflag = 'Z' WHERE CNO=@CNO AND flowflag IN ('N','P') ";
+                string cmdTxt = "UPDATE LYV_CapacityAssessment SET flowflag = 'Z' WHERE CNO=@CNO AND flowflag IN ('N','P') ";
                 this.m_db.AddParameter("@CNO", CNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
             else if (formResult == "Reject" || formResult == "Cancel")
             {
-                string cmdTxt = "UPDATE LYN_CapacityAssessment SET flowflag = 'X' WHERE CNO=@CNO ";
+                string cmdTxt = "UPDATE LYV_CapacityAssessment SET flowflag = 'X' WHERE CNO=@CNO ";
                 this.m_db.AddParameter("@CNO", CNO);
                 this.m_db.ExecuteNonQuery(cmdTxt);
             }
@@ -382,18 +376,18 @@ namespace Training.CapacityAssessmentCB.PO
         {
             string conn = Training.Properties.Settings.Default.UOF.ToString();
             this.m_db = new Ede.Uof.Utility.Data.DatabaseHelper(conn);
-            string where = " AND (LYN_CapacityAssessmentCB_1.CFMID_1='" + CFMID + "' OR LYN_CapacityAssessmentCB_2.CFMID_2='" + CFMID + "') ";
+            string where = " AND (LYV_CapacityAssessmentCB_1.CFMID_1='" + CFMID + "' OR LYV_CapacityAssessmentCB_2.CFMID_2='" + CFMID + "') ";
 
             if (Factory != "") where += " and LOWER(GROUPS.Factory) like LOWER(N'%" + Factory + "%') ";
             if (Department != "") where += " and LOWER(GROUPS.Department) like LOWER(N'%" + Department + "%') ";
-            if (Year != "") where += " and LYN_CapacityAssessmentCB.Year = '" + Year + "' ";
+            if (Year != "") where += " and LYV_CapacityAssessmentCB.Year = '" + Year + "' ";
             if (Month1 != "" && Month2 != "")
             {
-                where += " and LYN_CapacityAssessmentCB.Month >= " + Month1 + " and LYN_CapacityAssessmentCB.Month <= " + Month2;
+                where += " and LYV_CapacityAssessmentCB.Month >= " + Month1 + " and LYV_CapacityAssessmentCB.Month <= " + Month2;
             }
             else if (Month1 != "" || Month2 != "")
             {
-                where += " and LYN_CapacityAssessmentCB.Month = '" + Month1+ Month2 + "' ";
+                where += " and LYV_CapacityAssessmentCB.Month = '" + Month1+ Month2 + "' ";
             }
             if (flowflag != "ALL")
             {
@@ -411,20 +405,20 @@ namespace Training.CapacityAssessmentCB.PO
                 }
             }
 
-            string SQL = @"  select ROW_NUMBER() OVER(ORDER BY LYN_CapacityAssessmentCB.PNO DESC) AS Seq,  GROUPS.Factory, GROUPS.Department,
-                                    GROUPS.Position, LYN_CapacityAssessmentCB.UserID, GROUPS.UserNameTW + ' ' + GROUPS.UserName as UserName, CONVERT(VARCHAR,GROUPS.JoinDate,120) JoinDate,
-	                                LYN_CapacityAssessmentCB_1.TMT_1, LYN_CapacityAssessmentCB_1.TNL_1, LYN_CapacityAssessmentCB_1.TPD_1, LYN_CapacityAssessmentCB_1.TKT_1,
-	                                (LYN_CapacityAssessmentCB_1.TMT_1 + LYN_CapacityAssessmentCB_1.TNL_1 + LYN_CapacityAssessmentCB_1.TPD_1 + LYN_CapacityAssessmentCB_1.TKT_1) as TD_1,
-	                                '(' +LYN_CapacityAssessmentCB_1.CFMID_1 + ') ' + GROUPS1.NAME as CFM_1,
-	                                (LYN_CapacityAssessmentCB_2.TMT_2 + LYN_CapacityAssessmentCB_2.TNL_2 + LYN_CapacityAssessmentCB_2.TPD_2 + LYN_CapacityAssessmentCB_2.TKT_2) as TD_2,
-	                                '(' +LYN_CapacityAssessmentCB_2.CFMID_2 + ') ' + GROUPS2.NAME as CFM_2, LYN_CapacityAssessmentCB.Month + '年' + LYN_CapacityAssessmentCB.Year + '月份' TimePR, 
-                                    LYN_CapacityAssessmentCB.PNO, TB_WKF_TASK.TASK_ID
-                            from LYN_CapacityAssessmentCB LEFT JOIN TB_WKF_TASK on LYN_CapacityAssessmentCB.PNO=TB_WKF_TASK.DOC_NBR
-                            left join LYN_CapacityAssessmentCB_1 on LYN_CapacityAssessmentCB_1.PNO=LYN_CapacityAssessmentCB.PNO
-                            left join LYN_CapacityAssessmentCB_2 on LYN_CapacityAssessmentCB_2.PNO=LYN_CapacityAssessmentCB.PNO
-                            left join LYN_USERGROUPS GROUPS on GROUPS.UserID=LYN_CapacityAssessmentCB.UserID
-							LEFT JOIN TB_EB_USER GROUPS1 ON SUBSTRING(GROUPS1.ACCOUNT, PATINDEX('%[0-9]%', GROUPS1.ACCOUNT), LEN(GROUPS1.ACCOUNT))=LYN_CapacityAssessmentCB_1.CFMID_1
-							LEFT JOIN TB_EB_USER GROUPS2 ON SUBSTRING(GROUPS2.ACCOUNT, PATINDEX('%[0-9]%', GROUPS2.ACCOUNT), LEN(GROUPS2.ACCOUNT))=LYN_CapacityAssessmentCB_2.CFMID_2
+            string SQL = @"  select ROW_NUMBER() OVER(ORDER BY LYV_CapacityAssessmentCB.PNO DESC) AS Seq,  GROUPS.Factory, GROUPS.Department,
+                                    GROUPS.Position, LYV_CapacityAssessmentCB.UserID, GROUPS.UserNameTW + ' ' + GROUPS.UserName as UserName, CONVERT(VARCHAR,GROUPS.JoinDate,120) JoinDate,
+	                                LYV_CapacityAssessmentCB_1.TMT_1, LYV_CapacityAssessmentCB_1.TNL_1, LYV_CapacityAssessmentCB_1.TPD_1, LYV_CapacityAssessmentCB_1.TKT_1,
+	                                (LYV_CapacityAssessmentCB_1.TMT_1 + LYV_CapacityAssessmentCB_1.TNL_1 + LYV_CapacityAssessmentCB_1.TPD_1 + LYV_CapacityAssessmentCB_1.TKT_1) as TD_1,
+	                                '(' +LYV_CapacityAssessmentCB_1.CFMID_1 + ') ' + GROUPS1.NAME as CFM_1,
+	                                (LYV_CapacityAssessmentCB_2.TMT_2 + LYV_CapacityAssessmentCB_2.TNL_2 + LYV_CapacityAssessmentCB_2.TPD_2 + LYV_CapacityAssessmentCB_2.TKT_2) as TD_2,
+	                                '(' +LYV_CapacityAssessmentCB_2.CFMID_2 + ') ' + GROUPS2.NAME as CFM_2, LYV_CapacityAssessmentCB.Month + '年' + LYV_CapacityAssessmentCB.Year + '月份' TimePR, 
+                                    LYV_CapacityAssessmentCB.PNO, TB_WKF_TASK.TASK_ID
+                            from LYV_CapacityAssessmentCB LEFT JOIN TB_WKF_TASK on LYV_CapacityAssessmentCB.PNO=TB_WKF_TASK.DOC_NBR
+                            left join LYV_CapacityAssessmentCB_1 on LYV_CapacityAssessmentCB_1.PNO=LYV_CapacityAssessmentCB.PNO
+                            left join LYV_CapacityAssessmentCB_2 on LYV_CapacityAssessmentCB_2.PNO=LYV_CapacityAssessmentCB.PNO
+                            left join LYN_USERGROUPS GROUPS on GROUPS.UserID=LYV_CapacityAssessmentCB.UserID
+							LEFT JOIN TB_EB_USER GROUPS1 ON SUBSTRING(GROUPS1.ACCOUNT, PATINDEX('%[0-9]%', GROUPS1.ACCOUNT), LEN(GROUPS1.ACCOUNT))=LYV_CapacityAssessmentCB_1.CFMID_1
+							LEFT JOIN TB_EB_USER GROUPS2 ON SUBSTRING(GROUPS2.ACCOUNT, PATINDEX('%[0-9]%', GROUPS2.ACCOUNT), LEN(GROUPS2.ACCOUNT))=LYV_CapacityAssessmentCB_2.CFMID_2
                             WHERE 1=1 " + where;
 
             DataTable dt = new DataTable();

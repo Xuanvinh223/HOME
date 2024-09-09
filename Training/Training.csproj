@@ -98,14 +98,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DemoDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="PO\AcceptanceFA\LYN_AcceptanceFAPO.cs" />
     <Compile Include="PO\BoSungNhanSu\BoSungNhanSuPO.cs" />
     <Compile Include="PO\BusinessTripExpert\BusinessTripExpertPO.cs" />
     <Compile Include="PO\BusinessTripODPO\BusinessTripODPO.cs" />
     <Compile Include="PO\BusinessTripReport\BusinessTripReportPO.cs" />
-    <Compile Include="PO\CapacityAssessmentCB\CapacityAssessmentCBPO.cs" />
     <Compile Include="PO\BusinessTrip\BusinessTripPO.cs" />
-    <Compile Include="PO\LYVAcceptance\LYV_AcceptancePO.cs" />
-    <Compile Include="PO\LYVLeave\LeavePO.cs" />
+    <Compile Include="PO\CapacityAssessmentCB\CapacityAssessmentCBPO.cs" />
+    <Compile Include="PO\Acceptance\AcceptancePO.cs" />
+    <Compile Include="PO\Leave\LeavePO.cs" />
     <Compile Include="PO\LYVOut\OutPO.cs" />
     <Compile Include="PO\Supplier\SupplierPO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,6 +115,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Trigger\AcceptanceFA\AcceptanceFA_End.cs" />
+    <Compile Include="Trigger\AcceptanceFA\AcceptanceFA_Flow.cs" />
+    <Compile Include="Trigger\AcceptanceFA\AcceptanceFA_Start.cs" />
     <Compile Include="Trigger\BoSungNhanSu\BSNS_End.cs" />
     <Compile Include="Trigger\BoSungNhanSu\BSNS_Flow.cs" />
     <Compile Include="Trigger\BoSungNhanSu\BSNS_Start.cs" />
@@ -127,19 +131,20 @@
     <Compile Include="Trigger\BusinessTrip\BusinessTrip_End.cs" />
     <Compile Include="Trigger\BusinessTrip\BusinessTrip_Flow.cs" />
     <Compile Include="Trigger\BusinessTrip\BusinessTrip_Start.cs" />
-    <Compile Include="Trigger\CapacityAssessmentCB\LYN_CapacityAssessmentCB_End.cs" />
-    <Compile Include="Trigger\CapacityAssessmentCB\LYN_CapacityAssessmentCB_Flow.cs" />
-    <Compile Include="Trigger\CapacityAssessmentCB\LYN_CapacityAssessmentCB_Start.cs" />
-    <Compile Include="Trigger\Leave\LYV_Leave_End.cs" />
-    <Compile Include="Trigger\Leave\LYV_Leave_Flow.cs" />
-    <Compile Include="Trigger\Leave\LYV_Leave_Start.cs" />
-    <Compile Include="Trigger\LYVAcceptance\LYV_Acceptance_End.cs" />
-    <Compile Include="Trigger\LYVAcceptance\LYV_Acceptance_Flow.cs" />
-    <Compile Include="Trigger\LYVAcceptance\LYV_Acceptance_Start.cs" />
+    <Compile Include="Trigger\CapacityAssessmentCB\CapacityAssessmentCB_End.cs" />
+    <Compile Include="Trigger\CapacityAssessmentCB\CapacityAssessmentCB_Flow.cs" />
+    <Compile Include="Trigger\CapacityAssessmentCB\CapacityAssessmentCB_Start.cs" />
+    <Compile Include="Trigger\Leave\Leave_End.cs" />
+    <Compile Include="Trigger\Leave\Leave_Flow.cs" />
+    <Compile Include="Trigger\Leave\Leave_Start.cs" />
+    <Compile Include="Trigger\Acceptance\Acceptance_End.cs" />
+    <Compile Include="Trigger\Acceptance\Acceptance_Flow.cs" />
+    <Compile Include="Trigger\Acceptance\Acceptance_Start.cs" />
     <Compile Include="Trigger\Out\LYV_Out_Start.cs" />
     <Compile Include="Trigger\Supplier\Supplier_End.cs" />
     <Compile Include="Trigger\Supplier\Supplier_Flow.cs" />
     <Compile Include="Trigger\Supplier\Supplier_Start.cs" />
+    <Compile Include="UCO\AcceptanceFA\AcceptanceFAUCO.cs" />
     <Compile Include="UCO\BoSungNhanSu\BoSungNhanSuUCO.cs" />
     <Compile Include="UCO\BusinessTripExpert\BusinessTripExpertUCO.cs" />
     <Compile Include="UCO\BusinessTripOD\BusinessTripODUCO.cs" />
@@ -147,7 +152,7 @@
     <Compile Include="UCO\BusinnessTrip\BusinessTripUCO.cs" />
     <Compile Include="UCO\CapacityAssessmentCB\CapacityAssessmentCBUCO.cs" />
     <Compile Include="UCO\Leave\LeaveUCO.cs" />
-    <Compile Include="UCO\LYVAcceptance\AccpetanceUCO.cs" />
+    <Compile Include="UCO\Acceptance\AccpetanceUCO.cs" />
     <Compile Include="UCO\Out\OutUCO.cs" />
     <Compile Include="UCO\Supplier\SupplierUCO.cs" />
   </ItemGroup>

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using Training.CapacityAssessmentCB.PO;
-using Training.Data;
+﻿using System.Data;
+using LYV.CapacityAssessmentCB.PO;
 using System.Xml.Linq;
 
 
-namespace Training.CapacityAssessmentCB.UCO
+namespace LYV.CapacityAssessmentCB.UCO
 {
     public  class CapacityAssessmentCBUCO
     {

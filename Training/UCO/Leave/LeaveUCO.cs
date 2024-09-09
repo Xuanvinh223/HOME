@@ -1,8 +1,8 @@
 ﻿using System.Data;
 using System.Xml.Linq;
-using Training.LYVLeave.PO;
+using LYV.Leave.PO;
 
-namespace Training.Leave.UCO
+namespace LYV.Leave.UCO
 {
     public class LeaveUCO
     {

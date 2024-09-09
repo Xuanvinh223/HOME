@@ -17,14 +17,17 @@ public partial class WKF_BusinessTrip_Reports : Ede.Uof.Utility.Page.BasePage
 
             string LYV = Request["LYV"];
             string Type = uco.GetType(LYV);
+            string nameFilePdf = "";
 
             if (Type == "Trong nước")
             {
                 rd.Load(Server.MapPath("~/CDS/LYV/Plugin/Report/BusinessTripTN.rpt"));
+                nameFilePdf = "PHIEU_CONG_TAC_TRONG_NUOC";
             }
             else
             {
                 rd.Load(Server.MapPath("~/CDS/LYV/Plugin/Report/BusinessTripNN.rpt"));
+                nameFilePdf = "PHIEU_CONG_TAC_NGOAI_NUOC";
             }
 
             connInfo.ConnectionInfo.ServerName = "192.168.23.11";
@@ -41,7 +44,7 @@ public partial class WKF_BusinessTrip_Reports : Ede.Uof.Utility.Page.BasePage
             crvBusinessTrip.ReportSource = rd;
 
             //Xuất báo cáo sang PDF
-            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, LYV);
+            rd.ExportToHttpResponse(ExportFormatType.PortableDocFormat, System.Web.HttpContext.Current.Response, false, nameFilePdf);
         }
 
         ((Master_DialogMasterPage)this.Master).FindControl("MasterPageRadButton1").Visible = false;

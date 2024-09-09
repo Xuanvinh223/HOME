@@ -10,10 +10,9 @@ using Ede.Uof.EIP.Organization.Util;
 using Ede.Uof.EIP.SystemInfo;
 using Ede.Uof.Utility.Page.Common;
 using Ede.Uof.WKF.Design;
-using Training.LYVAcceptance.UCO;
+using LYV.Acceptance.UCO;
 
-public partial class CDS_LYV_Plugins_Acceptance_Acceptance
-    : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
+public partial class CDS_LYV_Plugins_Acceptance_Acceptance : WKF_FormManagement_VersionFieldUserControl_VersionFieldUC
 {
     #region ==============公開方法及屬性==============
     //表單設計時
@@ -99,10 +98,10 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance
 
     public void Print_Click(object sender, EventArgs e)
     {
-        ExpandoObject param = new { LNO = hfLNO.Value }.ToExpando();
+        ExpandoObject param = new { LYV = hfLYV.Value }.ToExpando();
         Dialog.Open2(
             btnPrint,
-            "~/CDS/LYV/Plugin/Acceptance/LYV_Acceptance_Reports.aspx",
+            "~/CDS/LYV/Plugin/Acceptance/Acceptance_Reports.aspx",
             "",
             950,
             600,
@@ -246,7 +245,7 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance
         AccpetanceUCO uco = new AccpetanceUCO();
         if (hfTASK_RESULT.Value.ToString() == "Adopt")
         {
-            string pflowflag = uco.getFlowflag(hfLNO.Value);
+            string pflowflag = uco.getFlowflag(hfLYV.Value);
             if (pflowflag == "Z")
             {
                 pPrint.Visible = true;
@@ -297,7 +296,7 @@ public partial class CDS_LYV_Plugins_Acceptance_Acceptance
                 }
                 if (base.taskObj != null)
                 {
-                    hfLNO.Value = base.taskObj.FormNumber;
+                    hfLYV.Value = base.taskObj.FormNumber;
                     hfTASKID.Value = base.taskObj.TaskId;
                     hfTASK_RESULT.Value = base.taskObj.TaskResult.ToString();
                 }

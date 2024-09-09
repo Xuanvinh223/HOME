@@ -241,7 +241,7 @@ public partial class WKF_BusinessTrip_Form
         Dialog.Open2(
             Print,
             "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx",
-            "",
+            "ĐƠN ĐỀ NGHỊ ĐI CÔNG TÁC",
             950,
             600,
             Dialog.PostBackType.None,
@@ -252,15 +252,11 @@ public partial class WKF_BusinessTrip_Form
     /// <summary>
     /// 外掛欄位的條件值 | Giá trị có điều kiện của trường plug-in
     /// </summary>
-    public override string ConditionValue
+    public override string ConditionValue // Trả về giá trị điều kiện trên form
     {
         get
         {
-            if (
-                "Applicant,ReturnToApplicant,ReturnApplicant".IndexOf(
-                    (string)ViewState["fieldMode"]
-                ) == -1
-            )
+            if ("Applicant,ReturnToApplicant,ReturnApplicant".IndexOf((string)ViewState["fieldMode"]) == -1)
             {
                 return (string)ViewState["customCondition"];
             }
@@ -362,9 +358,7 @@ public partial class WKF_BusinessTrip_Form
 
                 TPElement.Add(new XAttribute("Name_ID", Name_ID.Text));
                 TPElement.Add(new XAttribute("Name", Name.Text));
-                TPElement.Add(
-                    new XAttribute("Name_DepID", Name_DepID.Attributes["DepID"].ToString())
-                );
+                TPElement.Add(new XAttribute("Name_DepID", Name_DepID.Attributes["DepID"].ToString()));
                 TPElement.Add(new XAttribute("Name_DepName", Name_DepID.Text));
                 TPElement.Add(new XAttribute("Agent_ID", Agent_ID.Text));
                 TPElement.Add(new XAttribute("Agent", Agent.Text));
@@ -556,7 +550,7 @@ public partial class WKF_BusinessTrip_Form
                     Dialog.Open2(
                         Print,
                         "~/CDS/LYV/Plugin/BusinessTrip/BusinessTrip_Reports.aspx",
-                        "",
+                        "ĐƠN ĐỀ NGHỊ ĐI CÔNG TÁC",
                         950,
                         600,
                         Dialog.PostBackType.None,

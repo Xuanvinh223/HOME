@@ -59,12 +59,12 @@
 			  </Display>
 		  </FieldItem>
 
-		  <FieldItem WriteUI="~/CDS/LYV/Plugin/CapacityAssessmentCB/LYN_CapacityAssessmentCB.ascx" FieldName="LYN_CapacityAssessmentCB">
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/CapacityAssessmentCB/CapacityAssessmentCB.ascx" FieldName="CapacityAssessmentCB">
 			  <Display>
 				  <Value Culture="zh-TW" Name="LYN 出差申請單"/>
 				  <Value Culture="zh-CN" Name="LYN 出差申請單"/>
 				  <Value Culture="en-US" Name="LYN BusinessTrip"/>
-				  <Value Culture="vi" Name="Đánh giá năng lực cáng bộ"/>
+				  <Value Culture="vi" Name="CapacityAssessmentCB"/>
 			  </Display>
 		  </FieldItem>		  
 		  
@@ -86,7 +86,7 @@
 			  </Display>
 		  </FieldItem>
 
-		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Leave/LYV_Leave_Form.ascx" FieldName="Leave">
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/Leave/Leave_Form.ascx" FieldName="Leave">
 			  <Display>
 				  <Value Culture="zh-TW" Name="Leave" />
 				  <Value Culture="zh-CN" Name="Leave" />
@@ -101,6 +101,15 @@
 				  <Value Culture="zh-CN" Name="Acceptance" />
 				  <Value Culture="en-US" Name="Acceptance" />
 				  <Value Culture="vi" Name="Acceptance" />
+			  </Display>
+		  </FieldItem>
+
+		  <FieldItem WriteUI="~/CDS/LYV/Plugin/AcceptanceFA/AcceptanceFA.ascx" FieldName="AcceptanceFA">
+			  <Display>
+				  <Value Culture="zh-TW" Name="AcceptanceFA" />
+				  <Value Culture="zh-CN" Name="AcceptanceFA" />
+				  <Value Culture="en-US" Name="AcceptanceFA" />
+				  <Value Culture="vi" Name="AcceptanceFA" />
 			  </Display>
 		  </FieldItem>
 		  

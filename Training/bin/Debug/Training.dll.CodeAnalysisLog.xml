@@ -6,11 +6,33 @@
    <Modules>
     <Module Name="training.dll">
      <Namespaces>
+      <Namespace Name="LYV.Acceptance.UCO">
+       <Types>
+        <Type Name="AccpetanceUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
+           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'AccpetanceUCO' because it creates members of the following IDisposable types: 'AcceptancePO'. If 'AccpetanceUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="LYV.AcceptanceFA.UCO">
+       <Types>
+        <Type Name="AcceptanceFAUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
+           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'AcceptanceFAUCO' because it creates members of the following IDisposable types: 'AcceptanceFAPO'. If 'AcceptanceFAUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+       </Types>
+      </Namespace>
       <Namespace Name="LYV.BoSungNhanSu.UCO">
        <Types>
         <Type Name="BoSungNhanSuUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'BoSungNhanSuUCO' because it creates members of the following IDisposable types: 'BoSungNhanSuPO'. If 'BoSungNhanSuUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
@@ -21,7 +43,7 @@
        <Types>
         <Type Name="BusinessTripUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'BusinessTripUCO' because it creates members of the following IDisposable types: 'BusinessTripPO'. If 'BusinessTripUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
@@ -32,7 +54,7 @@
        <Types>
         <Type Name="BusinessTripODUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'BusinessTripODUCO' because it creates members of the following IDisposable types: 'BusinessTripODPO'. If 'BusinessTripODUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
@@ -43,8 +65,30 @@
        <Types>
         <Type Name="BusinessTripReportUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'BusinessTripReportUCO' because it creates members of the following IDisposable types: 'BusinessTripReportPO'. If 'BusinessTripReportUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="LYV.CapacityAssessmentCB.UCO">
+       <Types>
+        <Type Name="CapacityAssessmentCBUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
+           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'CapacityAssessmentCBUCO' because it creates members of the following IDisposable types: 'CapacityAssessmentCBPO'. If 'CapacityAssessmentCBUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="LYV.Leave.UCO">
+       <Types>
+        <Type Name="LeaveUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
+           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'LeaveUCO' because it creates members of the following IDisposable types: 'LeavePO'. If 'LeaveUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
         </Type>
@@ -54,7 +98,7 @@
        <Types>
         <Type Name="SupplierUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'SupplierUCO' because it creates members of the following IDisposable types: 'SupplierPO'. If 'SupplierUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
@@ -65,19 +109,8 @@
        <Types>
         <Type Name="BusinessTripExpertUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'BusinessTripExpertUCO' because it creates members of the following IDisposable types: 'BusinessTripExpertPO'. If 'BusinessTripExpertUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
-          </Message>
-         </Messages>
-        </Type>
-       </Types>
-      </Namespace>
-      <Namespace Name="Training.CapacityAssessmentCB.UCO">
-       <Types>
-        <Type Name="CapacityAssessmentCBUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
-         <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
-           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'CapacityAssessmentCBUCO' because it creates members of the following IDisposable types: 'CapacityAssessmentCBPO'. If 'CapacityAssessmentCBUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
         </Type>
@@ -87,44 +120,22 @@
        <Types>
         <Type Name="DemoDataSet" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="NonBreaking">
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="NonBreaking">
            <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'DemoDataSet'.</Issue>
           </Message>
          </Messages>
         </Type>
         <Type Name="DemoDataSet+TB_DEMO_DLL_FORMDataTable" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="NonBreaking">
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="NonBreaking">
            <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'DemoDataSet.TB_DEMO_DLL_FORMDataTable'.</Issue>
           </Message>
          </Messages>
         </Type>
         <Type Name="DemoDataSet+TB_DEMO_WS_FORMDataTable" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="NonBreaking">
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="NonBreaking">
            <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'DemoDataSet.TB_DEMO_WS_FORMDataTable'.</Issue>
-          </Message>
-         </Messages>
-        </Type>
-       </Types>
-      </Namespace>
-      <Namespace Name="Training.Leave.UCO">
-       <Types>
-        <Type Name="LeaveUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
-         <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
-           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'LeaveUCO' because it creates members of the following IDisposable types: 'LeavePO'. If 'LeaveUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
-          </Message>
-         </Messages>
-        </Type>
-       </Types>
-      </Namespace>
-      <Namespace Name="Training.LYVAcceptance.UCO">
-       <Types>
-        <Type Name="AccpetanceUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
-         <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
-           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'AccpetanceUCO' because it creates members of the following IDisposable types: 'LYV_AcceptancePO'. If 'AccpetanceUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
         </Type>
@@ -134,7 +145,7 @@
        <Types>
         <Type Name="OutUCO" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-08-30 06:00:11Z" FixCategory="DependsOnFix">
+          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2024-09-09 06:40:10Z" FixCategory="DependsOnFix">
            <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Implement IDisposable on 'OutUCO' because it creates members of the following IDisposable types: 'OutPO'. If 'OutUCO' has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Issue>
           </Message>
          </Messages>
